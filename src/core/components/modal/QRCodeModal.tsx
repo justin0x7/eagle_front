@@ -25,7 +25,8 @@ export default function QRCodeModal(props: Props) {
     modalTitle = person === 1 ? t("Word.Child")
       : t("Word.Guardian") + (person === 2 ? " 1" : " 2");
   } else {
-    modalTitle = t("Word.Self");
+    modalTitle = person === 1 ? t("Word.Self")
+      : t("Word.Guardian") + (person === 2 ? " 1" : " 2");
   }
 
   return (
