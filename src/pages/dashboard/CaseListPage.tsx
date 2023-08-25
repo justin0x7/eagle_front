@@ -80,7 +80,6 @@ export default function CaseListPage() {
       headerName: t("CaseList.TableHeader.NextSurvey").toString(),
       headerAlign: "left",
       align: "left",
-      sortable: false,
       width: 400,
     },  
   ]), [t]);

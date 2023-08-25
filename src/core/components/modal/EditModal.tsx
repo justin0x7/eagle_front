@@ -120,44 +120,44 @@ export default function EditModal(props: Props) {
             <Grid container padding={3}>
               <Grid item xs={12} paddingBottom={1}>
                 <Stack sx={{ justifyContent: "space-between", alignItems: "center" }} direction={"row"}>
-                  <Typography>Name:</Typography>
+                  <Typography>{t("CRUD.Name")}:</Typography>
                   <TextField id="name" label="Name" value={name} onChange={(e) => setName(e.target.value)} />
                 </Stack>
               </Grid>
               <Grid item xs={12} paddingBottom={1}>
                 <Stack sx={{ justifyContent: "space-between", alignItems: "center" }} direction={"row"}>
-                  <Typography>Email:</Typography>
+                  <Typography>{t("CRUD.Email")}:</Typography>
                   <TextField id="email" label="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
                 </Stack>
               </Grid>
               <Grid item xs={12} paddingBottom={1}>
                 <Stack sx={{ justifyContent: "space-between", alignItems: "center" }} direction={"row"}>
-                  <Typography>Title:</Typography>
+                  <Typography>{t("CRUD.Title")}:</Typography>
                   <TextField id="title" label="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
                 </Stack>
               </Grid>
               <Grid item xs={12} paddingBottom={1}>
                 <Stack sx={{ justifyContent: "space-between", alignItems: "center" }} direction={"row"}>
-                  <Typography>Department:</Typography>
+                  <Typography>{t("CRUD.Department")}:</Typography>
                   <TextField id="department" label="Department" value={department} onChange={(e) => setDepartment(e.target.value)} />
                 </Stack>
               </Grid>
               <Grid item xs={12} paddingBottom={1}>
                 <Stack sx={{ justifyContent: "space-between", alignItems: "center" }} direction={"row"}>
-                  <Typography>Address:</Typography>
+                  <Typography>{t("CRUD.Address")}:</Typography>
                   <TextField id="address" label="Address" value={address} onChange={(e) => setAddress(e.target.value)} />
                 </Stack>
               </Grid>
               <Grid item xs={12} paddingBottom={1}>
                 <Stack sx={{ justifyContent: "space-between", alignItems: "center" }} direction={"row"}>
-                  <Typography>Phone Number:</Typography>
+                  <Typography>{t("CRUD.PhoneNumber")}:</Typography>
                   <TextField id="phone" label="Phone Number" value={phone} onChange={(e) => setPhone(e.target.value)} />
                 </Stack>
               </Grid>
               
               <Grid item xs={12} paddingBottom={1}>
                 <Stack sx={{ justifyContent: "space-between", alignItems: "center" }} direction={"row"}>
-                  <Typography>Role:</Typography>
+                  <Typography>{t("CRUD.Role")}:</Typography>
                   <RadioGroup
                     row
                     aria-labelledby="demo-row-radio-buttons-group-label"
@@ -165,14 +165,14 @@ export default function EditModal(props: Props) {
                     value={role ? 'admin' : 'manager'}
                     onChange={handleRoleChange}
                   >
-                    <FormControlLabel value="admin" control={<Radio />} label="Admin" />
-                    <FormControlLabel value="manager" control={<Radio />} label="Manager" />
+                    <FormControlLabel value="admin" control={<Radio />} label={t("CRUD.Admin")} />
+                    <FormControlLabel value="manager" control={<Radio />} label={t("CRUD.Handler")} />
                   </RadioGroup>
                 </Stack>
               </Grid>
             </Grid>
             <ButtonPrimary variant="contained" color="primary" onClick={handleSave}>
-            Save
+            {t("CRUD.Save")}
           </ButtonPrimary>
           </form>
         </Box>

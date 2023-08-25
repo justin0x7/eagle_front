@@ -257,10 +257,15 @@ export default function AdultSystematicFollowUpPage() {
   return (
     <DashboardLayout>
       {/* Occasion Filter */}
-      <Typography>{t("System.Child")}</Typography>
-      <NavLink to={systematicFollowUpPath()} className={({ isActive }) => isActive ? "active" : ""}>
-        <ToggleOffIcon />
-      </NavLink>
+      <Stack direction="row" spacing={2} paddingTop={2}>
+        <Stack direction="row">
+          <Typography>{t("System.Child")}</Typography>
+          <NavLink to={systematicFollowUpPath()} className={({ isActive }) => isActive ? "active" : ""}>
+            <ToggleOffIcon />
+          </NavLink>
+        </Stack>
+        <Stack>{t("System.AdultOutPatient")}</Stack>
+      </Stack>
       <FormGroup row sx={{ paddingTop: 2 }}>
         <FormControlLabel
           control={
@@ -376,7 +381,7 @@ export default function AdultSystematicFollowUpPage() {
                 <Stack direction="row" justifyContent="space-around" alignItems="center" mt={2}>
                   <Paper elevation={6} sx={{ borderRadius: "100%", width: "120px", height: "120px", padding: "16px" }}>
                     <Stack justifyContent="center" alignItems="center" height="100%">
-                      <Typography color="text.secondary" fontWeight="medium" variant="h6">Score V</Typography>
+                      <Typography color="text.secondary" fontWeight="medium" variant="h6">VAS</Typography>
                       <Typography color="info.main" fontWeight="600" variant='h5'>{filterResult[filter].ors}</Typography>
                       {/* <StatusCircle variant="large" status={filterResult[filter].status} /> */}
                     </Stack>
@@ -386,7 +391,7 @@ export default function AdultSystematicFollowUpPage() {
 
                   <Paper elevation={6} sx={{ borderRadius: "100%", width: "120px", height: "120px", padding: "16px" }}>
                     <Stack justifyContent="center" alignItems="center" height="100%">
-                      <Typography color="text.secondary" fontWeight="medium" variant="h6">Score 15</Typography>
+                      <Typography color="text.secondary" fontWeight="medium" variant="h6">TFS</Typography>
                       <Typography color="info.main" fontWeight="600" variant='h5'>{filterResult[filter].score15}</Typography>
                       {/* <StatusCircle variant="large" status={filterResult[filter].status} /> */}
                     </Stack>

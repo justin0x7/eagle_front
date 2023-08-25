@@ -231,7 +231,7 @@ export default function EstimatesPage() {
                             <Typography fontWeight="bold" variant="h4">{label}</Typography>
                             <Paper elevation={6} sx={{ borderRadius: "100%", width: "120px", height: "120px", padding: "16px" }}>
                               <Stack justifyContent="center" alignItems="center" sx={{ height: "100%" }}>
-                                <Typography color="text.secondary" fontWeight="bold" fontSize={16}>Score V</Typography>
+                                <Typography color="text.secondary" fontWeight="bold" fontSize={16}>VAS</Typography>
                                 <Typography color="info.main" fontWeight="600" variant='h4'>
                                 {!ors? (
                                   "N/A"

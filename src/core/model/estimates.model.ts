@@ -12,7 +12,7 @@ export type ScoreDto = {
   ors: number;
 }
 
-export type EstimatesDto = {  
+export type EstimatesDto = {
   codeNumberForSort?: number;
   codeNumber: string; // BoF2023-02...
   status: SurveyStatus;

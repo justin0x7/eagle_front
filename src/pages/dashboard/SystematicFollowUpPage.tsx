@@ -260,10 +260,15 @@ export default function SystematicFollowUpPage() {
   return (
     <DashboardLayout>
       {/* Occasion Filter */}
+      <Stack direction="row" spacing={2} paddingTop={2}>
+      <Stack direction="row">
       <Typography>{t("System.Adult")}</Typography>
       <NavLink to={adultSystematicFollowUpPath()} className={({ isActive }) => isActive ? "active" : ""}>
         <ToggleOnIcon />
       </NavLink>
+      </Stack>
+      <Stack>{t("System.ChildOutPatient")}</Stack>
+      </Stack>
       <FormGroup row sx={{ paddingTop: 2 }}>
         <FormControlLabel
           control={
@@ -379,7 +384,7 @@ export default function SystematicFollowUpPage() {
                 <Stack direction="row" justifyContent="space-around" alignItems="center" mt={2}>
                   <Paper elevation={6} sx={{ borderRadius: "100%", width: "120px", height: "120px", padding: "16px" }}>
                     <Stack justifyContent="center" alignItems="center" height="100%">
-                      <Typography color="text.secondary" fontWeight="medium" variant="h6">Score V</Typography>
+                      <Typography color="text.secondary" fontWeight="medium" variant="h6">VAS</Typography>
                       <Typography color="info.main" fontWeight="600" variant='h5'>{filterResult[filter].ors}</Typography>
                       {/* <StatusCircle variant="large" status={filterResult[filter].status} /> */}
                     </Stack>
@@ -389,7 +394,7 @@ export default function SystematicFollowUpPage() {
 
                   <Paper elevation={6} sx={{ borderRadius: "100%", width: "120px", height: "120px", padding: "16px" }}>
                     <Stack justifyContent="center" alignItems="center" height="100%">
-                      <Typography color="text.secondary" fontWeight="medium" variant="h6">Scale</Typography>
+                      <Typography color="text.secondary" fontWeight="medium" variant="h6">Score 15</Typography>
                       <Typography color="info.main" fontWeight="600" variant='h5'>{filterResult[filter].score15}</Typography>
                       {/* <StatusCircle variant="large" status={filterResult[filter].status} /> */}
                     </Stack>

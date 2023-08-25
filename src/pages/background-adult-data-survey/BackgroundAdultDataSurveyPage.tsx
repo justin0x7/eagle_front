@@ -389,7 +389,7 @@ export default function BackgroundAdultDataSurveyPage() {
                     {metaData.entitiesData?.filter(basicDataUnit => basicDataUnit.description === "OtherText").map((basicDataUnit, index) => (
                       <TextField
                         key={index}
-                        label="Other"
+                        label={t("Default.Other")}
                         multiline
                         rows={4}
                         value={formData[metaData.entityName][basicDataUnit.id.toString()]}
