@@ -4,7 +4,7 @@ import * as React from 'react';
 import { useTranslation } from "react-i18next";
 import QRCode from 'react-qr-code';
 import { Link } from 'react-router-dom';
-import { QUESTIONNAIRES_URL } from '../../constants/base.const';
+import { QUESTIONNAIRES_URL, QUESTIONNAIRES_URL1 } from '../../constants/base.const';
 
 import { PersonIndex } from "../../model/estimates.model";
 
