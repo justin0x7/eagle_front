@@ -1,11 +1,11 @@
 import React from 'react';
-import PrintImg from "../../../assets/pdfprint.png"
+import PrintImg from "../../../assets/pdfprint1.png"
 
 class ComponentToPrint extends React.Component {
   render( ) {
     return (
       <>
-        <img src={PrintImg} height={"1090px"} width={"100%"} ></img>
+        <img src={PrintImg} height={"1000px"} width={"100%"} ></img>
       </>
     );
   }
