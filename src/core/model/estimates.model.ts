@@ -16,6 +16,7 @@ export type EstimatesDto = {
   codeNumberForSort?: number;
   codeNumber: string; // BoF2023-02...
   status: SurveyStatus;
+  signal: string;
   missedFields: string;
   history: {
     zeroMonth: {

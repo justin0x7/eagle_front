@@ -8,7 +8,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { NavLink, useNavigate } from "react-router-dom";
 
-import { TodoIconImage } from "../../assets/AppImages";
+import { ComingIconImage, DoneIconImage, LossIconImage, TodoIconImage } from "../../assets/AppImages";
 import { useAppDispatch, useAppSelector } from "../../core/hooks/rtkHooks";
 import DashboardLayout from "../../core/layout/DashboardLayout";
 import { EstimatesDto } from "../../core/model/estimates.model";
@@ -55,7 +55,20 @@ export default function CaseListPage() {
       align: "left",
       sortable: false,
       width: 300,
-      renderCell: () => <TodoIconImage />
+      // renderCell: () => <TodoIconImage />
+      // renderCell: (data) => {data.row.nextsurvey ? (<LossIconImage />) : (<LossIconImage />)} 
+      // renderCell: () => <DoneIconImage />
+      renderCell: (data) => {
+        return (data.row.status === "Loss" ? (
+          <LossIconImage />
+        ) : (
+          data.row.status === "Coming" ? (
+            <TodoIconImage />
+          ) : (
+            <DoneIconImage />
+          )
+        ))
+      }
     },
     // {
     //   field: 'missedFields',
@@ -81,6 +94,12 @@ export default function CaseListPage() {
       headerAlign: "left",
       align: "left",
       width: 400,
+      renderCell: (data) => {
+        console.log(data.row.signal);
+        return (
+          data.row.nextSurvey + t(data.row.signal)
+        )
+      }
     },  
   ]), [t]);
 

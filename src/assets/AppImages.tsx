@@ -15,6 +15,10 @@ export const QRCodeIconImage = () => <img src={qrcodeIconImage} width={30} heigh
 // status icons
 import todoIconImage from "./images/icons/todo.svg";
 import doneIconImage from "./images/icons/done.svg";
+import lossIconImage from "./images/icons/loss.svg";
+import comingIconImage from "./images/icons/coming.svg";
 
 export const TodoIconImage = () => <img src={todoIconImage} alt="todoIconImage" width="24" />;
 export const DoneIconImage = () => <img src={doneIconImage} alt="doneIconImage" width="24" />;
+export const LossIconImage = () => <img src={lossIconImage} alt="lossIconImage" width="24" />;
+export const ComingIconImage = () => <img src={comingIconImage} alt="comingIconImage" width="24" />;

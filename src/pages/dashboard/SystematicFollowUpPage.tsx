@@ -260,14 +260,16 @@ export default function SystematicFollowUpPage() {
   return (
     <DashboardLayout>
       {/* Occasion Filter */}
-      <Stack direction="row" spacing={2} paddingTop={2}>
-      <Stack direction="row">
-      <Typography>{t("System.Adult")}</Typography>
-      <NavLink to={adultSystematicFollowUpPath()} className={({ isActive }) => isActive ? "active" : ""}>
-        <ToggleOnIcon />
-      </NavLink>
-      </Stack>
-      <Stack>{t("System.ChildOutPatient")}</Stack>
+      <Stack direction="row" spacing={20} paddingTop={2}>
+        <Stack direction="row">
+          <NavLink to={adultSystematicFollowUpPath()} className={({ isActive }) => isActive ? "active" : ""}>
+            <ToggleOnIcon />
+          </NavLink>
+          <Typography fontSize={10}>{t("System.Adult")}</Typography>
+        </Stack>
+        <Stack>
+          <Typography fontSize={30}>{t("System.ChildOutPatient")}</Typography>
+        </Stack>
       </Stack>
       <FormGroup row sx={{ paddingTop: 2 }}>
         <FormControlLabel
