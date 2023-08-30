@@ -155,7 +155,7 @@ export default function CaseListAdultPage() {
             <NavLink to={homePath()} className={({ isActive }) => isActive ? "active" : ""}>
               <ToggleOffIcon />
             </NavLink>
-            <Typography>{t("Case.Child")}</Typography>
+            <Typography fontSize={10}>{t("Case.Child")}</Typography>
           </Stack>
           <Stack>
             <Typography fontSize={30}>{t("System.AdultTopic")}</Typography>

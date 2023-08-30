@@ -154,7 +154,7 @@ export default function CaseListPage() {
             <NavLink to={adultCaseList()} className={({ isActive }) => isActive ? "active" : ""}>
               <ToggleOnIcon />
             </NavLink>
-            <Typography>{t("Case.Adult")}</Typography>
+            <Typography fontSize={10}>{t("Case.Adult")}</Typography>
           </Stack>
           <Stack>
             <Typography fontSize={30}>{t("System.ChildTopic")}</Typography>
