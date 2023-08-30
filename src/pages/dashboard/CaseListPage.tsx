@@ -1,5 +1,5 @@
 import SearchIcon from '@mui/icons-material/Search';
-import { Box, InputAdornment, TextField, Typography } from "@mui/material";
+import { Box, InputAdornment, Stack, TextField, Typography } from "@mui/material";
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { DataGrid, GridColDef, GridRenderCellParams, GridRowParams, GridTreeNodeWithRender } from '@mui/x-data-grid';
@@ -100,7 +100,7 @@ export default function CaseListPage() {
           data.row.nextSurvey + t(data.row.signal)
         )
       }
-    },  
+    },
   ]), [t]);
 
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
@@ -148,10 +148,19 @@ export default function CaseListPage() {
             />
           </CardContent>
         </Card>
-        <Typography>{t("Case.Adult")}</Typography>
-        <NavLink to={adultCaseList()} className={({ isActive }) => isActive ? "active" : ""}>
-          <ToggleOnIcon />
-        </NavLink>
+
+        <Stack direction="row" spacing={20} paddingTop={2}>
+          <Stack direction="row">
+            <NavLink to={adultCaseList()} className={({ isActive }) => isActive ? "active" : ""}>
+              <ToggleOnIcon />
+            </NavLink>
+            <Typography>{t("Case.Adult")}</Typography>
+          </Stack>
+          <Stack>
+            <Typography fontSize={30}>{t("System.ChildTopic")}</Typography>
+          </Stack>
+        </Stack>
+
         <Card>
           <CardContent sx={{ padding: 0 }}>
             <Box>

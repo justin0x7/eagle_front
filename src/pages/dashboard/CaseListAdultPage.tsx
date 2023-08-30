@@ -1,5 +1,5 @@
 import SearchIcon from '@mui/icons-material/Search';
-import { Box, InputAdornment, TextField, Typography } from "@mui/material";
+import { Box, InputAdornment, Stack, TextField, Typography } from "@mui/material";
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { DataGrid, GridColDef, GridRenderCellParams, GridRowParams, GridTreeNodeWithRender } from '@mui/x-data-grid';
@@ -147,10 +147,21 @@ export default function CaseListAdultPage() {
             />
           </CardContent>
         </Card>
-        <Typography>{t("Case.Child")}</Typography>
-        <NavLink to={homePath()} className={({ isActive }) => isActive ? "active" : ""}>
-          <ToggleOffIcon />
-        </NavLink>
+
+
+
+        <Stack direction="row" spacing={20} paddingTop={2}>
+          <Stack direction="row">
+            <NavLink to={homePath()} className={({ isActive }) => isActive ? "active" : ""}>
+              <ToggleOffIcon />
+            </NavLink>
+            <Typography>{t("Case.Child")}</Typography>
+          </Stack>
+          <Stack>
+            <Typography fontSize={30}>{t("System.AdultTopic")}</Typography>
+          </Stack>
+        </Stack>
+
         <Card>
           <CardContent sx={{ padding: 0 }}>
             <Box>
