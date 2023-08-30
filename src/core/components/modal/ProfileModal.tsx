@@ -25,8 +25,9 @@ export default function ProfileModal(props: Props) {
   const [address, setAddress] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  const saveProfile = async (name: string, role: boolean, title: string, department: string, address: string, phone: string, email: string) => {
+  const saveProfile = async (name: string, role: boolean, title: string, department: string, address: string, phone: string, email: string, password: string) => {
     try {
       const { error } = await supabaseClient
         .from('vallentuna_users')
@@ -37,7 +38,8 @@ export default function ProfileModal(props: Props) {
           department,
           address,
           phone,
-          email
+          email,
+          password
         });
         
       if (error) {
@@ -45,7 +47,7 @@ export default function ProfileModal(props: Props) {
         return null;
       }
 
-      return { name, role, title, department, address, phone, email };
+      return { name, role, title, department, address, phone, email, password };
       
     } catch (error) {
       console.error(error);
@@ -62,7 +64,7 @@ export default function ProfileModal(props: Props) {
       alert('All fields are required');
       return;
     }
-    const savedContact = await saveProfile(name, role, title, department, address, phone, email);
+    const savedContact = await saveProfile(name, role, title, department, address, phone, email, password);
     if (savedContact) {
       console.log('Contact saved successfully:', savedContact);
       window.location.reload();
@@ -138,6 +140,12 @@ export default function ProfileModal(props: Props) {
                 <Stack sx={{ justifyContent: "space-between", alignItems: "center" }} direction={"row"}>
                   <Typography>{t("CRUD.Email")}:</Typography>
                   <TextField id="email" label="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                </Stack>
+              </Grid>
+              <Grid item xs={12} paddingBottom={1}>
+                <Stack sx={{ justifyContent: "space-between", alignItems: "center" }} direction={"row"}>
+                  <Typography>{t("CRUD.Password")}:</Typography>
+                  <TextField id="password" label="Password" value={email} onChange={(e) => setPassword(e.target.value)} />
                 </Stack>
               </Grid>
               <Grid item xs={12} paddingBottom={1}>
