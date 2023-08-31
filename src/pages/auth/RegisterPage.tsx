@@ -38,7 +38,7 @@ const Signup = () => {
     if (isSuccess) {
       console.log("asdfasdfasdf");
       dispatch(clearState());
-      navigate(homePath());
+      navigate(loginPath());
     }
     if (isError) {
       toast.error(errorMessage);

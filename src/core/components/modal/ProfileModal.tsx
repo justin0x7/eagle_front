@@ -1,18 +1,30 @@
 import CancelIcon from '@mui/icons-material/Cancel';
-import { Box, Button, Dialog, DialogContent, DialogTitle, FormControl, FormControlLabel, Grid, IconButton, InputLabel, MenuItem, Radio, RadioGroup, Stack, TextField, Typography } from '@mui/material';
+import { Box, Button, Dialog, DialogContent, DialogTitle, FormControl, FormControlLabel, Grid, IconButton, Input, InputLabel, MenuItem, Radio, RadioGroup, Stack, TextField, Typography } from '@mui/material';
 import { createClient } from '@supabase/supabase-js';
 import * as React from 'react';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useTranslation } from "react-i18next";
 import { ButtonPrimary } from '../button/Button';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { Controller, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../hooks/rtkHooks';
+import { SignUpUserProps } from '../../model/user.model';
+import { signupUser, clearState } from '../../store/slices/userSlice';
+import { loginPath } from '../../util/pathBuilder.util';
+import InputWithIcon from '../input/InputWithIcon';
+import { IdImage, SecureImage } from '../../../assets/AppImages';
+import InputRegister from '../input/ImputRegister';
 
 interface Props {
   open: boolean;
   onClose: () => void;
+  // inputRefPassword: any;
 }
 
 export default function ProfileModal(props: Props) {
+  const inputRef = useRef()
+
   const supabaseUrl = 'https://lxstflrwscwaenzwsiwv.supabase.co';
   const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx4c3RmbHJ3c2N3YWVuendzaXd2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTExMzk4NzYsImV4cCI6MjAwNjcxNTg3Nn0.ieQl89Swq9w-VJ6gOYtXG2sjEyhXlImJprtHhJWjxMU';
   const supabaseClient = createClient(supabaseUrl, supabaseKey);
@@ -41,14 +53,14 @@ export default function ProfileModal(props: Props) {
           email,
           password
         });
-        
+
       if (error) {
         console.error(error);
         return null;
       }
 
       return { name, role, title, department, address, phone, email, password };
-      
+
     } catch (error) {
       console.error(error);
       return null;
@@ -72,6 +84,39 @@ export default function ProfileModal(props: Props) {
       console.error('Failed to save contact');
     }
   };
+
+  // register
+
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const { isSuccess, isError, errorMessage } = useAppSelector(state => state.user);
+  const {
+    control,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<SignUpUserProps>();
+
+  const onSubmit = (data: SignUpUserProps) => {
+    dispatch(signupUser(data));
+  };
+
+  React.useEffect(() => {
+    return () => {
+      dispatch(clearState());
+    };
+  }, []);
+
+  React.useEffect(() => {
+    if (isSuccess) {
+      console.log("asdfasdfasdf");
+      dispatch(clearState());
+    }
+    if (isError) {
+      toast.error(errorMessage);
+      dispatch(clearState());
+    }
+  }, [isSuccess, isError]);
 
   return (
     <Dialog
@@ -98,12 +143,31 @@ export default function ProfileModal(props: Props) {
         <Box sx={{
           textAlign: "center"
         }}>
-          <form noValidate autoComplete="on">
+          <form noValidate autoComplete="on" onSubmit={handleSubmit(onSubmit)} method="POST">
+            {/* <form noValidate autoComplete="off" > */}
             <Grid container padding={3}>
               <Grid item xs={12} paddingBottom={1}>
                 <Stack sx={{ justifyContent: "space-between", alignItems: "center" }} direction={"row"}>
                   <Typography>{t("CRUD.Name")}:</Typography>
-                  <TextField id="name" label="Name" value={name} onChange={(e) => setName(e.target.value)} />
+                  {/* <TextField id="name" label="Name" value={name} onChange={(e) => setName(e.target.value)} /> */}
+                  <Controller
+                    control={control}
+                    name="username"
+                    defaultValue=""
+                    render={({ field: { onChange, value } }) => (
+                      // <InputRegister
+                      //   value={value}
+                      //   onChange={onChange}
+                      //   placeholder="Username"
+                      //   type="text"
+                      // />
+                      <TextField id="name" label="Name" value={value} onChange={(e) => {
+                        onChange(e)
+                        setName(e.target.value)
+                      }} />
+                    )}
+                  />
+                  {errors?.username && <p>{errors.username.message}</p>}
                 </Stack>
               </Grid>
               {/* <Grid item xs={12} paddingBottom={1}>
@@ -139,15 +203,96 @@ export default function ProfileModal(props: Props) {
               <Grid item xs={12} paddingBottom={1}>
                 <Stack sx={{ justifyContent: "space-between", alignItems: "center" }} direction={"row"}>
                   <Typography>{t("CRUD.Email")}:</Typography>
-                  <TextField id="email" label="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                  {/* <TextField id="email" label="Email" value={email} onChange={(e) => setEmail(e.target.value)} /> */}
+                  <Controller
+                    control={control}
+                    name="email"
+                    defaultValue=""
+                    render={({ field: { onChange, value } }) => (
+                      // <InputRegister
+                      //   value={value}
+                      //   onChange={onChange}
+                      //   placeholder="Email"
+                      //   type="text"
+                      // />
+                      <TextField id="email" label="Email" value={value} onChange={(e) => {
+                        onChange(e)
+                        setEmail(e.target.value)
+                      }} />
+                    )}
+                  />
+                  {errors?.email && <p>{errors.email.message}</p>}
                 </Stack>
               </Grid>
+
               <Grid item xs={12} paddingBottom={1}>
                 <Stack sx={{ justifyContent: "space-between", alignItems: "center" }} direction={"row"}>
                   <Typography>{t("CRUD.Password")}:</Typography>
-                  <TextField id="password" label="Password" value={email} onChange={(e) => setPassword(e.target.value)} />
+                  {/* <TextField id="password" label="Password" value={password} onChange={(e) => setPassword(e.target.value)} /> */}
+                  <Controller
+                    control={control}
+                    name="password"
+                    defaultValue=""
+                    render={({ field: { onChange, value } }) => (
+                      // <InputRegister
+                      //   value={value}
+                      //   onChange={onChange}
+                      //   placeholder="Password"
+                      //   type="password"
+                      // />
+                      <TextField type='password' id="password" label="Password" value={value} onChange={(e) => {
+                        onChange(e)
+                        setPassword(e.target.value)
+                      }} />
+                    )}
+                  />
+                  {/* <TextField id="password" label="Password" value={password} onChange={ (e) => setPassword(e.target.value) } /> */}
                 </Stack>
               </Grid>
+
+              {/* <Controller
+                control={control}
+                name="username"
+                defaultValue=""
+                render={({ field: { onChange, value } }) => (
+                  <InputRegister
+                    value={value}
+                    onChange={onChange}
+                    placeholder="Username"
+                    type="text"
+                  />
+                )}
+              />
+              {errors?.username && <p>{errors.username.message}</p>} */}
+
+              {/* <Controller
+                control={control}
+                name="email"
+                defaultValue=""
+                render={({ field: { onChange, value } }) => (
+                  <InputRegister
+                    value={value}
+                    onChange={onChange}
+                    placeholder="Email"
+                    type="text"
+                  />
+                )}
+              />
+              {errors?.email && <p>{errors.email.message}</p>} */}
+              {/* <Controller
+                control={control}
+                name="password"
+                defaultValue=""
+                render={({ field: { onChange, value } }) => (
+                  <InputRegister
+                    value={value}
+                    onChange={onChange}
+                    placeholder="Password"
+                    type="password"
+                  />
+                )}
+              /> */}
+
               <Grid item xs={12} paddingBottom={1}>
                 <Stack sx={{ justifyContent: "space-between", alignItems: "center" }} direction={"row"}>
                   <Typography>{t("CRUD.Role")}:</Typography>
@@ -164,8 +309,8 @@ export default function ProfileModal(props: Props) {
                 </Stack>
               </Grid>
             </Grid>
-            <ButtonPrimary variant="contained" color="primary" onClick={handleSave}>
-            {t("CRUD.Save")}
+            <ButtonPrimary type='submit' variant="contained" color="primary" onClick={handleSave}>
+              {t("CRUD.Save")}
             </ButtonPrimary>
           </form>
         </Box>

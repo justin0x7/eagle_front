@@ -25,6 +25,7 @@ export default function EditModal(props: Props) {
   const [address, setAddress] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   // useEffect(() => {
 
@@ -33,7 +34,7 @@ export default function EditModal(props: Props) {
   useEffect(() => {
     supabaseClient
       .from('vallentuna_users')
-      .select('name, role, title, department, address, phone, email')
+      .select('name, role, title, department, address, phone, email, password')
       .eq('id', props.currentId)
       .then(({ data: user, error }) => {
         if (error) {
@@ -47,24 +48,25 @@ export default function EditModal(props: Props) {
           setAddress(user[0].address);
           setDepartment(user[0].department);
           setPhone(user[0].phone);
+          setPassword(user[0].password);
         } else {
           console.error('User not found');
         }
       });
   }, [props.currentId]);
 
-  const updateProfile = async (name: string, role: boolean, email: string, department: string, address: string, phone: string, title: string) => {
+  const updateProfile = async (name: string, role: boolean, email: string, department: string, address: string, phone: string, title: string, password: string) => {
     try {
       const { data, error } = await supabaseClient
         .from('vallentuna_users')
-        .update({ name, role, email, phone, address, department, title })
+        .update({ name, role, email, phone, address, department, title, password })
         .eq('id', props.currentId)
       if (error) {
         console.error(error);
         return null;
       }
 
-      return { name, role, email, department, address, phone, title };
+      return { name, role, email, department, address, phone, title, password };
     } catch (error) {
       console.error(error);
       return null;
@@ -72,12 +74,12 @@ export default function EditModal(props: Props) {
   };
 
   const handleSave = async () => {
-    if (!name || !title || !department || !address || !phone || !email) {
+    if (!name || !title || !department || !address || !phone || !email || !password) {
       alert('All fields are required');
       return;
     }
   
-    const savedUser = await updateProfile(name, role, email, phone, address, department, title);
+    const savedUser = await updateProfile(name, role, email, phone, address, department, title, password);
   
     if (savedUser) {
       console.log('Updated successfully:', savedUser);
@@ -152,6 +154,12 @@ export default function EditModal(props: Props) {
                 <Stack sx={{ justifyContent: "space-between", alignItems: "center" }} direction={"row"}>
                   <Typography>{t("CRUD.PhoneNumber")}:</Typography>
                   <TextField id="phone" label="Phone Number" value={phone} onChange={(e) => setPhone(e.target.value)} />
+                </Stack>
+              </Grid>
+              <Grid item xs={12} paddingBottom={1}>
+                <Stack sx={{ justifyContent: "space-between", alignItems: "center" }} direction={"row"}>
+                  <Typography>{t("CRUD.Password")}:</Typography>
+                  <TextField id="password" label="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
                 </Stack>
               </Grid>
               
