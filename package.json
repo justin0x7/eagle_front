@@ -51,7 +51,7 @@
     "useref": "^1.4.4",
     "web-vitals": "latest"
   },
- // "scripts": {
+  "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
