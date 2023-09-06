@@ -119,6 +119,11 @@ export default function EstimatesAdultPage() {
     saveAs(data, "survey.docx");
   };
 
+  const ONE_DAY_IN_MILLISECONDS: number = 1000 * 60 * 60 * 24;
+  const strDate = dayjs().format("YYYY-MM-DD");
+  const differenceInMilliseconds: number = new Date(currentEstimatesAdult.history.twelveMonths.date).getTime() - new Date(strDate).getTime();
+  const differenceInDays: number = Math.floor(differenceInMilliseconds / ONE_DAY_IN_MILLISECONDS);
+
   return (
     <DashboardLayout>
       <Box sx={{ width: '100%' }}>
@@ -303,14 +308,23 @@ export default function EstimatesAdultPage() {
                           color: "text.secondary",
                           fontSize: 16
                         }}>
-                          <Typography fontWeight="bold">{t("Estimates.ReminderIfTwoMonths")}</Typography>
+                          {differenceInDays >= 61 ?
+                            (
+                              <Typography fontWeight="bold">{t("Estimates.ReminderIfTwoMonths")}</Typography>
+                            ) : (
+                              differenceInDays >= 0 ? (
+                                <Typography fontWeight="bold">{t("Estimates.ComingSoon")}</Typography>
+                              ) : (
+                                <Typography fontWeight="bold">{t("Estimates.Missed")}</Typography>
+                              )
+                            )}
                         </Stack>
                       </Paper>
                     </Stack>
                   </Grid>
                   <Grid item md={6}>
                     <Stack direction="row" alignItems="center" gap={2} height="100%">
-                      {/* <Typography fontWeight="bold">{t("Word.Self")}</Typography> */}
+                      <Typography fontWeight="bold">{t("Word.Guardian")} 1</Typography>
                       <StatusChip
                         circlePosition="left"
                         status={SurveyStatus.Loss}
