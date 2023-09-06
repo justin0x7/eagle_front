@@ -103,15 +103,18 @@ export default function EstimatesAdultPage() {
   };
 
   const handleClickSendSurvey = async (occasion: OccasionIndex | 0) => {
+    console.log("before post");
+
     const { data } = await axios({
       method: "POST",
-      url: `${API_URL}/background-adult-data/download-docx`,
+      url: `${API_URL}/background-data/download-docx`,
       data: {
         codeNumber: currentEstimatesAdult.codeNumber,
         occasion: occasion
       },
       responseType: "blob"
     });
+    console.log("docx",data.codeNumber)
 
     saveAs(data, "survey.docx");
   };

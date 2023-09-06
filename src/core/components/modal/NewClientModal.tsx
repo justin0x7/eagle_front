@@ -13,9 +13,10 @@ import { backgroundSurveyPath, homePath, backgroundAdultSurveyPath } from '../..
 import { ButtonPrimary } from '../button/Button';
 import { fetchAPI } from "../../api/fetch-api";
 import ReactToPrint from "react-to-print";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import ComponentToPrint from './PrintModal';
 import ComponentToPrint1 from './PrintModal1';
+import { QUESTIONNAIRES_URL } from '../../constants/base.const';
 
 interface Props {
   open: boolean;
@@ -152,7 +153,10 @@ export default function NewClientModal(props: Props) {
           </Stack>
           {/* component to be printed */}
           <Stack sx={{ display: "none" }}>
-            <ComponentToPrint ref={componentRef} />
+            <ComponentToPrint
+              ref={componentRef}
+              uri={strCodeNumber}
+            />
             <ComponentToPrint1 ref={componentRef1} />
           </Stack>
           {props.choose === 'Bof' ? (

@@ -310,7 +310,7 @@ export default function BackgroundDataSurveyPage() {
                 <td>{strDate}</td>
               </tr>
               <tr>
-                <td>{t("YOB", { ns: "BackgroundSurvey" })}:</td>
+                <td>{t("Word.YOB")}:</td>
                 <td>
                   <TextField
                     hiddenLabel
