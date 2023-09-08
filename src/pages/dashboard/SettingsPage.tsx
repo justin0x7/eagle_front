@@ -265,15 +265,15 @@ export default function SettingsPage() {
                     <Grid item md={12}>
                       <Stack direction="row" alignItems="center" sx={{ display: "flex", justifyContent: "space-between" }}>
                         <Typography sx={{ textAlign: "center", lineHeight: 1.5 }} fontWeight="700" variant="h3" color="#839BAA">Mon 0:</Typography>
-                        <Typography sx={{ textAlign: "center", backgroundColor: "#006D56", borderRadius: "20px", width: "50px" }} fontWeight="medium" variant="h5"  > {scoreCount_}/{scoreCount} </Typography>
+                        <Typography sx={{ textAlign: "center", backgroundColor: "#006D56", borderRadius: "20px", width: "100px" }} fontWeight="medium" variant="h5"  > {scoreCount_}|{scoreCount} </Typography>
                       </Stack>
                       <Stack direction="row" alignItems="center" sx={{ display: "flex", justifyContent: "space-between" }}>
                         <Typography sx={{ textAlign: "center", lineHeight: 1.5 }} fontWeight="700" variant="h3" color="#334957" >Mon 6:</Typography>
-                        <Typography sx={{ textAlign: "center", backgroundColor: "#7BC29A", borderRadius: "20px", width: "50px" }} fontWeight="medium" variant="h5"  >{scoreCount_1}/{scoreCount1}</Typography>
+                        <Typography sx={{ textAlign: "center", backgroundColor: "#7BC29A", borderRadius: "20px", width: "100px" }} fontWeight="medium" variant="h5"  >{scoreCount_1}|{scoreCount1}</Typography>
                       </Stack>
                       <Stack direction="row" alignItems="center" sx={{ display: "flex", justifyContent: "space-between" }}>
                         <Typography sx={{ textAlign: "center", lineHeight: 1.5 }} fontWeight="700" variant="h3" color="#004E7E" >Mon 12:</Typography>
-                        <Typography sx={{ textAlign: "center", backgroundColor: "#55B26C", borderRadius: "20px", width: "50px" }} fontWeight="medium" variant="h5"  >{scoreCount_2}/{scoreCount2}</Typography>
+                        <Typography sx={{ textAlign: "center", backgroundColor: "#55B26C", borderRadius: "20px", width: "100px" }} fontWeight="medium" variant="h5"  >{scoreCount_2}|{scoreCount2}</Typography>
                       </Stack>
 
                       <NavLink to={homePath()} className={({ isActive }) => isActive ? "active" : ""}>
