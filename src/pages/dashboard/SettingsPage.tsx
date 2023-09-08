@@ -78,15 +78,60 @@ export default function SettingsPage() {
   }, [email]);
 
   const { t } = useTranslation();
+  const [scoreCount_, setScoreCount_] = useState(null);
+  const [scoreCount_1, setScoreCount_1] = useState(null);
+  const [scoreCount_2, setScoreCount_2] = useState(null);
   const [scoreCount, setScoreCount] = useState(null);
   const [scoreCount1, setScoreCount1] = useState(null);
   const [scoreCount2, setScoreCount2] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [currentUserId, setCurrentUserId] = useState("");
 
+  const url_ = `${API_URL}/score/getByOccasion/1`;
+  const url_1 = `${API_URL}/score/getByOccasion/2`;
+  const url_2 = `${API_URL}/score/getByOccasion/3`;
+
   const url = `${API_URL}/adult-score/getByOccasion/1`;
   const url1 = `${API_URL}/adult-score/getByOccasion/2`;
   const url2 = `${API_URL}/adult-score/getByOccasion/3`;
+
+  useEffect(() => {
+    axios.get(url_)
+      .then(response => {
+        const count = response.data;
+        console.log(`Number of scores with occasion 1: ${count}`);
+        setScoreCount_(count);
+      })
+      .catch(error => {
+        console.error(error); // handle the error
+      });
+  }, []);
+
+
+  useEffect(() => {
+    axios.get(url_1)
+      .then(response => {
+        const count = response.data;
+        console.log(`Number of scores with occasion 1: ${count}`);
+        setScoreCount_1(count);
+      })
+      .catch(error => {
+        console.error(error); // handle the error
+      });
+  }, []);
+
+
+  useEffect(() => {
+    axios.get(url_2)
+      .then(response => {
+        const count = response.data;
+        console.log(`Number of scores with occasion 1: ${count}`);
+        setScoreCount_2(count);
+      })
+      .catch(error => {
+        console.error(error); // handle the error
+      });
+  }, []);
 
   useEffect(() => {
     axios.get(url)
@@ -220,15 +265,15 @@ export default function SettingsPage() {
                     <Grid item md={12}>
                       <Stack direction="row" alignItems="center" sx={{ display: "flex", justifyContent: "space-between" }}>
                         <Typography sx={{ textAlign: "center", lineHeight: 1.5 }} fontWeight="700" variant="h3" color="#839BAA">Mon 0:</Typography>
-                        <Typography sx={{ textAlign: "center", backgroundColor: "#006D56", borderRadius: "20px", width: "50px" }} fontWeight="medium" variant="h5"  > {scoreCount} </Typography>
+                        <Typography sx={{ textAlign: "center", backgroundColor: "#006D56", borderRadius: "20px", width: "50px" }} fontWeight="medium" variant="h5"  > {scoreCount_}/{scoreCount} </Typography>
                       </Stack>
                       <Stack direction="row" alignItems="center" sx={{ display: "flex", justifyContent: "space-between" }}>
                         <Typography sx={{ textAlign: "center", lineHeight: 1.5 }} fontWeight="700" variant="h3" color="#334957" >Mon 6:</Typography>
-                        <Typography sx={{ textAlign: "center", backgroundColor: "#7BC29A", borderRadius: "20px", width: "50px" }} fontWeight="medium" variant="h5"  >{scoreCount1}</Typography>
+                        <Typography sx={{ textAlign: "center", backgroundColor: "#7BC29A", borderRadius: "20px", width: "50px" }} fontWeight="medium" variant="h5"  >{scoreCount_1}/{scoreCount1}</Typography>
                       </Stack>
                       <Stack direction="row" alignItems="center" sx={{ display: "flex", justifyContent: "space-between" }}>
                         <Typography sx={{ textAlign: "center", lineHeight: 1.5 }} fontWeight="700" variant="h3" color="#004E7E" >Mon 12:</Typography>
-                        <Typography sx={{ textAlign: "center", backgroundColor: "#55B26C", borderRadius: "20px", width: "50px" }} fontWeight="medium" variant="h5"  >{scoreCount2}</Typography>
+                        <Typography sx={{ textAlign: "center", backgroundColor: "#55B26C", borderRadius: "20px", width: "50px" }} fontWeight="medium" variant="h5"  >{scoreCount_2}/{scoreCount2}</Typography>
                       </Stack>
 
                       <NavLink to={homePath()} className={({ isActive }) => isActive ? "active" : ""}>
