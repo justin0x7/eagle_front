@@ -84,9 +84,9 @@ export default function SettingsPage() {
   const [showEditModal, setShowEditModal] = useState(false);
   const [currentUserId, setCurrentUserId] = useState("");
 
-  const url = `${API_URL}/score/getByOccasion/1`;
-  const url1 = `${API_URL}/score/getByOccasion/2`;
-  const url2 = `${API_URL}/score/getByOccasion/3`;
+  const url = `${API_URL}/adult-score/getByOccasion/1`;
+  const url1 = `${API_URL}/adult-score/getByOccasion/2`;
+  const url2 = `${API_URL}/adult-score/getByOccasion/3`;
 
   useEffect(() => {
     axios.get(url)

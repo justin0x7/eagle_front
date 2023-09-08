@@ -28,7 +28,7 @@ export default function CaseListAdultPage() {
   const { t } = useTranslation();
 
   const { caseList } = useAppSelector(state => state.caseListAdultSurvey);
-
+  
   const [searchString, setSearchString] = useState("");
   const [activeTabIndex, setActiveTabIndex] = useState(0);
   // const [showLinkModal, setShowLinkModal] = useState(false);
