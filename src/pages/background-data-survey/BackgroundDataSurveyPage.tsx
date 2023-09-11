@@ -283,7 +283,7 @@ export default function BackgroundDataSurveyPage() {
 
   const handleGoToEstimates = async () => {
     const saved = await handleSave();
-    if (saved) navigate(estimatesPath());
+    if (saved) navigate(homePath());
   };
 
   if (!codeNumber) navigate(homePath());
