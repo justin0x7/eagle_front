@@ -98,15 +98,15 @@ export default function AdminPage() {
                   <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
                       <TableRow>
-                        <TableCell>Name</TableCell>
-                        <TableCell align="center">Role</TableCell>
-                        <TableCell align="left">Email</TableCell>
-                        <TableCell align="left">Title</TableCell>
-                        <TableCell align="left">Department</TableCell>
-                        <TableCell align="left">Phone</TableCell>
-                        <TableCell align="left">Address</TableCell>
-                        <TableCell align="center">Edit</TableCell>
-                        <TableCell align="center">Delete</TableCell>
+                        <TableCell>{t("AdminPage.Name", { ns: "AdminPage" })}</TableCell>
+                        <TableCell align="center">{t("AdminPage.Role", { ns: "AdminPage" })}</TableCell>
+                        <TableCell align="left">{t("AdminPage.Email", { ns: "AdminPage" })}</TableCell>
+                        <TableCell align="left">{t("AdminPage.Title", { ns: "AdminPage" })}</TableCell>
+                        <TableCell align="left">{t("AdminPage.Department", { ns: "AdminPage" })}</TableCell>
+                        <TableCell align="left">{t("AdminPage.Phone", { ns: "AdminPage" })}</TableCell>
+                        <TableCell align="left">{t("AdminPage.Address", { ns: "AdminPage" })}</TableCell>
+                        <TableCell align="center">{t("AdminPage.Edit", { ns: "AdminPage" })}</TableCell>
+                        <TableCell align="center">{t("AdminPage.Delete", { ns: "AdminPage" })}</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>

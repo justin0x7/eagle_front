@@ -179,25 +179,25 @@ export default function ProfileModal(props: Props) {
               <Grid item xs={12} paddingBottom={1}>
                 <Stack sx={{ justifyContent: "space-between", alignItems: "center" }} direction={"row"}>
                   <Typography>{t("CRUD.Title")}:</Typography>
-                  <TextField id="title" label="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
+                  <TextField id="title" label={t("CRUD.Title")} value={title} onChange={(e) => setTitle(e.target.value)} />
                 </Stack>
               </Grid>
               <Grid item xs={12} paddingBottom={1}>
                 <Stack sx={{ justifyContent: "space-between", alignItems: "center" }} direction={"row"}>
                   <Typography>{t("CRUD.Department")}:</Typography>
-                  <TextField id="department" label="Department" value={department} onChange={(e) => setDepartment(e.target.value)} />
+                  <TextField id="department" label={t("CRUD.Department")} value={department} onChange={(e) => setDepartment(e.target.value)} />
                 </Stack>
               </Grid>
               <Grid item xs={12} paddingBottom={1}>
                 <Stack sx={{ justifyContent: "space-between", alignItems: "center" }} direction={"row"}>
                   <Typography>{t("CRUD.Address")}:</Typography>
-                  <TextField id="address" label="Address" value={address} onChange={(e) => setAddress(e.target.value)} />
+                  <TextField id="address" label={t("CRUD.Address")} value={address} onChange={(e) => setAddress(e.target.value)} />
                 </Stack>
               </Grid>
               <Grid item xs={12} paddingBottom={1}>
                 <Stack sx={{ justifyContent: "space-between", alignItems: "center" }} direction={"row"}>
                   <Typography>{t("CRUD.PhoneNumber")}:</Typography>
-                  <TextField id="phone" label="Phone Number" value={phone} onChange={(e) => setPhone(e.target.value)} />
+                  <TextField id="phone" label={t("CRUD.PhoneNumber")} value={phone} onChange={(e) => setPhone(e.target.value)} />
                 </Stack>
               </Grid>
               <Grid item xs={12} paddingBottom={1}>
@@ -215,7 +215,7 @@ export default function ProfileModal(props: Props) {
                       //   placeholder="Email"
                       //   type="text"
                       // />
-                      <TextField id="email" label="Email" value={value} onChange={(e) => {
+                      <TextField id="email" label={t("CRUD.Email")} value={value} onChange={(e) => {
                         onChange(e)
                         setEmail(e.target.value)
                       }} />
@@ -240,7 +240,7 @@ export default function ProfileModal(props: Props) {
                       //   placeholder="Password"
                       //   type="password"
                       // />
-                      <TextField type='password' id="password" label="Password" value={value} onChange={(e) => {
+                      <TextField type='password' id="password" label={t("CRUD.Password")} value={value} onChange={(e) => {
                         onChange(e)
                         setPassword(e.target.value)
                       }} />

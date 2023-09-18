@@ -278,12 +278,12 @@ export default function BackgroundAdultDataSurveyPage() {
 
   const handleSaveAndClose = async () => {
     const saved = await handleSave();
-    if (saved) handleBack();
+    if (saved) navigate(adultCaseList());
   };
 
   const handleGoToEstimates = async () => {
     const saved = await handleSave();
-    if (saved) navigate(adultCaseList());
+    if (saved) handleBack();
   };
 
   if (!codeNumber) navigate(homePath());

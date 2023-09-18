@@ -278,12 +278,12 @@ export default function BackgroundDataSurveyPage() {
 
   const handleSaveAndClose = async () => {
     const saved = await handleSave();
-    if (saved) handleBack();
+    if (saved) navigate(homePath());
   };
 
   const handleGoToEstimates = async () => {
     const saved = await handleSave();
-    if (saved) navigate(homePath());
+    if (saved) handleBack();
   };
 
   if (!codeNumber) navigate(homePath());

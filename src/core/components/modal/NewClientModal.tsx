@@ -157,7 +157,10 @@ export default function NewClientModal(props: Props) {
               ref={componentRef}
               uri={strCodeNumber}
             />
-            <ComponentToPrint1 ref={componentRef1} />
+            <ComponentToPrint1
+              ref={componentRef1}
+              uri={strCodeNumber}
+            />
           </Stack>
           {props.choose === 'Bof' ? (
             <ButtonPrimary sx={{ display: valueShowableButton ? "none" : "inline" }} onClick={handleClickRegisterAsAbsent}>{t("NewClientModal.RegisterAsAbsent")}</ButtonPrimary>

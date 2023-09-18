@@ -248,13 +248,6 @@ export default function FollowUpSurveyPage() {
         >
           {t("Action.SaveAndClose")}
         </ButtonPrimary>
-        <ButtonPrimary
-          variant="contained"
-          onClick={handleGoToEstimates}
-          endIcon={<EastIcon />}
-        >
-          {t("Action.GoToEstimates")}
-        </ButtonPrimary>
       </Stack>
     </Container>
   );

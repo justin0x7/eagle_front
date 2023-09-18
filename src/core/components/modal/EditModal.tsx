@@ -123,43 +123,43 @@ export default function EditModal(props: Props) {
               <Grid item xs={12} paddingBottom={1}>
                 <Stack sx={{ justifyContent: "space-between", alignItems: "center" }} direction={"row"}>
                   <Typography>{t("CRUD.Name")}:</Typography>
-                  <TextField id="name" label="Name" value={name} onChange={(e) => setName(e.target.value)} />
+                  <TextField id="name" label={t("CRUD.Name")} value={name} onChange={(e) => setName(e.target.value)} />
                 </Stack>
               </Grid>
               <Grid item xs={12} paddingBottom={1}>
                 <Stack sx={{ justifyContent: "space-between", alignItems: "center" }} direction={"row"}>
                   <Typography>{t("CRUD.Email")}:</Typography>
-                  <TextField id="email" label="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                  <TextField id="email" label={t("CRUD.Email")} value={email} onChange={(e) => setEmail(e.target.value)} />
                 </Stack>
               </Grid>
               <Grid item xs={12} paddingBottom={1}>
                 <Stack sx={{ justifyContent: "space-between", alignItems: "center" }} direction={"row"}>
                   <Typography>{t("CRUD.Title")}:</Typography>
-                  <TextField id="title" label="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
+                  <TextField id="title" label={t("CRUD.Title")} value={title} onChange={(e) => setTitle(e.target.value)} />
                 </Stack>
               </Grid>
               <Grid item xs={12} paddingBottom={1}>
                 <Stack sx={{ justifyContent: "space-between", alignItems: "center" }} direction={"row"}>
                   <Typography>{t("CRUD.Department")}:</Typography>
-                  <TextField id="department" label="Department" value={department} onChange={(e) => setDepartment(e.target.value)} />
+                  <TextField id="department" label={t("CRUD.Department")} value={department} onChange={(e) => setDepartment(e.target.value)} />
                 </Stack>
               </Grid>
               <Grid item xs={12} paddingBottom={1}>
                 <Stack sx={{ justifyContent: "space-between", alignItems: "center" }} direction={"row"}>
                   <Typography>{t("CRUD.Address")}:</Typography>
-                  <TextField id="address" label="Address" value={address} onChange={(e) => setAddress(e.target.value)} />
+                  <TextField id="address" label={t("CRUD.Address")} value={address} onChange={(e) => setAddress(e.target.value)} />
                 </Stack>
               </Grid>
               <Grid item xs={12} paddingBottom={1}>
                 <Stack sx={{ justifyContent: "space-between", alignItems: "center" }} direction={"row"}>
                   <Typography>{t("CRUD.PhoneNumber")}:</Typography>
-                  <TextField id="phone" label="Phone Number" value={phone} onChange={(e) => setPhone(e.target.value)} />
+                  <TextField id="phone" label={t("CRUD.PhoneNumber")} value={phone} onChange={(e) => setPhone(e.target.value)} />
                 </Stack>
               </Grid>
               <Grid item xs={12} paddingBottom={1}>
                 <Stack sx={{ justifyContent: "space-between", alignItems: "center" }} direction={"row"}>
                   <Typography>{t("CRUD.Password")}:</Typography>
-                  <TextField id="password" label="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                  <TextField id="password" label={t("CRUD.Password")} value={password} onChange={(e) => setPassword(e.target.value)} />
                 </Stack>
               </Grid>
               

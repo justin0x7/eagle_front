@@ -25,9 +25,9 @@ class ComponentToPrint extends React.Component<Props> {
           <img src={leafImage} width={200}></img>
           {strDate}
         </Grid>
-        <Typography variant="h4" align="center">{t("Thanks for helping us get better!")}</Typography>
+        <Typography variant="h5" align="center">{t("Information about participation in systematic follow-up")}</Typography>
         <br />
-        <Stack direction="row" alignItems="center" gap={20}>
+        {/* <Stack direction="row" alignItems="center" gap={20}>
           <QRCode
             size={256}
             style={{ height: "auto", maxWidth: "25%", width: "25%" }}
@@ -46,170 +46,52 @@ class ComponentToPrint extends React.Component<Props> {
             {t("Reply latest - Date")}: __________
             </Typography>
           </Stack>
-        </Stack>
+        </Stack> */}
         <br />
         <Typography>
-        {t("The public service in Vallentuna carries out follow-up of interventions with the aim of quality assurance of the interventions offered and to find areas for improvement.")}
+        {t("The Public Health Service in Vallentuna carries out systematic follow-up of the interventions that have been started after September 1, 2021. The purpose is to ensure the quality of the efforts carried out at the Public Health Service and to find areas for improvement. All families who participate in the outpatient service are asked to participate in the follow-up, and the answers we receive are very important to be able to offer the best possible support to the families we meet.")}
+        </Typography>
+        <br />
+        <Typography variant="h6">
+        {t("Confidentiality and processing of personal data")}
         </Typography>
         <Typography>
-        {t("All families participating in the outpatient intervention are asked to participate in the follow-up and you/you have given your consent to participate in the follow-up at the beginning of the intervention.")}
+        {t("All information you provide in the systematic follow-up will be treated confidentially. The answers are de-identified and stored in a locked cabinet to which unauthorized persons do not have access. The processors have confidentiality regarding all collected information about you and your family. In order to follow up the effect of the granted effort, we would like to be able to send you follow-up surveys after six, respectively twelve, months. Based on the EU's data protection regulation, GDPR, we need your consent to save your contact details during these twelve months. All data collected will be aggregated at the group level and your individual responses will be permanently deleted after the data is aggregated.")}
+        </Typography>
+        <br />
+        <Typography variant="h6">
+        {t("Consent")}
         </Typography>
         <Typography>
-        {t("The follow-up takes place on 2 occasions. The first occasion is six months after the start of the effort and the second occasion is one year after the start of the effort. The follow-up is carried out even if the intervention has already been completed. All data collected will be aggregated at the group level and your individual responses will be permanently deleted after the data is aggregated. The code on the form is for being able to pair the answers with your/your previous answers and thus be able to measure the results of the effort.")}
+        {t("I agree that the Public Health Service saves my contact details twelve months after starting work at the Public Health Service in order to ask follow-up questions about the work. I can request that my data be deleted at any time.")}
         </Typography>
-        <Typography>
-        {t("Do this:")}
+        <br />
+        <Typography variant="h6">
+        {t("Name")}:________________________________________________
         </Typography>
-        <Typography>
-        {t("Fill in your form(s) via the QR code. Each QR code is unique for the respective person who must answer the follow-up. It appears on the page with the QR code who is to read each QR code.")}
+        <Typography variant="h6">
+        {t("Place and date")}:__________________________________________
         </Typography>
-        <Typography>
-        {t("Scan your QR code with the mobile phone's camera and click on the link that appears on the screen to then answer the form you have been assigned. Then click save when you're done.")}
+        <Typography variant="h6">
+        {t("The consent is valid until")}:_______________________________
         </Typography>
-        <Typography>
-        {t("The answers we receive are very important to be able to offer the best possible support to the families we meet. Thanks in advance!")}
+        <Typography variant="h6">
+        {t("Address")}:____________________________________________
         </Typography>
-        <Typography>
-        {t("If you have any questions about the follow-up, please contact your therapist or unit manager Elin Hall.")}
+        <Typography variant="h6">
+        ____________________________________________
         </Typography>
-        <Typography>
-        {t("Sincerely")}
-        </Typography>
-        <Typography>
-        {t("Public services Child and family, Vallentuna municipality")}
+        <Typography variant="h6">
+        {t("Phone number")}:______________________________________
         </Typography>
 
-        <Grid container sx={{ justifyContent: "space-between" }}>
+        <Grid container sx={{ justifyContent: "space-between", position: "absolute", bottom: "5px", right: "5px" }}>
           <img src={footerLogo}></img>
           <img src={eagle} height="100px"></img>
         </Grid>
       
       
-      <Grid container sx={{ justifyContent: "space-between" }}>
-        <img src={leafImage} width={200}></img>
-        {strDate}
-      </Grid>
-      <Typography variant="h4" align="center">{t("Thanks for helping us get better!")}</Typography>
-      <br />
-      <Stack direction="row" alignItems="center" gap={20}>
-        <QRCode
-          size={256}
-          style={{ height: "auto", maxWidth: "25%", width: "25%" }}
-          level="M"
-          value={this.props.uri}
-          viewBox={`0 0 256 256`}
-        />
-        <Stack>
-          <Typography>
-          {t("QR code for parent ")} 2.
-          </Typography>
-          <Typography>
-          {t("The parent to answer")}: __________
-          </Typography>
-          <Typography>
-          {t("Reply latest - Date")}: __________
-          </Typography>
-        </Stack>
-      </Stack>
-      <br />
-      <Typography>
-      {t("The public service in Vallentuna carries out follow-up of interventions with the aim of quality assurance of the interventions offered and to find areas for improvement.")}
-      </Typography>
-      <Typography>
-      {t("All families participating in the outpatient intervention are asked to participate in the follow-up and you/you have given your consent to participate in the follow-up at the beginning of the intervention.")}
-      </Typography>
-      <Typography>
-      {t("The follow-up takes place on 2 occasions. The first occasion is six months after the start of the effort and the second occasion is one year after the start of the effort. The follow-up is carried out even if the intervention has already been completed. All data collected will be aggregated at the group level and your individual responses will be permanently deleted after the data is aggregated. The code on the form is for being able to pair the answers with your/your previous answers and thus be able to measure the results of the effort.")}
-      </Typography>
-      <Typography>
-      {t("Do this:")}
-      </Typography>
-      <Typography>
-      {t("Fill in your form(s) via the QR code. Each QR code is unique for the respective person who must answer the follow-up. It appears on the page with the QR code who is to read each QR code.")}
-      </Typography>
-      <Typography>
-      {t("Scan your QR code with the mobile phone's camera and click on the link that appears on the screen to then answer the form you have been assigned. Then click save when you're done.")}
-      </Typography>
-      <Typography>
-      {t("The answers we receive are very important to be able to offer the best possible support to the families we meet. Thanks in advance!")}
-      </Typography>
-      <Typography>
-      {t("If you have any questions about the follow-up, please contact your therapist or unit manager Elin Hall.")}
-      </Typography>
-      <Typography>
-      {t("Sincerely")}
-      </Typography>
-      <Typography>
-      {t("Public services Child and family, Vallentuna municipality")}
-      </Typography>
 
-      <Grid container sx={{ justifyContent: "space-between" }}>
-        <img src={footerLogo}></img>
-        <img src={eagle} height="100px"></img>
-      </Grid>
-    
-    <Grid container sx={{ justifyContent: "space-between" }}>
-      <img src={leafImage} width={200}></img>
-      {strDate}
-    </Grid>
-    <Typography variant="h4" align="center">{t("Thanks for helping us get better!")}</Typography>
-    <br />
-    <Stack direction="row" alignItems="center" gap={20}>
-      <QRCode
-        size={256}
-        style={{ height: "auto", maxWidth: "25%", width: "25%" }}
-        level="M"
-        value={this.props.uri}
-        viewBox={`0 0 256 256`}
-      />
-      <Stack>
-        <Typography>
-        {t("QR code for child.")}
-        </Typography>
-        <Typography>
-        {t("The parent to answer")}: __________
-        </Typography>
-        <Typography>
-        {t("Reply latest - Date")}: __________
-        </Typography>
-      </Stack>
-    </Stack>
-    <br />
-    <Typography>
-    {t("The public service in Vallentuna carries out follow-up of interventions with the aim of quality assurance of the interventions offered and to find areas for improvement.")}
-    </Typography>
-    <Typography>
-    {t("All families participating in the outpatient intervention are asked to participate in the follow-up and you/you have given your consent to participate in the follow-up at the beginning of the intervention.")}
-    </Typography>
-    <Typography>
-    {t("The follow-up takes place on 2 occasions. The first occasion is six months after the start of the effort and the second occasion is one year after the start of the effort. The follow-up is carried out even if the intervention has already been completed. All data collected will be aggregated at the group level and your individual responses will be permanently deleted after the data is aggregated. The code on the form is for being able to pair the answers with your/your previous answers and thus be able to measure the results of the effort.")}
-    </Typography>
-    <Typography>
-    {t("Do this:")}
-    </Typography>
-    <Typography>
-    {t("Fill in your form(s) via the QR code. Each QR code is unique for the respective person who must answer the follow-up. It appears on the page with the QR code who is to read each QR code.")}
-    </Typography>
-    <Typography>
-    {t("Scan your QR code with the mobile phone's camera and click on the link that appears on the screen to then answer the form you have been assigned. Then click save when you're done.")}
-    </Typography>
-    <Typography>
-    {t("The answers we receive are very important to be able to offer the best possible support to the families we meet. Thanks in advance!")}
-    </Typography>
-    <Typography>
-    {t("If you have any questions about the follow-up, please contact your therapist or unit manager Elin Hall.")}
-    </Typography>
-    <Typography>
-    {t("Sincerely")}
-    </Typography>
-    <Typography>
-    {t("Public services Child and family, Vallentuna municipality")}
-    </Typography>
-
-    <Grid container sx={{ justifyContent: "space-between" }}>
-      <img src={footerLogo}></img>
-      <img src={eagle} height="100px"></img>
-    </Grid>
   </Container>
   </>
     );
