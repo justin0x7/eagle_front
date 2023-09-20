@@ -24,16 +24,52 @@ import { useTranslation } from "react-i18next";
 import { NavLink, useNavigate } from 'react-router-dom';
 
 import NewClientModal from '../components/modal/NewClientModal';
-import { useAppDispatch } from "../hooks/rtkHooks";
+import { useAppDispatch, useAppSelector } from "../hooks/rtkHooks";
 import { clearState } from "../store/slices/userSlice";
 import { setStorageValue } from "../util/localStorage.util";
 import { homePath, settingsPath, systematicFollowUpPath } from '../util/pathBuilder.util';
 import dayjs from 'dayjs';
+import { createClient } from '@supabase/supabase-js';
 
 const SideMenu = (props: {
   onClickNew: () => void;
   onClickNew1: () => void;
 }) => {
+  const supabaseUrl = 'https://lxstflrwscwaenzwsiwv.supabase.co';
+  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx4c3RmbHJ3c2N3YWVuendzaXd2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTExMzk4NzYsImV4cCI6MjAwNjcxNTg3Nn0.ieQl89Swq9w-VJ6gOYtXG2sjEyhXlImJprtHhJWjxMU';
+  const supabaseClient = createClient(supabaseUrl, supabaseKey);
+  const { username, email } = useAppSelector(state => state.user);
+  const [name, setName] = useState('');
+  const [role, setRole] = useState(false);
+  const [title, setTitle] = useState('');
+  const [department, setDepartment] = useState('');
+  const [address, setAddress] = useState('');
+  const [phone, setPhone] = useState('');
+
+
+
+  React.useEffect(() => {
+    supabaseClient
+      .from('vallentuna_users')
+      .select('name, role, title, department, address, phone, email')
+      .eq('email', email)
+      .then(({ data: user, error }) => {
+        if (error) {
+          console.error(error);
+        } else if (user.length > 0) {
+          console.log('User:', user[0]);
+          setName(user[0].name);
+          setRole(user[0].role);
+          // setEmail(user[0].email);
+          setTitle(user[0].title);
+          setAddress(user[0].address);
+          setDepartment(user[0].department);
+          setPhone(user[0].phone);
+        } else {
+          console.error('User not found');
+        }
+      });
+  }, [email]);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -79,6 +115,7 @@ const SideMenu = (props: {
         </Menu>
       </Stack>
       <List component="nav" className='pt-[16px]'>
+        {role &&
         <NavLink to={systematicFollowUpPath()} className={({ isActive }) => isActive ? "active" : ""}>
           <ListItemButton key="Systematic follow-up">
             <ListItemIcon>
@@ -89,6 +126,7 @@ const SideMenu = (props: {
             } />
           </ListItemButton>
         </NavLink>
+}
         <NavLink to={homePath()} className={({ isActive }) => isActive ? "active" : ""}>
           <ListItemButton key="Case list">
             <ListItemIcon>
