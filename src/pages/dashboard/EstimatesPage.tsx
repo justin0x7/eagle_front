@@ -95,7 +95,7 @@ export default function EstimatesPage() {
       codeNumber: currentEstimates.codeNumber,
     })))));
     setShowQRCodeModal(true);
-    setQrcodeUriDomain("https://vallentuna-important-events.netlify.app");
+    setQrcodeUriDomain("https://vallentuna-parent-questionnare.vercel.app");
   };
 
   const handleClickFillOutFollowUpSurvey = () => {
