@@ -15,7 +15,7 @@ export default function StatusCircle(props: Props) {
   const backgroundColor = {
     [SurveyStatus.Clear]: "#00FF00",
     [SurveyStatus.Coming]: "#FFE500",
-    [SurveyStatus.Loss]: "#FFE500",
+    [SurveyStatus.Loss]: "#FF0000",
   };
 
   return (
