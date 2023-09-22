@@ -87,7 +87,7 @@ export default function EstimatesPage() {
       ors: 0
     })))));
     setShowQRCodeModal(true);
-    setQrcodeUriDomain("https://vallentuna-quiz.vercel.app");
+    setQrcodeUriDomain(QUESTIONNAIRES_URL);
   };
 
   const handleClickImportantEventsScanLink = () => {
@@ -95,7 +95,7 @@ export default function EstimatesPage() {
       codeNumber: currentEstimates.codeNumber,
     })))));
     setShowQRCodeModal(true);
-    setQrcodeUriDomain("https://vallentuna-parent-questionnare.vercel.app");
+    setQrcodeUriDomain("https://vallentuna-important-events.netlify.app");
   };
 
   const handleClickFillOutFollowUpSurvey = () => {
