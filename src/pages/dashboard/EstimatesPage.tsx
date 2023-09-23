@@ -27,6 +27,7 @@ import { OccasionIndex, PersonIndex } from '../../core/model/estimates.model';
 import { OrsAndScore15WithOccasion } from '../../core/model/score.model';
 import { SurveyStatus } from "../../core/model/status.model";
 import { backgroundSurveyPath, followUpSurveyPath } from "../../core/util/pathBuilder.util";
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Fab } from '@mui/material';
 
 interface ScanLinkProps {
   disabled: boolean;
@@ -121,9 +122,24 @@ export default function EstimatesPage() {
   const strDate = dayjs().format("YYYY-MM-DD");
   const differenceInMilliseconds: number = new Date(currentEstimates.history.twelveMonths.date).getTime() - new Date(strDate).getTime();
   const differenceInDays: number = Math.floor(differenceInMilliseconds / ONE_DAY_IN_MILLISECONDS);
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const [isScanUnLocked, setIsScanUnLocked] = React.useState(false);
+  const handleFinishCase = () => {
+    setIsScanUnLocked(true);
+    setOpen(false);
+  }
 
   return (
-    <DashboardLayout>
+    <DashboardLayout >
       <Box sx={{ width: '100%' }}>
         <Grid container spacing={3}>
           <Grid item md={12}>
@@ -181,6 +197,9 @@ export default function EstimatesPage() {
           </Grid>
 
           {[...Array(3)].map((_occasionIt, occasionIndex) => {
+          
+
+
             let ors = 0, score15 = 0;
             if (scores) {
               const filteredScores = scores.filter(s => s.occasion === (occasionIndex + 1));
@@ -388,7 +407,7 @@ export default function EstimatesPage() {
             <Stack direction="row" alignItems="center" gap={2}>
               <Typography fontWeight="600" color="success.main" variant='h4'>Status:</Typography>
               <Typography fontWeight="bold">{t(completedFollowUpSurvey ? "Estimates.FollowSurveyDone" : "Estimates.FollowUpSurveyNotDone")}</Typography>
-              <ButtonRed disabled={completedFollowUpSurvey} sx={{ color: "#FFF" }}>
+              <ButtonRed onClick={handleClickOpen} disabled={completedFollowUpSurvey} sx={{ color: "#FFF" }}>
                 {t(completedFollowUpSurvey ? "Estimates.Completed" : "Estimates.CloseCase")}
               </ButtonRed>
             </Stack>
@@ -401,6 +420,25 @@ export default function EstimatesPage() {
         domain={qrcodeUriDomain}
         uri={targetURI}
       />
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {t("Estimate.ConfirmSentences")}
+        </DialogTitle>
+        {/* <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            {t("Estimate.DescribeSentences")}
+          </DialogContentText>
+        </DialogContent> */}
+        <DialogActions>
+          <Button onClick={handleFinishCase}>{t("Estimate.GotIt")}</Button>
+          <Button onClick={handleClose}>{t("Estimate.Cancel")}</Button>
+        </DialogActions>
+      </Dialog>
     </DashboardLayout>
   );
 }
