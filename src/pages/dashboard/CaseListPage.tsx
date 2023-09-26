@@ -172,15 +172,15 @@ export default function CaseListPage() {
                   label={t("CaseList.AllCodeNumber")}
                 />
                 <StyledTab
-                  icon={(caseList?.filter(data => data.status === SurveyStatus.Clear).length || 0).toString()}
+                  icon={(caseList?.filter(data => data.status === SurveyStatus.Loss).length || 0).toString()}
                   label={t("CaseList.FullyAnswered")}
                 />
                 <StyledTab
-                  icon={(caseList?.filter(data => data.status === SurveyStatus.Coming).length || 0).toString()}
+                  icon={(caseList?.filter(data => data.status === SurveyStatus.Clear).length || 0).toString()}
                   label={t("CaseList.Ongoing")}
                 />
                 <StyledTab
-                  icon={(caseList?.filter(data => data.status === SurveyStatus.Loss).length || 0).toString()}
+                  icon={(caseList?.filter(data => data.status === SurveyStatus.Coming).length || 0).toString()}
                   label={t("CaseList.ActionRequired")}
                 />
               </StyledTabs>
