@@ -26,8 +26,11 @@ import DashboardLayout from "../../core/layout/DashboardLayout";
 import { OccasionIndex, PersonIndex } from '../../core/model/estimates.model';
 import { OrsAndScore15WithOccasion } from '../../core/model/score.model';
 import { SurveyStatus } from "../../core/model/status.model";
-import { backgroundSurveyPath, followUpSurveyPath } from "../../core/util/pathBuilder.util";
+import { backgroundSurveyPath, estimatesPath, followUpSurveyPath } from "../../core/util/pathBuilder.util";
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Fab } from '@mui/material';
+import toast from 'react-hot-toast';
+import { fetchAPI } from '../../core/api/fetch-api';
+import { FollowUpData } from '../../core/model/followUpData.model';
 
 interface ScanLinkProps {
   disabled: boolean;
@@ -132,11 +135,31 @@ export default function EstimatesPage() {
     setOpen(false);
   };
 
-  const [isScanUnLocked, setIsScanUnLocked] = React.useState(false);
-  const handleFinishCase = () => {
-    setIsScanUnLocked(true);
+  const handleFinishCase = async () => {
     setOpen(false);
-  }
+    navigate(-1)
+
+    // const closeStatusData = {
+    //   processor: username,
+    //   codeNumber: currentEstimates.codeNumber,
+    //   closeStatus: false
+    // };
+
+    // await fetch({
+    //   url: `${API_URL}/close-status/create`,
+    //   method: "POST",
+    //   body: closeStatusData
+    // })
+    //   .then(response => {
+    //     if (!response.ok) {
+    //       throw new Error('Failed to save data');
+    //     }
+    //     // Handle success
+    //   })
+    //   .catch(error => {
+    //     // Handle error
+    //   });
+  };
 
   return (
     <DashboardLayout >
@@ -197,7 +220,7 @@ export default function EstimatesPage() {
           </Grid>
 
           {[...Array(3)].map((_occasionIt, occasionIndex) => {
-          
+
 
 
             let ors = 0, score15 = 0;

@@ -59,13 +59,15 @@ export default function CaseListPage() {
       // renderCell: (data) => {data.row.nextsurvey ? (<LossIconImage />) : (<LossIconImage />)} 
       // renderCell: () => <DoneIconImage />
       renderCell: (data) => {
-        return (data.row.status === "Loss" ? (
+        return (data.row.status === "Coming" ? (
           <LossIconImage />
         ) : (
-          data.row.status === "Coming" ? (
+          data.row.status === "Loss" ? 
+          (
             <TodoIconImage />
           ) : (
-            <DoneIconImage />
+            // <DoneIconImage />
+            <TodoIconImage />
           )
         ))
       }
