@@ -31,6 +31,7 @@ import { Button, Dialog, DialogActions, DialogContent, DialogContentText, Dialog
 import toast from 'react-hot-toast';
 import { fetchAPI } from '../../core/api/fetch-api';
 import { FollowUpData } from '../../core/model/followUpData.model';
+import { BackgroundMetadata } from '../../core/model/backgroundData.model';
 
 interface ScanLinkProps {
   disabled: boolean;
@@ -137,28 +138,24 @@ export default function EstimatesPage() {
 
   const handleFinishCase = async () => {
     setOpen(false);
-    navigate(-1)
+    navigate(-1);
 
-    // const closeStatusData = {
-    //   processor: username,
-    //   codeNumber: currentEstimates.codeNumber,
-    //   closeStatus: false
-    // };
+    try {
+      const newBackgroundMetaData = {} as BackgroundMetadata;
+      newBackgroundMetaData.codeNumber = currentEstimates.codeNumber as string;
+      newBackgroundMetaData.isClosed = true;
+      newBackgroundMetaData.processor = username as string;
+      await fetchAPI({
+        url: `/background-data/create`,
+        method: "POST",
+        body: newBackgroundMetaData
+      });
 
-    // await fetch({
-    //   url: `${API_URL}/close-status/create`,
-    //   method: "POST",
-    //   body: closeStatusData
-    // })
-    //   .then(response => {
-    //     if (!response.ok) {
-    //       throw new Error('Failed to save data');
-    //     }
-    //     // Handle success
-    //   })
-    //   .catch(error => {
-    //     // Handle error
-    //   });
+    }
+    catch (e) {
+      console.log("saving error: ", e);
+    }
+    return 
   };
 
   return (

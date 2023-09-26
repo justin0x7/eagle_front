@@ -35,6 +35,8 @@ export type BackgroundMetadata = {
   codeNumber: string;
   date: string;
   yearOfBirth: number;
+  isClosed: any;
+  processor: string;
 }
 
 export type BackgroundData = {
