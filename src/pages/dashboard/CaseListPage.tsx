@@ -119,9 +119,9 @@ export default function CaseListPage() {
 
   const filteredRows = caseList ? (activeTabIndex === 0 ? caseList
     : caseList.filter(row => row.status === (
-      activeTabIndex === 1 ? SurveyStatus.Clear
-        : activeTabIndex === 2 ? SurveyStatus.Coming
-          : SurveyStatus.Loss)
+      activeTabIndex === 1 ? SurveyStatus.Loss
+        : activeTabIndex === 2 ? SurveyStatus.Clear
+          : SurveyStatus.Coming)
     )).filter(row => row.codeNumber.includes(searchString))
     : [];
 
