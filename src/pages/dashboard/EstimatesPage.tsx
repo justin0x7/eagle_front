@@ -139,6 +139,7 @@ export default function EstimatesPage() {
   const handleFinishCase = async () => {
     setOpen(false);
     navigate(-1);
+    console.log("before finsh case")
 
     try {
       const newBackgroundMetaData = {} as BackgroundMetadata;
@@ -150,6 +151,7 @@ export default function EstimatesPage() {
         method: "POST",
         body: newBackgroundMetaData
       });
+      console.log("after finish case")
 
     }
     catch (e) {
