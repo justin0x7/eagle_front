@@ -142,14 +142,11 @@ export default function EstimatesPage() {
     console.log("before finsh case")
 
     try {
-      const newBackgroundMetaData = {} as BackgroundMetadata;
-      newBackgroundMetaData.codeNumber = currentEstimates.codeNumber as string;
-      newBackgroundMetaData.isClosed = true;
-      newBackgroundMetaData.processor = username as string;
+      const codeNumber = currentEstimates.codeNumber
       await fetchAPI({
-        url: `/background-data/create`,
+        url: `/background-data/close-status`,
         method: "POST",
-        body: newBackgroundMetaData
+        body: JSON.stringify(codeNumber)
       });
       console.log("after finish case")
 
