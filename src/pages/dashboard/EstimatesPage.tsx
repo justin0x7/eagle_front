@@ -136,25 +136,43 @@ export default function EstimatesPage() {
     setOpen(false);
   };
 
+  // const handleFinishCase = async () => {
+  //   setOpen(false);
+  //   navigate(-1);
+  //   console.log("before finsh case")
+
+  //   try {
+  //     const codeNumber = currentEstimates.codeNumber
+  //     await fetchAPI({
+  //       url: `/background-data/close-status`,
+  //       method: "POST",
+  //       body: codeNumber
+  //     });
+  //     console.log("after finish case")
+
+  //   }
+  //   catch (e) {
+  //     console.log("saving error: ", e);
+  //   }
+  //   return true;
+  // };
   const handleFinishCase = async () => {
     setOpen(false);
     navigate(-1);
-    console.log("before finsh case")
-
+    const codeNumber = currentEstimates.codeNumber;
     try {
-      const codeNumber = currentEstimates.codeNumber
-      await fetchAPI({
-        url: `/background-data/close-status`,
+      const response = await fetch(`${API_URL}/background-data/close-status`, {
         method: "POST",
-        body: JSON.stringify(codeNumber)
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ codeNumber })
       });
-      console.log("after finish case")
-
+  
+      // Handle response here
+    } catch (error) {
+      // Handle error here
     }
-    catch (e) {
-      console.log("saving error: ", e);
-    }
-    return 
   };
 
   return (
