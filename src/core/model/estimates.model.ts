@@ -45,4 +45,5 @@ export type EstimatesDto = {
     };
   };
   nextSurvey: string;
+  closeStatus: string;
 };

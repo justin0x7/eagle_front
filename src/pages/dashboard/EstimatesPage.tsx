@@ -73,6 +73,7 @@ export default function EstimatesPage() {
   const [showQRCodeModal, setShowQRCodeModal] = useState(false);
   const [targetURI, setTargetURI] = useState("");
   const [qrcodeUriDomain, setQrcodeUriDomain] = useState("");
+  const [closedButton, setClosedButton] = useState(false);
 
   const { data: scores } = useQuery<OrsAndScore15WithOccasion[]>("getScoresByCodeNumberAndOccasion", () =>
     axios.post(
@@ -159,6 +160,7 @@ export default function EstimatesPage() {
   const handleFinishCase = async () => {
     setOpen(false);
     navigate(-1);
+    setClosedButton(true);
     const codeNumber = currentEstimates.codeNumber;
     try {
       const response = await fetch(`${API_URL}/background-data/close-status`, {
@@ -174,6 +176,7 @@ export default function EstimatesPage() {
       // Handle error here
     }
   };
+  const closeStatus = currentEstimates.closeStatus;
 
   return (
     <DashboardLayout >
@@ -272,7 +275,6 @@ export default function EstimatesPage() {
                   ];
 
             const isScanLocked = Math.abs(dayjs().diff(date, "week")) > 0;
-
             return (
               <>
                 <Grid item md={6} key={`grid-item-${occasionIndex}`}>
@@ -445,7 +447,7 @@ export default function EstimatesPage() {
               <Typography fontWeight="600" color="success.main" variant='h4'>Status:</Typography>
               <Typography fontWeight="bold">{t(completedFollowUpSurvey ? "Estimates.FollowSurveyDone" : "Estimates.FollowUpSurveyNotDone")}</Typography>
               <ButtonRed onClick={handleClickOpen} disabled={completedFollowUpSurvey} sx={{ color: "#FFF" }}>
-                {t(completedFollowUpSurvey ? "Estimates.Completed" : "Estimates.CloseCase")}
+                {t(completedFollowUpSurvey ? "Estimates.Completed" : closeStatus === "true" ? "Estimates.Closed" : "Estimates.CloseCase")}
               </ButtonRed>
             </Stack>
           </Grid>
