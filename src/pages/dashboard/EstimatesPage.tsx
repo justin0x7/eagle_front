@@ -170,14 +170,14 @@ export default function EstimatesPage() {
         },
         body: JSON.stringify({ codeNumber })
       });
-  
+
       // Handle response here
     } catch (error) {
       // Handle error here
     }
   };
-  const closeStatus = currentEstimates.closeStatus;
-
+  // const closeStatus = currentEstimates.closeStatus;
+  // console.log("closeStatus:", closeStatus);
   return (
     <DashboardLayout >
       <Box sx={{ width: '100%' }}>
@@ -447,7 +447,7 @@ export default function EstimatesPage() {
               <Typography fontWeight="600" color="success.main" variant='h4'>Status:</Typography>
               <Typography fontWeight="bold">{t(completedFollowUpSurvey ? "Estimates.FollowSurveyDone" : "Estimates.FollowUpSurveyNotDone")}</Typography>
               <ButtonRed onClick={handleClickOpen} disabled={completedFollowUpSurvey} sx={{ color: "#FFF" }}>
-                {t(completedFollowUpSurvey ? "Estimates.Completed" : closeStatus === "true" ? "Estimates.Closed" : "Estimates.CloseCase")}
+                {t(completedFollowUpSurvey ? "Estimates.Completed" : closedButton ? "Estimates.Closed" : "Estimates.CloseCase")}
               </ButtonRed>
             </Stack>
           </Grid>
