@@ -11,7 +11,7 @@ import Typography from "@mui/material/Typography";
 import axios from 'axios';
 import dayjs from "dayjs";
 import { saveAs } from "file-saver";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useQuery } from 'react-query';
 import { Link, useNavigate } from "react-router-dom";
@@ -32,6 +32,12 @@ import toast from 'react-hot-toast';
 import { fetchAPI } from '../../core/api/fetch-api';
 import { FollowUpData } from '../../core/model/followUpData.model';
 import { BackgroundMetadata } from '../../core/model/backgroundData.model';
+
+type CloseStatusEntity = {
+  codeNumber: string;
+  processor: string;
+  isClosed: string;
+};
 
 interface ScanLinkProps {
   disabled: boolean;
@@ -73,7 +79,8 @@ export default function EstimatesPage() {
   const [showQRCodeModal, setShowQRCodeModal] = useState(false);
   const [targetURI, setTargetURI] = useState("");
   const [qrcodeUriDomain, setQrcodeUriDomain] = useState("");
-  const [closedButton, setClosedButton] = useState(false);
+  const [closedButton, setClosedButton] = useState("false");
+  const [closeStatusEntity, setCloseStatusEntity] = useState<CloseStatusEntity>();
 
   const { data: scores } = useQuery<OrsAndScore15WithOccasion[]>("getScoresByCodeNumberAndOccasion", () =>
     axios.post(
@@ -137,45 +144,68 @@ export default function EstimatesPage() {
     setOpen(false);
   };
 
-  // const handleFinishCase = async () => {
-  //   setOpen(false);
-  //   navigate(-1);
-  //   console.log("before finsh case")
+  useEffect(() => {
+    try {
 
-  //   try {
-  //     const codeNumber = currentEstimates.codeNumber
-  //     await fetchAPI({
-  //       url: `/background-data/close-status`,
-  //       method: "POST",
-  //       body: codeNumber
-  //     });
-  //     console.log("after finish case")
+      axios.get(
+        `${API_URL}/close-status/getOne/${currentEstimates.codeNumber}`
+      ).then((res: any) => {
+        console.log(res);
+        const closeStatus = res.data.isClosed;
+        setClosedButton(closeStatus);
+      }).catch(err => {
+        console.log(err);
+      });
+    }
+    catch (e) {
+      console.log(e);
+    }
+  }, []);
 
-  //   }
-  //   catch (e) {
-  //     console.log("saving error: ", e);
-  //   }
-  //   return true;
-  // };
   const handleFinishCase = async () => {
     setOpen(false);
     navigate(-1);
-    setClosedButton(true);
     const codeNumber = currentEstimates.codeNumber;
-    try {
-      const response = await fetch(`${API_URL}/background-data/close-status`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ codeNumber })
-      });
-
-      // Handle response here
-    } catch (error) {
-      // Handle error here
-    }
+    const processor = username;
+    const isClosed = "true"
+    axios.post(
+      `${API_URL}/close-status/create`,
+      {
+        ...closeStatusEntity,
+        codeNumber,
+        processor,
+        isClosed
+      },
+    ).then(res => {
+      console.log(res);
+    }).catch(err => {
+      console.log(err);
+    });
   };
+
+  // const handleSubmit = () => {
+  //   const ors = orsAndSatisfactionScaleAnswers.reduce((prev, curr) => {
+  //     return prev + curr;
+  //   }, 0); 
+
+  //   axios.post(
+  //     `${API_URL}/score/create`,
+  //     {
+  //       ...scoreEntity,
+  //       ors: +ors || 0,
+  //       score15Answers,
+  //       orsAndSatisfactionScaleAnswers,
+  //       date: dayjs().format("YYYY-MM-DD")
+  //     },
+  //   ).then(res => {
+  //     console.log(res); 
+  //     setSubmitted(true);
+  //   }).catch(err => {
+  //     console.log(err);
+  //     setHasError(true);
+  //   });
+  // };
+
   // const closeStatus = currentEstimates.closeStatus;
   // console.log("closeStatus:", closeStatus);
   return (
@@ -363,7 +393,6 @@ export default function EstimatesPage() {
                     </CardActions>
                   </Card>
                 </Grid>
-
               </>
             );
           })}
@@ -415,7 +444,6 @@ export default function EstimatesPage() {
                         status={SurveyStatus.Loss}
                         variant="large"
                         content={<ScanLink disabled={false} onClick={() => handleClickImportantEventsScanLink()} />}
-
                       />
                     </Stack>
                   </Grid>
@@ -446,9 +474,16 @@ export default function EstimatesPage() {
             <Stack direction="row" alignItems="center" gap={2}>
               <Typography fontWeight="600" color="success.main" variant='h4'>Status:</Typography>
               <Typography fontWeight="bold">{t(completedFollowUpSurvey ? "Estimates.FollowSurveyDone" : "Estimates.FollowUpSurveyNotDone")}</Typography>
-              <ButtonRed onClick={handleClickOpen} disabled={completedFollowUpSurvey} sx={{ color: "#FFF" }}>
-                {t(completedFollowUpSurvey ? "Estimates.Completed" : closedButton ? "Estimates.Closed" : "Estimates.CloseCase")}
-              </ButtonRed>
+              {closedButton === "false" && !completedFollowUpSurvey
+                ? (
+                  <ButtonRed onClick={handleClickOpen} disabled={completedFollowUpSurvey} sx={{ color: "#FFF" }}>
+                    {t("Estimates.CloseCase")}
+                  </ButtonRed>
+                ) : (
+                  <ButtonRed disabled={completedFollowUpSurvey} sx={{ color: "#FFF" }}>
+                    {t(completedFollowUpSurvey ? "Estimates.Completed" : "Estimates.Closed")}
+                  </ButtonRed>
+                )}
             </Stack>
           </Grid>
         </Grid>
