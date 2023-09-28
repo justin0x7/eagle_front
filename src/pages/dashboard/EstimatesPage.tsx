@@ -473,7 +473,7 @@ export default function EstimatesPage() {
             <Stack direction="row" alignItems="center" gap={2}>
               <Typography fontWeight="600" color="success.main" variant='h4'>Status:</Typography>
               <Typography fontWeight="bold">{t(completedFollowUpSurvey ? "Estimates.FollowSurveyDone" : "Estimates.FollowUpSurveyNotDone")}</Typography>
-              {closedButton === "false"
+              {/* {closedButton === "false"
                 ? (!completedFollowUpSurvey
                   ? (
                     <ButtonRed disabled={completedFollowUpSurvey} sx={{ color: "#FFF" }}>
@@ -491,10 +491,33 @@ export default function EstimatesPage() {
                     </ButtonRed>
                   ) : (
                     <ButtonRed disabled={completedFollowUpSurvey} sx={{ color: "#FFF" }}>
-                      {t(completedFollowUpSurvey ? "Estimates.Completed" : "Estimates.Closed")}
+                      {t("Estimates.Closed")}
                     </ButtonRed>
                   )
-                )}
+                )} */}
+              {
+                completedFollowUpSurvey ? (
+                  closedButton === "false" ? (
+                    <ButtonRed onClick={handleClickOpen} sx={{ color: "#FFF" }}>
+                      {t("Estimates.CloseCase")}
+                    </ButtonRed>
+                  ) : (
+                    <ButtonRed disabled={true} sx={{ color: "#FFF" }}>
+                      {t("Estimates.Closed")}
+                    </ButtonRed>
+                  )
+                ) : (
+                  closedButton === "false" ? (
+                    <ButtonRed onClick={handleClickOpen} sx={{ color: "#FFF" }}>
+                      {t("Estimates.CloseCase")}
+                    </ButtonRed>
+                  ) : (
+                    <ButtonRed disabled={completedFollowUpSurvey} sx={{ color: "#FFF" }}>
+                      {t("Estimates.InCompleted")}
+                    </ButtonRed>
+                  )
+                )
+              }
             </Stack>
           </Grid>
         </Grid>
