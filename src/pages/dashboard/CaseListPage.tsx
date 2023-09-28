@@ -21,6 +21,8 @@ import StyledTab from './resources/StyledTab';
 import StyledTabs from './resources/StyledTabs';
 import TabPanel from './resources/TabPanel';
 import ToggleOnIcon from '@mui/icons-material/ToggleOn';
+import axios from 'axios';
+import { API_URL } from '../../core/constants/base.const';
 
 export default function CaseListPage() {
   const dispatch = useAppDispatch();
@@ -28,6 +30,7 @@ export default function CaseListPage() {
   const { t } = useTranslation();
 
   const { caseList } = useAppSelector(state => state.caseListSurvey);
+  const { username } = useAppSelector(state => state.user);
 
   const [searchString, setSearchString] = useState("");
   const [activeTabIndex, setActiveTabIndex] = useState(0);
@@ -47,6 +50,28 @@ export default function CaseListPage() {
       renderCell: (data) => {
         return <p>{data.row.codeNumber}</p>
       }
+      // renderCell: (data) => {
+      //   const [rowCodeNumber, setRowCodeNumber] = useState("");
+
+      //   useEffect(() => {
+      //     try {
+      //       axios.get(
+      //         `${API_URL}/close-status/getOne/${username}`
+      //       ).then((res: any) => {
+      //         console.log(res);
+      //         setRowCodeNumber(res.data.codeNumber);
+      //       }).catch(err => {
+      //         console.log(err);
+      //       });
+      //     }
+      //     catch (e) {
+      //       console.log(e);
+      //     }
+      //   }, []);
+      //   return (
+      //     rowCodeNumber
+      //   )
+      // }
     },
     {
       field: 'status',
@@ -62,13 +87,13 @@ export default function CaseListPage() {
         return (data.row.status === "Coming" ? (
           <LossIconImage />
         ) : (
-          data.row.status === "Loss" ? 
-          (
-            <TodoIconImage />
-          ) : (
-            // <DoneIconImage />
-            <TodoIconImage />
-          )
+          data.row.status === "Loss" ?
+            (
+              <TodoIconImage />
+            ) : (
+              // <DoneIconImage />
+              <TodoIconImage />
+            )
         ))
       }
     },
@@ -103,6 +128,35 @@ export default function CaseListPage() {
         )
       }
     },
+    {
+      field: 'processor',
+      headerName: t("CaseList.TableHeader.Processor").toString(),
+      headerAlign: "left",
+      align: "left",
+      width: 200,
+      renderCell: (data) => {
+        const [rowProcessor, setRowProcessor] = useState("");
+
+        useEffect(() => {
+          try {
+            axios.get(
+              `${API_URL}/close-status/getOne/${data.row.codeNumber}`
+            ).then((res: any) => {
+              console.log(res);
+              setRowProcessor(res.data.processor);
+            }).catch(err => {
+              console.log(err);
+            });
+          }
+          catch (e) {
+            console.log(e);
+          }
+        }, []);
+        return (
+          rowProcessor
+        )
+      }
+    },
   ]), [t]);
 
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
@@ -128,6 +182,24 @@ export default function CaseListPage() {
   useEffect(() => {
     dispatch(loadCaseListData());
   }, []);
+
+  const [rowCodeNumber, setRowCodeNumber] = useState("");
+
+    useEffect(() => {
+      try {
+        axios.get(
+          `${API_URL}/close-status/getOne/${username}`
+        ).then((res: any) => {
+          console.log(res);
+          setRowCodeNumber(res.data.codeNumber);
+        }).catch(err => {
+          console.log(err);
+        });
+      }
+      catch (e) {
+        console.log(e);
+      }
+    }, [rowCodeNumber]);
 
   return (
     <DashboardLayout>

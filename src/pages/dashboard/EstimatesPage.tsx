@@ -146,7 +146,6 @@ export default function EstimatesPage() {
 
   useEffect(() => {
     try {
-
       axios.get(
         `${API_URL}/close-status/getOne/${currentEstimates.codeNumber}`
       ).then((res: any) => {
@@ -474,15 +473,27 @@ export default function EstimatesPage() {
             <Stack direction="row" alignItems="center" gap={2}>
               <Typography fontWeight="600" color="success.main" variant='h4'>Status:</Typography>
               <Typography fontWeight="bold">{t(completedFollowUpSurvey ? "Estimates.FollowSurveyDone" : "Estimates.FollowUpSurveyNotDone")}</Typography>
-              {closedButton === "false" && !completedFollowUpSurvey
-                ? (
-                  <ButtonRed onClick={handleClickOpen} disabled={completedFollowUpSurvey} sx={{ color: "#FFF" }}>
-                    {t("Estimates.CloseCase")}
-                  </ButtonRed>
-                ) : (
-                  <ButtonRed disabled={completedFollowUpSurvey} sx={{ color: "#FFF" }}>
-                    {t(completedFollowUpSurvey ? "Estimates.Completed" : "Estimates.Closed")}
-                  </ButtonRed>
+              {closedButton === "false"
+                ? (!completedFollowUpSurvey
+                  ? (
+                    <ButtonRed disabled={completedFollowUpSurvey} sx={{ color: "#FFF" }}>
+                      {t("Estimates.CloseCase")}
+                    </ButtonRed>
+                  ) : (
+                    <ButtonRed onClick={handleClickOpen} sx={{ color: "#FFF" }}>
+                      {t("Estimates.CloseCase")}
+                    </ButtonRed>
+                  )
+                ) : (!completedFollowUpSurvey
+                  ? (
+                    <ButtonRed disabled={completedFollowUpSurvey} sx={{ color: "#FFF" }}>
+                      {t("Estimates.InCompleted")}
+                    </ButtonRed>
+                  ) : (
+                    <ButtonRed disabled={completedFollowUpSurvey} sx={{ color: "#FFF" }}>
+                      {t(completedFollowUpSurvey ? "Estimates.Completed" : "Estimates.Closed")}
+                    </ButtonRed>
+                  )
                 )}
             </Stack>
           </Grid>

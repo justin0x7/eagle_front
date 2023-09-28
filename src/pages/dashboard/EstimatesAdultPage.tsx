@@ -11,7 +11,7 @@ import Typography from "@mui/material/Typography";
 import axios from 'axios';
 import dayjs from "dayjs";
 import { saveAs } from "file-saver";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useQuery } from 'react-query';
 import { Link, useNavigate } from "react-router-dom";
@@ -27,6 +27,13 @@ import { OccasionIndex, PersonIndex } from '../../core/model/adultEstimates.mode
 import { OrsAndScore15WithOccasion } from '../../core/model/score.model';
 import { SurveyStatus } from "../../core/model/status.model";
 import { backgroundAdultSurveyPath, followUpSurveyPath } from "../../core/util/pathBuilder.util";
+import { Dialog, DialogTitle, DialogActions, Button } from '@mui/material';
+
+type CloseStatusAdultEntity = {
+  codeNumber: string;
+  processor: string;
+  isClosed: string;
+};
 
 interface ScanLinkProps {
   disabled: boolean;
@@ -68,6 +75,17 @@ export default function EstimatesAdultPage() {
   const [showQRCodeModal, setShowQRCodeModal] = useState(false);
   const [targetURI, setTargetURI] = useState("");
   const [qrcodeUriDomain, setQrcodeUriDomain] = useState("");
+  const [open, setOpen] = React.useState(false);
+  const [closedButton, setClosedButton] = useState("false");
+  const [closeStatusAdultEntity, setCloseStatusAdultEntity] = useState<CloseStatusAdultEntity>();
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const { data: scores } = useQuery<OrsAndScore15WithOccasion[]>("getScoresByCodeNumberAndOccasion", () =>
     axios.post(
@@ -114,9 +132,48 @@ export default function EstimatesAdultPage() {
       },
       responseType: "blob"
     });
-    console.log("docx",data.codeNumber)
+    console.log("docx", data.codeNumber)
 
     saveAs(data, "survey.docx");
+  };
+
+  useEffect(() => {
+    try {
+
+      axios.get(
+        `${API_URL}/close-status-adult/getOne/${currentEstimatesAdult.codeNumber}`
+      ).then((res: any) => {
+        console.log(res);
+        const closeStatus = res.data.isClosed;
+        setClosedButton(closeStatus);
+      }).catch(err => {
+        console.log(err);
+      });
+    }
+    catch (e) {
+      console.log(e);
+    }
+  }, []);
+
+  const handleFinishCase = async () => {
+    setOpen(false);
+    navigate(-1);
+    const codeNumber = currentEstimatesAdult.codeNumber;
+    const processor = username;
+    const isClosed = "true"
+    axios.post(
+      `${API_URL}/close-status-adult/create`,
+      {
+        ...closeStatusAdultEntity,
+        codeNumber,
+        processor,
+        isClosed
+      },
+    ).then(res => {
+      console.log(res);
+    }).catch(err => {
+      console.log(err);
+    });
   };
 
   const ONE_DAY_IN_MILLISECONDS: number = 1000 * 60 * 60 * 24;
@@ -232,13 +289,13 @@ export default function EstimatesAdultPage() {
                               <Stack justifyContent="center" alignItems="center" sx={{ height: "100%" }}>
                                 <Typography color="text.secondary" fontWeight="bold" fontSize={16}>VAS</Typography>
                                 <Typography color="info.main" fontWeight="600" variant='h4'>
-                                {!ors? (
-                                  "N/A"
-                                ) : (
-                                  ors
-                                )}
+                                  {!ors ? (
+                                    "N/A"
+                                  ) : (
+                                    ors
+                                  )}
                                 </Typography>
-                                
+
                               </Stack>
                             </Paper>
                           </Stack>
@@ -249,7 +306,7 @@ export default function EstimatesAdultPage() {
                               <Stack justifyContent="center" alignItems="center" sx={{ height: "100%" }}>
                                 <Typography color="text.secondary" fontWeight="bold" fontSize={16}>TFS</Typography>
                                 <Typography color="info.main" fontWeight="600" variant='h4'>
-                                  {!score15? (
+                                  {!score15 ? (
                                     "N/A"
                                   ) : (
                                     score15
@@ -361,9 +418,28 @@ export default function EstimatesAdultPage() {
             <Stack direction="row" alignItems="center" gap={2}>
               <Typography fontWeight="600" color="success.main" variant='h4'>Status:</Typography>
               <Typography fontWeight="bold">{t(completedFollowUpSurvey ? "Estimates.FollowSurveyDone" : "Estimates.FollowUpSurveyNotDone")}</Typography>
-              <ButtonRed disabled={completedFollowUpSurvey} sx={{ color: "#FFF" }}>
-                {t(completedFollowUpSurvey ? "Estimates.Completed" : "Estimates.CloseCase")}
-              </ButtonRed>
+              {closedButton === "false"
+                ? (!completedFollowUpSurvey
+                  ? (
+                    <ButtonRed disabled={completedFollowUpSurvey} sx={{ color: "#FFF" }}>
+                      {t("Estimates.CloseCase")}
+                    </ButtonRed>
+                  ) : (
+                    <ButtonRed onClick={handleClickOpen} sx={{ color: "#FFF" }}>
+                      {t("Estimates.CloseCase")}
+                    </ButtonRed>
+                  )
+                ) : (!completedFollowUpSurvey
+                  ? (
+                    <ButtonRed disabled={completedFollowUpSurvey} sx={{ color: "#FFF" }}>
+                      {t("Estimates.InCompleted")}
+                    </ButtonRed>
+                  ) : (
+                    <ButtonRed disabled={completedFollowUpSurvey} sx={{ color: "#FFF" }}>
+                      {t(completedFollowUpSurvey ? "Estimates.Completed" : "Estimates.Closed")}
+                    </ButtonRed>
+                  )
+                )}
             </Stack>
           </Grid>
         </Grid>
@@ -374,6 +450,25 @@ export default function EstimatesAdultPage() {
         domain={qrcodeUriDomain}
         uri={targetURI}
       />
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {t("Estimate.ConfirmSentences")}
+        </DialogTitle>
+        {/* <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            {t("Estimate.DescribeSentences")}
+          </DialogContentText>
+        </DialogContent> */}
+        <DialogActions>
+          <Button onClick={handleFinishCase}>{t("Estimate.GotIt")}</Button>
+          <Button onClick={handleClose}>{t("Estimate.Cancel")}</Button>
+        </DialogActions>
+      </Dialog>
     </DashboardLayout>
   );
 }

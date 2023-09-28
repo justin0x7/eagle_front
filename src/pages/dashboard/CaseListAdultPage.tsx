@@ -21,6 +21,8 @@ import StyledTab from './resources/StyledTab';
 import StyledTabs from './resources/StyledTabs';
 import TabPanel from './resources/TabPanel';
 import ToggleOffIcon from '@mui/icons-material/ToggleOff';
+import axios from 'axios';
+import { API_URL } from '../../core/constants/base.const';
 
 export default function CaseListAdultPage() {
   const dispatch = useAppDispatch();
@@ -97,6 +99,35 @@ export default function CaseListAdultPage() {
         console.log(data.row.signal);
         return (
           data.row.nextSurvey + t(data.row.signal)
+        )
+      }
+    },
+    {
+      field: 'processor',
+      headerName: t("CaseList.TableHeader.Processor").toString(),
+      headerAlign: "left",
+      align: "left",
+      width: 200,
+      renderCell: (data) => {
+        const [rowProcessor, setRowProcessor] = useState("");
+
+        useEffect(() => {
+          try {
+            axios.get(
+              `${API_URL}/close-status-adult/getOne/${data.row.codeNumber}`
+            ).then((res: any) => {
+              console.log(res);
+              setRowProcessor(res.data.processor);
+            }).catch(err => {
+              console.log(err);
+            });
+          }
+          catch (e) {
+            console.log(e);
+          }
+        }, []);
+        return (
+          rowProcessor
         )
       }
     },
