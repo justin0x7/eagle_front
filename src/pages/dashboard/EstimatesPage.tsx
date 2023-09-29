@@ -173,7 +173,7 @@ export default function EstimatesPage() {
     navigate(-1);
     const codeNumber = currentEstimates.codeNumber;
     const processor = username;
-    const isClosed = "true"
+    const isClosed = "false"
     axios.post(
       `${API_URL}/close-status/create`,
       {

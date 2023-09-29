@@ -160,7 +160,7 @@ export default function EstimatesAdultPage() {
     navigate(-1);
     const codeNumber = currentEstimatesAdult.codeNumber;
     const processor = username;
-    const isClosed = "true"
+    const isClosed = "false"
     axios.post(
       `${API_URL}/close-status-adult/create`,
       {
@@ -420,7 +420,7 @@ export default function EstimatesAdultPage() {
               <Typography fontWeight="bold">{t(completedFollowUpSurvey ? "Estimates.FollowSurveyDone" : "Estimates.FollowUpSurveyNotDone")}</Typography>
               {
                 completedFollowUpSurvey ? (
-                  closedButton === "false" ? (
+                  closedButton !== "false" ? (
                     <ButtonRed onClick={handleClickOpen} sx={{ color: "#FFF" }}>
                       {t("Estimates.CloseCase")}
                     </ButtonRed>
