@@ -6,7 +6,7 @@ import backgroundAdultSurveySliceReducer from "./slices/backgroundAdultSurveySli
 import followUpSurveySliceReducer from "./slices/followUpSurveySlice";
 import caseListSliceReducer from "./slices/caseListSlice";
 import caseListAdultSliceReducer from "./slices/caseListAdultSlice";
-
+// import closeStatusSliceReduver from "./slices/closeStatusSlice";
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +16,7 @@ export const store = configureStore({
     followUpSurvey: followUpSurveySliceReducer,
     caseListSurvey: caseListSliceReducer,
     caseListAdultSurvey: caseListAdultSliceReducer
+    // closeStatusIn: closeStatusSliceReduver
   },
   middleware: getDefaultMiddleware => getDefaultMiddleware({ serializableCheck: false }),
 });

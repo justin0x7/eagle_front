@@ -183,23 +183,23 @@ export default function CaseListPage() {
     dispatch(loadCaseListData());
   }, []);
 
-  const [rowCodeNumber, setRowCodeNumber] = useState("");
+  // const [rowCodeNumber, setRowCodeNumber] = useState("");
 
-    useEffect(() => {
-      try {
-        axios.get(
-          `${API_URL}/close-status/getOne/${username}`
-        ).then((res: any) => {
-          console.log(res);
-          setRowCodeNumber(res.data.codeNumber);
-        }).catch(err => {
-          console.log(err);
-        });
-      }
-      catch (e) {
-        console.log(e);
-      }
-    }, [rowCodeNumber]);
+  //   useEffect(() => {
+  //     try {
+  //       axios.get(
+  //         `${API_URL}/close-status/getOne/${username}`
+  //       ).then((res: any) => {
+  //         console.log(res);
+  //         setRowCodeNumber(res.data.codeNumber);
+  //       }).catch(err => {
+  //         console.log(err);
+  //       });
+  //     }
+  //     catch (e) {
+  //       console.log(e);
+  //     }
+  //   }, [rowCodeNumber]);
 
   return (
     <DashboardLayout>

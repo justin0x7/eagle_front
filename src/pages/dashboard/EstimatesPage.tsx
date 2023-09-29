@@ -161,6 +161,13 @@ export default function EstimatesPage() {
     }
   }, []);
 
+  // axios.get(
+  //         `${API_URL}/close-status/getOne/${currentEstimates.codeNumber}`
+  //       ).then((res: any) => {
+  //         console.log(res);
+  //         const closeStatus = res.data.isClosed;
+  //         setClosedButton(closeStatus);})
+
   const handleFinishCase = async () => {
     setOpen(false);
     navigate(-1);
