@@ -504,7 +504,7 @@ export default function EstimatesPage() {
                 )} */}
               {
                 completedFollowUpSurvey ? (
-                  closedButton === "false" ? (
+                  closedButton !== "false" ? (
                     <ButtonRed onClick={handleClickOpen} sx={{ color: "#FFF" }}>
                       {t("Estimates.CloseCase")}
                     </ButtonRed>
