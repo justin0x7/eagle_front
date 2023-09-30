@@ -5,7 +5,7 @@ import * as React from 'react';
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch } from "../../hooks/rtkHooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/rtkHooks";
 import { BackgroundData } from "../../model/backgroundData.model";
 import { BackgroundAdultData } from "../../model/backgroundAdultData.model";
 import { loadCaseListData } from "../../store/slices/caseListSlice";
@@ -16,7 +16,14 @@ import ReactToPrint from "react-to-print";
 import { useRef, useState } from "react";
 import ComponentToPrint from './PrintModal';
 import ComponentToPrint1 from './PrintModal1';
-import { QUESTIONNAIRES_URL } from '../../constants/base.const';
+import { API_URL, QUESTIONNAIRES_URL } from '../../constants/base.const';
+import axios from 'axios';
+
+type CloseStatusEntity = {
+  codeNumber: string;
+  processor: string;
+  isClosed: string;
+};
 
 interface Props {
   open: boolean;
@@ -28,15 +35,53 @@ export default function NewClientModal(props: Props) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const { username } = useAppSelector(state => state.user);
   const [valueShowableButton, setValueShowableButton] = React.useState(false);
   const strCodeNumber = `${props.choose}${props.strNumber}`;
+  const [closeStatusEntity, setCloseStatusEntity] = useState<CloseStatusEntity>();
 
   const handleClickBackgroundSurvey = () => {
     navigate(backgroundSurveyPath(strCodeNumber));
+    //
+    const codeNumber = strCodeNumber;
+    const processor = username;
+    const isClosed = "true"
+    axios.post(
+      `${API_URL}/close-status/create`,
+      {
+        ...closeStatusEntity,
+        codeNumber,
+        processor,
+        isClosed
+      },
+    ).then(res => {
+      console.log(res);
+    }).catch(err => {
+      console.log(err);
+    });
+    //
   };
 
   const handleClickBackgroundAdultSurvey = () => {
     navigate(backgroundAdultSurveyPath(strCodeNumber));
+    //
+    const codeNumber = strCodeNumber;
+    const processor = username;
+    const isClosed = "true"
+    axios.post(
+      `${API_URL}/close-status-adult/create`,
+      {
+        ...closeStatusEntity,
+        codeNumber,
+        processor,
+        isClosed
+      },
+    ).then(res => {
+      console.log(res);
+    }).catch(err => {
+      console.log(err);
+    });
+    //
   };
 
   const handleClickCreate = () => {
@@ -58,6 +103,24 @@ export default function NewClientModal(props: Props) {
         method: "POST",
         body: payload
       });
+      //
+      const codeNumber = strCodeNumber;
+      const processor = username;
+      const isClosed = "true"
+      axios.post(
+        `${API_URL}/close-status/create`,
+        {
+          ...closeStatusEntity,
+          codeNumber,
+          processor,
+          isClosed
+        },
+      ).then(res => {
+        console.log(res);
+      }).catch(err => {
+        console.log(err);
+      });
+      //
 
       toast.success("Saved successfully.");
       props.onClose();
@@ -85,6 +148,24 @@ export default function NewClientModal(props: Props) {
         method: "POST",
         body: payload
       });
+      //
+      const codeNumber = strCodeNumber;
+      const processor = username;
+      const isClosed = "true"
+      axios.post(
+        `${API_URL}/close-status-adult/create`,
+        {
+          ...closeStatusEntity,
+          codeNumber,
+          processor,
+          isClosed
+        },
+      ).then(res => {
+        console.log(res);
+      }).catch(err => {
+        console.log(err);
+      });
+      //
 
       toast.success("Saved successfully.");
       props.onClose();
