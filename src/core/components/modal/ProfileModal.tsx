@@ -79,7 +79,7 @@ export default function ProfileModal(props: Props) {
     const savedContact = await saveProfile(name, role, title, department, address, phone, email, password);
     if (savedContact) {
       console.log('Contact saved successfully:', savedContact);
-      window.location.reload();
+      // window.location.reload();
     } else {
       console.error('Failed to save contact');
     }
