@@ -20,7 +20,7 @@ import { ButtonPrimary, ButtonRed } from "../../core/components/button/Button";
 import QRCodeModal from '../../core/components/modal/QRCodeModal';
 import StatusChip from "../../core/components/status/StatusChip";
 import { API_URL, QUESTIONNAIRES_URL } from '../../core/constants/base.const';
-import { useAppSelector } from "../../core/hooks/rtkHooks";
+import { useAppDispatch, useAppSelector } from "../../core/hooks/rtkHooks";
 import { useFollowUpData } from "../../core/hooks/useFollowUpData";
 import DashboardLayout from "../../core/layout/DashboardLayout";
 import { OccasionIndex, PersonIndex } from '../../core/model/estimates.model';
@@ -32,6 +32,7 @@ import toast from 'react-hot-toast';
 import { fetchAPI } from '../../core/api/fetch-api';
 import { FollowUpData } from '../../core/model/followUpData.model';
 import { BackgroundMetadata } from '../../core/model/backgroundData.model';
+import { closeStatusListData } from '../../core/store/slices/closeStatusSlice';
 
 type CloseStatusEntity = {
   codeNumber: string;
@@ -67,8 +68,10 @@ const ScanLink = ({
 
 export default function EstimatesPage() {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const { username } = useAppSelector(state => state.user);
+  const { closeStatusList } = useAppSelector(state => state.closeStatusIn);
   const currentEstimates = useAppSelector(state => state.backgroundSurvey.currentEstimates);
   const {
     data: followUpData,
@@ -79,7 +82,7 @@ export default function EstimatesPage() {
   const [showQRCodeModal, setShowQRCodeModal] = useState(false);
   const [targetURI, setTargetURI] = useState("");
   const [qrcodeUriDomain, setQrcodeUriDomain] = useState("");
-  const [closedButton, setClosedButton] = useState("false");
+  const [closedButton, setClosedButton] = useState<undefined | string>("true");
   const [closeStatusEntity, setCloseStatusEntity] = useState<CloseStatusEntity>();
 
   const { data: scores } = useQuery<OrsAndScore15WithOccasion[]>("getScoresByCodeNumberAndOccasion", () =>
@@ -144,21 +147,29 @@ export default function EstimatesPage() {
     setOpen(false);
   };
 
+  // useEffect(() => {
+  //   try {
+  //     axios.get(
+  //       `${API_URL}/close-status/getOne/${currentEstimates.codeNumber}`
+  //     ).then((res: any) => {
+  //       console.log(res);
+  //       const closeStatus = res.data.isClosed;
+  //       setClosedButton(closeStatus);
+  //     }).catch(err => {
+  //       console.log(err);
+  //     });
+  //   }
+  //   catch (e) {
+  //     console.log(e);
+  //   }
+  // }, []);
+
   useEffect(() => {
-    try {
-      axios.get(
-        `${API_URL}/close-status/getOne/${currentEstimates.codeNumber}`
-      ).then((res: any) => {
-        console.log(res);
-        const closeStatus = res.data.isClosed;
-        setClosedButton(closeStatus);
-      }).catch(err => {
-        console.log(err);
-      });
-    }
-    catch (e) {
-      console.log(e);
-    }
+    const closeStatus = (closeStatusList.find((item) => item.codeNumber === currentEstimates.codeNumber))?.isClosed
+    setClosedButton(closeStatus);
+    console.log("closed status:", closeStatus)
+    console.log("closed status:", currentEstimates.codeNumber)
+
   }, []);
 
   // axios.get(
@@ -173,7 +184,8 @@ export default function EstimatesPage() {
     navigate(-1);
     const codeNumber = currentEstimates.codeNumber;
     const processor = username;
-    const isClosed = "false"
+    const isClosed = "false";
+    setClosedButton("false");
     axios.post(
       `${API_URL}/close-status/create`,
       {
@@ -188,6 +200,9 @@ export default function EstimatesPage() {
       console.log(err);
     });
   };
+  useEffect(() => {
+    dispatch(closeStatusListData());
+  }, []);
 
   // const handleSubmit = () => {
   //   const ors = orsAndSatisfactionScaleAnswers.reduce((prev, curr) => {
@@ -504,7 +519,7 @@ export default function EstimatesPage() {
                 )} */}
               {
                 completedFollowUpSurvey ? (
-                  closedButton !== "false" ? (
+                  closedButton === "true" ? (
                     <ButtonRed onClick={handleClickOpen} sx={{ color: "#FFF" }}>
                       {t("Estimates.CloseCase")}
                     </ButtonRed>

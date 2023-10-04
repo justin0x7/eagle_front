@@ -116,17 +116,17 @@ const SideMenu = (props: {
       </Stack>
       <List component="nav" className='pt-[16px]'>
         {role &&
-        <NavLink to={systematicFollowUpPath()} className={({ isActive }) => isActive ? "active" : ""}>
-          <ListItemButton key="Systematic follow-up">
-            <ListItemIcon>
-              <WysiwygRoundedIcon />
-            </ListItemIcon>
-            <ListItemText primary={
-              <Typography fontWeight="600">{t("SideMenu.SystematicFollowUp")}</Typography>
-            } />
-          </ListItemButton>
-        </NavLink>
-}
+          <NavLink to={systematicFollowUpPath()} className={({ isActive }) => isActive ? "active" : ""}>
+            <ListItemButton key="Systematic follow-up">
+              <ListItemIcon>
+                <WysiwygRoundedIcon />
+              </ListItemIcon>
+              <ListItemText primary={
+                <Typography fontWeight="600">{t("SideMenu.SystematicFollowUp")}</Typography>
+              } />
+            </ListItemButton>
+          </NavLink>
+        }
         <NavLink to={homePath()} className={({ isActive }) => isActive ? "active" : ""}>
           <ListItemButton key="Case list">
             <ListItemIcon>

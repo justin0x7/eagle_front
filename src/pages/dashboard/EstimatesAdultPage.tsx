@@ -20,7 +20,7 @@ import { ButtonPrimary, ButtonRed } from "../../core/components/button/Button";
 import QRCodeModal from '../../core/components/modal/QRCodeModal';
 import StatusChip from "../../core/components/status/StatusChip";
 import { API_URL, QUESTIONNAIRES_URL1 } from '../../core/constants/base.const';
-import { useAppSelector } from "../../core/hooks/rtkHooks";
+import { useAppDispatch, useAppSelector } from "../../core/hooks/rtkHooks";
 import { useFollowUpData } from "../../core/hooks/useFollowUpData";
 import DashboardLayout from "../../core/layout/DashboardLayout";
 import { OccasionIndex, PersonIndex } from '../../core/model/adultEstimates.model';
@@ -28,6 +28,7 @@ import { OrsAndScore15WithOccasion } from '../../core/model/score.model';
 import { SurveyStatus } from "../../core/model/status.model";
 import { backgroundAdultSurveyPath, followUpSurveyPath } from "../../core/util/pathBuilder.util";
 import { Dialog, DialogTitle, DialogActions, Button } from '@mui/material';
+import { closeStatusAdultListData } from '../../core/store/slices/closeStatusAdultSlice';
 
 type CloseStatusAdultEntity = {
   codeNumber: string;
@@ -63,8 +64,10 @@ const ScanLink = ({
 
 export default function EstimatesAdultPage() {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const { username } = useAppSelector(state => state.user);
+  const { closeStatusAdultList } = useAppSelector(state => state.closeStatusAdultIn)
   const currentEstimatesAdult = useAppSelector(state => state.backgroundAdultSurvey.currentEstimatesAdult);
   const {
     data: followUpData,
@@ -76,7 +79,7 @@ export default function EstimatesAdultPage() {
   const [targetURI, setTargetURI] = useState("");
   const [qrcodeUriDomain, setQrcodeUriDomain] = useState("");
   const [open, setOpen] = React.useState(false);
-  const [closedButton, setClosedButton] = useState("false");
+  const [closedButton, setClosedButton] = useState<undefined | string>("true");
   const [closeStatusAdultEntity, setCloseStatusAdultEntity] = useState<CloseStatusAdultEntity>();
 
   const handleClickOpen = () => {
@@ -137,22 +140,30 @@ export default function EstimatesAdultPage() {
     saveAs(data, "survey.docx");
   };
 
-  useEffect(() => {
-    try {
+  // useEffect(() => {
+  //   try {
 
-      axios.get(
-        `${API_URL}/close-status-adult/getOne/${currentEstimatesAdult.codeNumber}`
-      ).then((res: any) => {
-        console.log(res);
-        const closeStatus = res.data.isClosed;
-        setClosedButton(closeStatus);
-      }).catch(err => {
-        console.log(err);
-      });
-    }
-    catch (e) {
-      console.log(e);
-    }
+  //     axios.get(
+  //       `${API_URL}/close-status-adult/getOne/${currentEstimatesAdult.codeNumber}`
+  //     ).then((res: any) => {
+  //       console.log(res);
+  //       const closeStatus = res.data.isClosed;
+  //       setClosedButton(closeStatus);
+  //     }).catch(err => {
+  //       console.log(err);
+  //     });
+  //   }
+  //   catch (e) {
+  //     console.log(e);
+  //   }
+  // }, []);
+
+  useEffect(() => {
+    const closeStatus = (closeStatusAdultList.find((item) => item.codeNumber === currentEstimatesAdult.codeNumber))?.isClosed
+    setClosedButton(closeStatus);
+    console.log("closed status:", closeStatus)
+    console.log("closed status:", currentEstimatesAdult.codeNumber)
+
   }, []);
 
   const handleFinishCase = async () => {
@@ -160,7 +171,8 @@ export default function EstimatesAdultPage() {
     navigate(-1);
     const codeNumber = currentEstimatesAdult.codeNumber;
     const processor = username;
-    const isClosed = "false"
+    const isClosed = "false";
+    setClosedButton("false");
     axios.post(
       `${API_URL}/close-status-adult/create`,
       {
@@ -175,6 +187,9 @@ export default function EstimatesAdultPage() {
       console.log(err);
     });
   };
+  useEffect(() => {
+    dispatch(closeStatusAdultListData());
+  }, []);
 
   const ONE_DAY_IN_MILLISECONDS: number = 1000 * 60 * 60 * 24;
   const strDate = dayjs().format("YYYY-MM-DD");
@@ -420,7 +435,7 @@ export default function EstimatesAdultPage() {
               <Typography fontWeight="bold">{t(completedFollowUpSurvey ? "Estimates.FollowSurveyDone" : "Estimates.FollowUpSurveyNotDone")}</Typography>
               {
                 completedFollowUpSurvey ? (
-                  closedButton !== "false" ? (
+                  closedButton === "true" ? (
                     <ButtonRed onClick={handleClickOpen} sx={{ color: "#FFF" }}>
                       {t("Estimates.CloseCase")}
                     </ButtonRed>

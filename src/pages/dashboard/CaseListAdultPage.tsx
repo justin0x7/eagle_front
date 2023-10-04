@@ -15,6 +15,7 @@ import { AdultEstimatesDto } from "../../core/model/adultEstimates.model";
 import { SurveyStatus } from '../../core/model/status.model';
 import { setCurrentEstimatesAction } from '../../core/store/slices/backgroundAdultSurveySlice';
 import { loadCaseListAdultData } from "../../core/store/slices/caseListAdultSlice";
+import { closeStatusAdultListData } from "../../core/store/slices/closeStatusAdultSlice";
 import { estimatesAdultPath, homePath } from '../../core/util/pathBuilder.util';
 import AdultHistorySummary from './resources/AdultHistorySummary';
 import StyledTab from './resources/StyledTab';
@@ -23,14 +24,42 @@ import TabPanel from './resources/TabPanel';
 import ToggleOffIcon from '@mui/icons-material/ToggleOff';
 import axios from 'axios';
 import { API_URL } from '../../core/constants/base.const';
+import { createClient } from '@supabase/supabase-js';
+import { type } from 'os';
 
 export default function CaseListAdultPage() {
+  const supabaseUrl = 'https://lxstflrwscwaenzwsiwv.supabase.co';
+  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx4c3RmbHJ3c2N3YWVuendzaXd2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTExMzk4NzYsImV4cCI6MjAwNjcxNTg3Nn0.ieQl89Swq9w-VJ6gOYtXG2sjEyhXlImJprtHhJWjxMU';
+  const supabaseClient = createClient(supabaseUrl, supabaseKey);
+  const { email } = useAppSelector(state => state.user);
+  const [name, setName] = useState('');
+  const [role, setRole] = useState(false);
+
+  React.useEffect(() => {
+    supabaseClient
+      .from('vallentuna_users')
+      .select('name, role, title, department, address, phone, email')
+      .eq('email', email)
+      .then(({ data: user, error }) => {
+        if (error) {
+          // console.error(error);
+        } else if (user.length > 0) {
+          // console.log('User:', user[0]);
+          setRole(user[0].role);
+          // setEmail(user[0].email);
+        } else {
+          // console.error('User not found');
+        }
+      });
+  }, [email]);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
 
   const { caseList } = useAppSelector(state => state.caseListAdultSurvey);
-  
+  const { closeStatusAdultList } = useAppSelector(state => state.closeStatusAdultIn);
+  console.log("closeStatusAdult", closeStatusAdultList)
+  const { username } = useAppSelector(state => state.user);
   const [searchString, setSearchString] = useState("");
   const [activeTabIndex, setActiveTabIndex] = useState(0);
   // const [showLinkModal, setShowLinkModal] = useState(false);
@@ -96,7 +125,7 @@ export default function CaseListAdultPage() {
       align: "left",
       width: 400,
       renderCell: (data) => {
-        console.log(data.row.signal);
+        // console.log(data.row.signal);
         return (
           data.row.nextSurvey + t(data.row.signal)
         )
@@ -109,28 +138,50 @@ export default function CaseListAdultPage() {
       align: "left",
       width: 200,
       renderCell: (data) => {
-        const [rowProcessor, setRowProcessor] = useState("");
+        const [rowProcessor, setRowProcessor] = useState<undefined | string>("");
 
+        const closeStatusFilteredData = closeStatusAdultList.find((tip) => tip.codeNumber === data.row.codeNumber)
+        const output = closeStatusFilteredData?.processor
         useEffect(() => {
-          try {
-            axios.get(
-              `${API_URL}/close-status-adult/getOne/${data.row.codeNumber}`
-            ).then((res: any) => {
-              console.log(res);
-              setRowProcessor(res.data.processor);
-            }).catch(err => {
-              console.log(err);
-            });
-          }
-          catch (e) {
-            console.log(e);
-          }
+          setRowProcessor(output);
         }, []);
+
+        // console.log("XXXXXXXXX:", closeStatusFilteredData)
+        // console.log("output:", closeStatusAdultList)
         return (
           rowProcessor
         )
       }
     },
+    // {
+    //   field: 'processor',
+    //   headerName: t("CaseList.TableHeader.Processor").toString(),
+    //   headerAlign: "left",
+    //   align: "left",
+    //   width: 200,
+    //   renderCell: (data) => {
+    //     const [rowProcessor, setRowProcessor] = useState("");
+
+    //     useEffect(() => {
+    //       try {
+    //         axios.get(
+    //           `${API_URL}/close-status-adult/getOne/${data.row.codeNumber}`
+    //         ).then((res: any) => {
+    //           console.log(res);
+    //           setRowProcessor(res.data.processor);
+    //         }).catch(err => {
+    //           console.log(err);
+    //         });
+    //       }
+    //       catch (e) {
+    //         console.log(e);
+    //       }
+    //     }, []);
+    //     return (
+    //       rowProcessor
+    //     )
+    //   }
+    // },
   ]), [t]);
 
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
@@ -145,16 +196,39 @@ export default function CaseListAdultPage() {
     navigate(estimatesAdultPath());
   };
 
-  const filteredRows = caseList ? (activeTabIndex === 0 ? caseList
-    : caseList.filter(row => row.status === (
-      activeTabIndex === 1 ? SurveyStatus.Clear
-        : activeTabIndex === 2 ? SurveyStatus.Coming
-          : SurveyStatus.Loss)
-    )).filter(row => row.codeNumber.includes(searchString))
-    : [];
+  // const filteredRows = caseList ? (activeTabIndex === 0 ? caseList
+  //   : caseList.filter(row => row.status === (
+  //     activeTabIndex === 1 ? SurveyStatus.Clear
+  //       : activeTabIndex === 2 ? SurveyStatus.Coming
+  //         : SurveyStatus.Loss)
+  //   )).filter(row => row.codeNumber.includes(searchString))
+  //   : [];
+
+  const caseListFilter = closeStatusAdultList.filter((tip) => tip.processor === username).map(row => {
+    return caseList.find(item => item.codeNumber === row.codeNumber);
+  })
+  const filteredRows = role ? (
+    caseList ? (activeTabIndex === 0 ? caseList
+      : caseList.filter(row => row.status === (
+        activeTabIndex === 1 ? SurveyStatus.Clear
+          : activeTabIndex === 2 ? SurveyStatus.Coming
+            : SurveyStatus.Loss)
+      )).filter(row => row.codeNumber.includes(searchString))
+      : []
+  ) : (
+    caseListFilter
+      ? (activeTabIndex === 0 ? caseListFilter
+        : caseListFilter.filter((row: any) => row?.status === (
+          activeTabIndex === 1 ? SurveyStatus.Clear
+            : activeTabIndex === 2 ? SurveyStatus.Coming
+              : SurveyStatus.Loss)
+        )).filter((row: any) => row?.codeNumber.includes(searchString))
+      : []
+  )
 
   useEffect(() => {
     dispatch(loadCaseListAdultData());
+    dispatch(closeStatusAdultListData());
   }, []);
 
   return (
@@ -195,25 +269,45 @@ export default function CaseListAdultPage() {
 
         <Card>
           <CardContent sx={{ padding: 0 }}>
-            <Box>
-              <StyledTabs value={activeTabIndex} onChange={handleTabChange} aria-label="basic tabs example">
-                <StyledTab
-                  icon={(caseList?.length || 0).toString()}
-                  label={t("CaseList.AllCodeNumber")}
-                />
-                <StyledTab
-                  icon={(caseList?.filter(data => data.status === SurveyStatus.Clear).length || 0).toString()}
-                  label={t("CaseList.FullyAnswered")}
-                />
-                <StyledTab
-                  icon={(caseList?.filter(data => data.status === SurveyStatus.Coming).length || 0).toString()}
-                  label={t("CaseList.Ongoing")}
-                />
-                <StyledTab
-                  icon={(caseList?.filter(data => data.status === SurveyStatus.Loss).length || 0).toString()}
-                  label={t("CaseList.ActionRequired")}
-                />
-              </StyledTabs>
+            <Box>{role ? (
+                <StyledTabs value={activeTabIndex} onChange={handleTabChange} aria-label="basic tabs example">
+                  <StyledTab
+                    icon={(caseList?.length || 0).toString()}
+                    label={t("CaseList.AllCodeNumber")}
+                  />
+                  <StyledTab
+                    icon={(caseList?.filter(data => data.status === SurveyStatus.Clear).length || 0).toString()}
+                    label={t("CaseList.FullyAnswered")}
+                  />
+                  <StyledTab
+                    icon={(caseList?.filter(data => data.status === SurveyStatus.Coming).length || 0).toString()}
+                    label={t("CaseList.Ongoing")}
+                  />
+                  <StyledTab
+                    icon={(caseList?.filter(data => data.status === SurveyStatus.Loss).length || 0).toString()}
+                    label={t("CaseList.ActionRequired")}
+                  />
+                </StyledTabs>
+              ) : (
+                <StyledTabs value={activeTabIndex} onChange={handleTabChange} aria-label="basic tabs example">
+                  <StyledTab
+                    icon={(caseListFilter?.length || 0).toString()}
+                    label={t("CaseList.AllCodeNumber")}
+                  />
+                  <StyledTab
+                    icon={(caseListFilter?.filter(data => data?.status === SurveyStatus.Clear).length || 0).toString()}
+                    label={t("CaseList.FullyAnswered")}
+                  />
+                  <StyledTab
+                    icon={(caseListFilter?.filter(data => data?.status === SurveyStatus.Coming).length || 0).toString()}
+                    label={t("CaseList.Ongoing")}
+                  />
+                  <StyledTab
+                    icon={(caseListFilter?.filter(data => data?.status === SurveyStatus.Loss).length || 0).toString()}
+                    label={t("CaseList.ActionRequired")}
+                  />
+                </StyledTabs>
+              )}
             </Box>
             <TabPanel>
               <Box className="w-full">

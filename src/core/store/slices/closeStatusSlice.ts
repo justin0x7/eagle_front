@@ -1,89 +1,27 @@
-// import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-// import { fetchAPI } from "../../api/fetch-api";
-// import { EstimatesDto } from "../../model/estimates.model";
-// import axios from "axios";
-// import { API_URL } from "../../constants/base.const";
-
-// interface CaseListSlice {
-//   caseList: Array<{ id: number; } & EstimatesDto>;
-// }
-
-// const initialState = {
-//   caseList: []
-// } as CaseListSlice;
-
-
-// export const loadCaseListData = createAsyncThunk(
-//   "caseList/loadCaseListData",
-//   async (_, thunkAPI) => {
-//     try {
-//         axios.get(
-//           `${API_URL}/close-status/getOne/${codeNumber}`
-//         ).then((res: any) => {
-//           console.log(res);
-//           const closeStatus = res.data.isClosed;
-//         }).catch(err => {
-//           console.log(err);
-//         });
-//       }
-//       catch (e) {
-//         console.log(e);
-//         thunkAPI.rejectWithValue(e);
-//       }
-//   }
-// );
-
-// const closeStatusSlice = createSlice({
-//   name: "caseList",
-//   initialState,
-//   reducers: {
-//   },
-//   extraReducers: (builder) => {
-//     builder
-//       .addCase(loadCaseListData.fulfilled, (state, { payload }) => {
-//         if (payload) state.caseList = payload;
-//       });
-//   }
-// });
-
-// export default closeStatusSlice.reducer;
-
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { fetchAPI } from "../../api/fetch-api";
 import { EstimatesDto } from "../../model/estimates.model";
+import { getCloseStatus } from "../../model/closeStatus.model";
 
-interface CaseListSlice {
-  caseList: Array<{ id: number; } & EstimatesDto>;
+interface CloseStatusSlice {
+  closeStatusList: Array<getCloseStatus>;
 }
 
 const initialState = {
-  caseList: []
-} as CaseListSlice;
+  closeStatusList: []
+} as CloseStatusSlice;
 
-const getThreeNumber = (number: string) => {
-  if (number.length == 1) {
-    return "00" + number
-  } else if (number.length == 2) {
-    return "0" + number
-  } 
-  return number
-}
-
-export const loadCaseListData = createAsyncThunk(
-  "caseList/loadCaseListData",
+export const closeStatusListData = createAsyncThunk(
+  "closeStatus/closeStatusListData",
   async (_, thunkAPI) => {
     try {
       const { data } = await fetchAPI({
-        url: `/background-data/getCaseList`,
+        url: `/close-status/getAll`,
         method: "GET"
       });
-      const rows = (data as Array<EstimatesDto>)?.map((d, idx) => {
-        const codeNumberForSort = d.codeNumber.slice(3, 7) + getThreeNumber(d.codeNumber.split("-")[1])
-        return { ...d, codeNumberForSort: Number(codeNumberForSort), id: idx + 1}
-      });
-      const sorted = rows.sort((a, b) => a.codeNumberForSort - b.codeNumberForSort)
+      const rows = (data as Array<getCloseStatus>)
 
-      return sorted;
+      return rows;
     }
     catch (e) {
       console.log(e);
@@ -92,18 +30,18 @@ export const loadCaseListData = createAsyncThunk(
   }
 );
 
-const caseListSlice = createSlice({
-  name: "caseList",
+const closeStatusListSlice = createSlice({
+  name: "closeStatusList",
   initialState,
   reducers: {
   },
   extraReducers: (builder) => {
     builder
-      .addCase(loadCaseListData.fulfilled, (state, { payload }) => {
-        if (payload) state.caseList = payload;
+      .addCase(closeStatusListData.fulfilled, (state, { payload }) => {
+        if (payload) state.closeStatusList = payload;
       });
   }
 });
 
-export default caseListSlice.reducer;
+export default closeStatusListSlice.reducer;
 
