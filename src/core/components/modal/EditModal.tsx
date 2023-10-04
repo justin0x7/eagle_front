@@ -5,6 +5,11 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from "react-i18next";
 import { ButtonPrimary } from '../button/Button';
+import { Controller, useForm } from 'react-hook-form';
+// import toast from 'react-hot-toast';
+// import { useAppDispatch, useAppSelector } from '../../hooks/rtkHooks';
+// import { SignUpUserProps, UpdateUserProps } from '../../model/user.model';
+// import { updateUser, clearState, signupUser } from '../../store/slices/userSlice';
 
 interface Props {
   open: boolean;
@@ -93,6 +98,36 @@ export default function EditModal(props: Props) {
     setRole(e.target.value === 'admin');
   };
 
+  // const dispatch = useAppDispatch();
+
+  // const { isSuccess, isError, errorMessage } = useAppSelector(state => state.user);
+  // const {
+  //   control,
+  //   handleSubmit,
+  //   formState: { errors }
+  // } = useForm<SignUpUserProps>();
+
+  // const onSubmit = (data: SignUpUserProps) => {
+  //   dispatch(signupUser(data));
+  // };
+
+  // React.useEffect(() => {
+  //   return () => {
+  //     dispatch(clearState());
+  //   };
+  // }, []);
+
+  // React.useEffect(() => {
+  //   if (isSuccess) {
+  //     console.log("asdfasdfasdf");
+  //     dispatch(clearState());
+  //   }
+  //   if (isError) {
+  //     toast.error(errorMessage);
+  //     dispatch(clearState());
+  //   }
+  // }, [isSuccess, isError]);
+
   return (
     <Dialog
       open={props.open}
@@ -118,12 +153,31 @@ export default function EditModal(props: Props) {
         <Box sx={{
           textAlign: "center"
         }}>
+          {/* <form noValidate autoComplete="on" onSubmit={handleSubmit(onSubmit)} method="POST"> */}
           <form noValidate autoComplete="on">
             <Grid container padding={3}>
               <Grid item xs={12} paddingBottom={1}>
                 <Stack sx={{ justifyContent: "space-between", alignItems: "center" }} direction={"row"}>
                   <Typography>{t("CRUD.Name")}:</Typography>
                   <TextField id="name" label={t("CRUD.Name")} value={name} onChange={(e) => setName(e.target.value)} />
+                  {/* <Controller
+                    control={control}
+                    name="username"
+                    defaultValue=""
+                    render={({ field: { onChange, value } }) => (
+                      // <InputRegister
+                      //   value={value}
+                      //   onChange={onChange}
+                      //   placeholder="Username"
+                      //   type="text"
+                      // />
+                      <TextField id="name" label="Name" value={name} onChange={(e) => {
+                        onChange(e)
+                        setName(e.target.value)
+                      }} />
+                    )}
+                  />
+                  {errors?.username && <p>{errors.username.message}</p>} */}
                 </Stack>
               </Grid>
               <Grid item xs={12} paddingBottom={1}>

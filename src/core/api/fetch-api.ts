@@ -3,7 +3,7 @@ import { getStorageValue } from "../util/localStorage.util";
 
 type Props = {
   url: string;
-  method: "GET" | "POST";
+  method: "GET" | "POST" | "PUT";
   body?: any;
 };
 

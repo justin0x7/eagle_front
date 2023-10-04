@@ -9,6 +9,12 @@ export type SignUpUserProps = {
   password: string;
 };
 
+export type UpdateUserProps = {
+  newUsername: string;
+  email: string;
+  newPassword: string;
+};
+
 export type ForgotPasswordProps = {
   email: string;
 };

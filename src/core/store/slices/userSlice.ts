@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { fetchAPI } from "../../api/fetch-api";
-import { LoginUserProps, SignUpUserProps } from "../../model/user.model";
+import { LoginUserProps, SignUpUserProps, UpdateUserProps } from "../../model/user.model";
 import { getStorageValue, setStorageValue } from "../../util/localStorage.util";
 import { AsyncThunkConfig } from "../store";
 
@@ -12,6 +12,8 @@ interface UserSlice {
   isSuccess: boolean;
   isError: boolean;
   errorMessage: string;
+  newUsername: string; 
+  newPassword: string;
 }
 
 const initialState = {
@@ -20,7 +22,9 @@ const initialState = {
   isFetching: false,
   isSuccess: false,
   isError: false,
-  errorMessage: ""
+  errorMessage: "",
+  newUsername: "",
+  newPassword: ""
 } as UserSlice;
 
 export const signupUser = createAsyncThunk<any, SignUpUserProps, AsyncThunkConfig>(
@@ -40,6 +44,33 @@ export const signupUser = createAsyncThunk<any, SignUpUserProps, AsyncThunkConfi
       if (response?.status === 201) {
         setStorageValue("token", token);
         return { ...data, username, email };
+      } else {
+        return thunkAPI.rejectWithValue(data);
+      }
+    } catch (e: any) {
+      console.log("Error", e.response.data);
+      return thunkAPI.rejectWithValue(e.response.data);
+    }
+  }
+);
+
+export const updateUser = createAsyncThunk<any, UpdateUserProps, AsyncThunkConfig>(
+  "users/updateUser",
+  async ({ email, newUsername, newPassword }, thunkAPI) => {
+    try {
+      const { response, data } = await fetchAPI({
+        url: "/users/update",
+        method: "PUT",
+        body: {
+          email,
+          newUsername,
+          newPassword,
+        },
+      });
+      const token = response?.headers.get("Authorization");
+      if (response?.status === 200) {
+        setStorageValue("token", token);
+        return { ...data, email, newUsername };
       } else {
         return thunkAPI.rejectWithValue(data);
       }
@@ -120,6 +151,22 @@ const userSlice = createSlice({
         state.isFetching = true;
       })
       .addCase(signupUser.rejected, (state, { error }) => {
+        state.isFetching = false;
+        state.isError = true;
+        state.errorMessage = error.message || "";
+      })
+
+      //Update User
+      .addCase(updateUser.fulfilled, (state, { payload }) => {
+        state.isFetching = false;
+        state.isSuccess = true;
+        state.email = payload.email;
+        state.username = payload.newUsername;
+      })
+      .addCase(updateUser.pending, (state) => {
+        state.isFetching = true;
+      })
+      .addCase(updateUser.rejected, (state, { error }) => {
         state.isFetching = false;
         state.isError = true;
         state.errorMessage = error.message || "";
