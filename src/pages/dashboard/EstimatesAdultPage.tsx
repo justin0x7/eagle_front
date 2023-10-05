@@ -14,7 +14,7 @@ import { saveAs } from "file-saver";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useQuery } from 'react-query';
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 import { ButtonPrimary, ButtonRed } from "../../core/components/button/Button";
 import QRCodeModal from '../../core/components/modal/QRCodeModal';
@@ -81,7 +81,9 @@ export default function EstimatesAdultPage() {
   const [open, setOpen] = React.useState(false);
   const [closedButton, setClosedButton] = useState<undefined | string>("true");
   const [closeStatusAdultEntity, setCloseStatusAdultEntity] = useState<CloseStatusAdultEntity>();
-
+  const codenumber = useParams()
+  console.log("FFFFFFFFFFF:", codenumber)
+  const [makeCodeNumber, setMakeCodeNumber] = useState("");
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -159,6 +161,8 @@ export default function EstimatesAdultPage() {
   // }, []);
 
   useEffect(() => {
+    setMakeCodeNumber(JSON.stringify(codenumber).slice(15, -2));
+    console.log("GGGGGGGG:", JSON.stringify(codenumber).slice(15, -2))
     const closeStatus = (closeStatusAdultList.find((item) => item.codeNumber === currentEstimatesAdult.codeNumber))?.isClosed
     setClosedButton(closeStatus);
     console.log("closed status:", closeStatus)
@@ -208,7 +212,7 @@ export default function EstimatesAdultPage() {
                     circlePosition="right"
                     status={currentEstimatesAdult.status}
                     variant="medium"
-                    content={<Typography fontWeight="600">{currentEstimatesAdult.codeNumber}</Typography>}
+                    content={<Typography fontWeight="600">{makeCodeNumber}</Typography>}
                   />
 
                   <Stack alignItems="center">
