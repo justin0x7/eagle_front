@@ -23,7 +23,7 @@ import { API_URL, QUESTIONNAIRES_URL } from '../../core/constants/base.const';
 import { useAppDispatch, useAppSelector } from "../../core/hooks/rtkHooks";
 import { useFollowUpData } from "../../core/hooks/useFollowUpData";
 import DashboardLayout from "../../core/layout/DashboardLayout";
-import { OccasionIndex, PersonIndex } from '../../core/model/estimates.model';
+import { EstimatesDto, OccasionIndex, PersonIndex } from '../../core/model/estimates.model';
 import { OrsAndScore15WithOccasion } from '../../core/model/score.model';
 import { SurveyStatus } from "../../core/model/status.model";
 import { backgroundSurveyPath, estimatesPath, followUpSurveyPath } from "../../core/util/pathBuilder.util";
@@ -72,7 +72,13 @@ export default function EstimatesPage() {
   const { t } = useTranslation();
   const { username } = useAppSelector(state => state.user);
   const { closeStatusList } = useAppSelector(state => state.closeStatusIn);
+  // const [loadestimates, setLoadestimates] = useState<EstimatesDto | undefined>();
+  // useEffect(() => {
+  //   const loadestimates = useAppSelector(state => state.backgroundSurvey.currentEstimates);
+  //   setLoadestimates(loadestimates);
+  // }, [])
   const currentEstimates = useAppSelector(state => state.backgroundSurvey.currentEstimates);
+  // const currentEstimates = loadestimates;
   const {
     data: followUpData,
     isFetched: isFetchedFollowUpData
