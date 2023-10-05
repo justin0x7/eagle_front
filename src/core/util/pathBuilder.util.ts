@@ -34,12 +34,12 @@ export const backgroundAdultSurveyPath = (codeNumber?: string) => {
   return `/background-adult-survey/${codeNumber || ":codeNumber"}`;
 };
 
-export const estimatesPath = () => {
-  return "/estimates";
+export const estimatesPath = (codeNumber?: string) => {
+  return `/estimates/${codeNumber || ":codeNumber"}`;
 };
 
-export const estimatesAdultPath = () => {
-  return "/estimates-adult";
+export const estimatesAdultPath = (codeNumber?: string) => {
+  return `/estimates-adult/${codeNumber || ":codeNumber"}`;
 };
 
 export const settingsPath = () => {

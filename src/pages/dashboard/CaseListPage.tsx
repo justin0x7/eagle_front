@@ -190,7 +190,7 @@ export default function CaseListPage() {
     // setSelectedRow(e.row);
 
     dispatch(setCurrentEstimatesAction(e.row));
-    navigate(estimatesPath());
+    navigate(estimatesPath(e.row.codeNumber));
   };
 
   // const filteredRows = caseList.length ? caseList.filter(row => row.codeNumber.includes(searchString))

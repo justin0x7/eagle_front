@@ -33,6 +33,7 @@ import { fetchAPI } from '../../core/api/fetch-api';
 import { FollowUpData } from '../../core/model/followUpData.model';
 import { BackgroundMetadata } from '../../core/model/backgroundData.model';
 import { closeStatusListData } from '../../core/store/slices/closeStatusSlice';
+import { useParams } from 'react-router-dom';
 
 type CloseStatusEntity = {
   codeNumber: string;
@@ -72,6 +73,7 @@ export default function EstimatesPage() {
   const { t } = useTranslation();
   const { username } = useAppSelector(state => state.user);
   const { closeStatusList } = useAppSelector(state => state.closeStatusIn);
+  
   // const [loadestimates, setLoadestimates] = useState<EstimatesDto | undefined>();
   // useEffect(() => {
   //   const loadestimates = useAppSelector(state => state.backgroundSurvey.currentEstimates);
@@ -90,7 +92,11 @@ export default function EstimatesPage() {
   const [qrcodeUriDomain, setQrcodeUriDomain] = useState("");
   const [closedButton, setClosedButton] = useState<undefined | string>("true");
   const [closeStatusEntity, setCloseStatusEntity] = useState<CloseStatusEntity>();
-
+  const codenumber = useParams()
+  console.log("FFFFFFFFFFF:", codenumber)
+  const [makeCodeNumber, setMakeCodeNumber] = useState("");
+  
+  
   const { data: scores } = useQuery<OrsAndScore15WithOccasion[]>("getScoresByCodeNumberAndOccasion", () =>
     axios.post(
       `${API_URL}/score/getScoresByCodeNumberAndOccasion`,
@@ -171,6 +177,8 @@ export default function EstimatesPage() {
   // }, []);
 
   useEffect(() => {
+    setMakeCodeNumber(JSON.stringify(codenumber).slice(15, -2));
+    console.log("GGGGGGGG:", JSON.stringify(codenumber).slice(15, -2))
     const closeStatus = (closeStatusList.find((item) => item.codeNumber === currentEstimates.codeNumber))?.isClosed
     setClosedButton(closeStatus);
     console.log("closed status:", closeStatus)
@@ -247,7 +255,7 @@ export default function EstimatesPage() {
                     circlePosition="right"
                     status={currentEstimates.status}
                     variant="medium"
-                    content={<Typography fontWeight="600">{currentEstimates.codeNumber}</Typography>}
+                    content={<Typography fontWeight="600">{makeCodeNumber}</Typography>}
                   />
 
                   <Stack alignItems="center">

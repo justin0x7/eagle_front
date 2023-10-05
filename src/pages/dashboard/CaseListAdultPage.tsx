@@ -193,7 +193,7 @@ export default function CaseListAdultPage() {
     // setSelectedRow(e.row);
 
     dispatch(setCurrentEstimatesAction(e.row));
-    navigate(estimatesAdultPath());
+    navigate(estimatesAdultPath(e.row.codeNumber));
   };
 
   // const filteredRows = caseList ? (activeTabIndex === 0 ? caseList
