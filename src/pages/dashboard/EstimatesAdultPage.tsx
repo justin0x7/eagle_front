@@ -159,12 +159,12 @@ export default function EstimatesAdultPage() {
   //     console.log(e);
   //   }
   // }, []);
-  setMakeCodeNumber(String(codenumber))
-  console.log(String(codenumber))
+
   useEffect(() => {
     // setMakeCodeNumber(JSON.stringify(codenumber).slice(15, -2));
     // console.log("GGGGGGGG:", JSON.stringify(codenumber).slice(15, -2))
-
+    setMakeCodeNumber(String(codenumber))
+    console.log(String(codenumber))
     const closeStatus = (closeStatusAdultList.find((item) => item.codeNumber === currentEstimatesAdult.codeNumber))?.isClosed
     setClosedButton(closeStatus);
     console.log("closed status:", closeStatus)
