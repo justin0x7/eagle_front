@@ -81,7 +81,7 @@ export default function EstimatesAdultPage() {
   const [open, setOpen] = React.useState(false);
   const [closedButton, setClosedButton] = useState<undefined | string>("true");
   const [closeStatusAdultEntity, setCloseStatusAdultEntity] = useState<CloseStatusAdultEntity>();
-  const codenumber = useParams()
+  const codenumber = useParams().codeNumber
   console.log("FFFFFFFFFFF:", codenumber)
   const [makeCodeNumber, setMakeCodeNumber] = useState("");
   const handleClickOpen = () => {
@@ -159,10 +159,12 @@ export default function EstimatesAdultPage() {
   //     console.log(e);
   //   }
   // }, []);
-
+  setMakeCodeNumber(String(codenumber))
+  console.log(String(codenumber))
   useEffect(() => {
-    setMakeCodeNumber(JSON.stringify(codenumber).slice(15, -2));
-    console.log("GGGGGGGG:", JSON.stringify(codenumber).slice(15, -2))
+    // setMakeCodeNumber(JSON.stringify(codenumber).slice(15, -2));
+    // console.log("GGGGGGGG:", JSON.stringify(codenumber).slice(15, -2))
+
     const closeStatus = (closeStatusAdultList.find((item) => item.codeNumber === currentEstimatesAdult.codeNumber))?.isClosed
     setClosedButton(closeStatus);
     console.log("closed status:", closeStatus)

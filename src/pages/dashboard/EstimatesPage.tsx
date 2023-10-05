@@ -73,7 +73,7 @@ export default function EstimatesPage() {
   const { t } = useTranslation();
   const { username } = useAppSelector(state => state.user);
   const { closeStatusList } = useAppSelector(state => state.closeStatusIn);
-  
+
   // const [loadestimates, setLoadestimates] = useState<EstimatesDto | undefined>();
   // useEffect(() => {
   //   const loadestimates = useAppSelector(state => state.backgroundSurvey.currentEstimates);
@@ -92,11 +92,11 @@ export default function EstimatesPage() {
   const [qrcodeUriDomain, setQrcodeUriDomain] = useState("");
   const [closedButton, setClosedButton] = useState<undefined | string>("true");
   const [closeStatusEntity, setCloseStatusEntity] = useState<CloseStatusEntity>();
-  const codenumber = useParams()
+  const codenumber = useParams().codeNumber
   console.log("FFFFFFFFFFF:", codenumber)
   const [makeCodeNumber, setMakeCodeNumber] = useState("");
-  
-  
+
+
   const { data: scores } = useQuery<OrsAndScore15WithOccasion[]>("getScoresByCodeNumberAndOccasion", () =>
     axios.post(
       `${API_URL}/score/getScoresByCodeNumberAndOccasion`,
@@ -175,10 +175,12 @@ export default function EstimatesPage() {
   //     console.log(e);
   //   }
   // }, []);
-
+  setMakeCodeNumber(String(codenumber))
+  console.log(String(codenumber))
   useEffect(() => {
-    setMakeCodeNumber(JSON.stringify(codenumber).slice(15, -2));
-    console.log("GGGGGGGG:", JSON.stringify(codenumber).slice(15, -2))
+    // setMakeCodeNumber(JSON.stringify(codenumber).slice(15, -2));
+    // console.log("GGGGGGGG:", JSON.stringify(codenumber).slice(15, -2))
+
     const closeStatus = (closeStatusList.find((item) => item.codeNumber === currentEstimates.codeNumber))?.isClosed
     setClosedButton(closeStatus);
     console.log("closed status:", closeStatus)
