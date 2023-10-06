@@ -307,7 +307,7 @@ export default function BackgroundAdultDataSurveyPage() {
               </tr>
               <tr>
                 <td>{t("Word.Date")}:</td>
-                <td>{strDate}</td>
+                <td>{backgroundAdultData?.date ? backgroundAdultData?.date :strDate}</td>
               </tr>
               <tr>
                 <td>{t("Word.YOB")}:</td>

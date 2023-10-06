@@ -235,7 +235,7 @@ export default function BackgroundDataSurveyPage() {
         hasValue = false;
         if (
           unfilledEntities.includes("educationVh2") ||
-          unfilledEntities.includes("employmentVh2")
+          unfilledEntities.includes("employmentVh1")
         ) {
           for (const idString in formData["educationVh2"]) {
             if (formData["educationVh2"][idString]) {
@@ -309,10 +309,10 @@ export default function BackgroundDataSurveyPage() {
               </tr>
               <tr>
                 <td>{t("Word.Date")}:</td>
-                <td>{strDate}</td>
+                <td>{backgroundData?.date ? backgroundData?.date :strDate}</td>
               </tr>
               <tr>
-                <td>{t("Word.YOB")}:</td>
+                <td>{t("Word.YC")}:</td>
                 <td>
                   <TextField
                     hiddenLabel
