@@ -29,6 +29,8 @@ import Input from '@mui/material/Input';
 import EditModal from '../../core/components/modal/EditModal';
 import EditSelf from '../../core/components/modal/EditSelf';
 import ToggleOnIcon from '@mui/icons-material/ToggleOn';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import { TextField } from '@mui/material';
 
 enum Filters {
   Filter1,
@@ -51,13 +53,12 @@ export default function SettingsPage() {
   const [department, setDepartment] = useState('');
   const [address, setAddress] = useState('');
   const [phone, setPhone] = useState('');
-
-
+  const [password, setPassword] = useState('');
 
   useEffect(() => {
     supabaseClient
       .from('vallentuna_users')
-      .select('name, role, title, department, address, phone, email')
+      .select('name, role, title, department, address, phone, email, password')
       .eq('email', email)
       .then(({ data: user, error }) => {
         if (error) {
@@ -71,6 +72,7 @@ export default function SettingsPage() {
           setAddress(user[0].address);
           setDepartment(user[0].department);
           setPhone(user[0].phone);
+          setPassword(user[0].password);
         } else {
           console.error('User not found');
         }
@@ -86,6 +88,7 @@ export default function SettingsPage() {
   const [scoreCount2, setScoreCount2] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [currentUserId, setCurrentUserId] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const url_ = `${API_URL}/score/getByOccasion/1`;
   const url_1 = `${API_URL}/score/getByOccasion/2`;
@@ -296,7 +299,30 @@ export default function SettingsPage() {
                       <Typography fontWeight="medium" variant="h5" sx={{ lineHeight: 1.5 }}>{username}</Typography>
                       <Divider variant="middle" sx={{ width: "100%" }} />
                       <Typography fontWeight="medium" variant="subtitle1" sx={{ lineHeight: 1.5, color: "#839BAA" }}>{t("Word.Password")}</Typography>
-                      <Typography fontWeight="medium" variant="h5" sx={{ lineHeight: 1.5 }}>{email}</Typography>
+                      <Stack direction="row" sx={{ justifyContent: "space-between" }}>
+                        {showPassword ? (
+                          <Typography fontWeight="medium" variant="h5" sx={{ lineHeight: 1.5 }}>
+                            ********************
+                          </Typography>
+                        ) : (
+                          <Typography fontWeight="medium" variant="h5" sx={{ lineHeight: 1.5 }}>
+                            {password}
+                          </Typography>
+                        )}
+                        <VisibilityIcon onClick={() => setShowPassword(!showPassword)} />
+                      </Stack>
+                      {/* {!showPassword ? (
+                        <Typography fontWeight="medium" variant="h5" sx={{ lineHeight: 1.5 }}>
+                          ********************
+                            <VisibilityIcon onClick={() => setShowPassword(true)}/>
+                        </Typography>
+                      ) : (
+                        <Typography fontWeight="medium" variant="h5" sx={{ lineHeight: 1.5 }}>
+                          {password}
+                            <VisibilityIcon onClick={() => setShowPassword(false)}/>
+                        </Typography>
+                      )} */}
+
                       <Divider variant="middle" sx={{ width: "100%" }} />
                       {/* <TextField  variant="standard"></TextField>
                     <TextField  variant="standard"></TextField> */}

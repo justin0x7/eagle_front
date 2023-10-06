@@ -16,7 +16,7 @@ import { SurveyStatus } from '../../core/model/status.model';
 import { setCurrentEstimatesAction } from '../../core/store/slices/backgroundAdultSurveySlice';
 import { loadCaseListAdultData } from "../../core/store/slices/caseListAdultSlice";
 import { closeStatusAdultListData } from "../../core/store/slices/closeStatusAdultSlice";
-import { estimatesAdultPath, homePath } from '../../core/util/pathBuilder.util';
+import { estimatesAdultPath, caseListPath } from '../../core/util/pathBuilder.util';
 import AdultHistorySummary from './resources/AdultHistorySummary';
 import StyledTab from './resources/StyledTab';
 import StyledTabs from './resources/StyledTabs';
@@ -257,7 +257,7 @@ export default function CaseListAdultPage() {
 
         <Stack direction="row" spacing={20} paddingTop={2}>
           <Stack direction="row">
-            <NavLink to={homePath()} className={({ isActive }) => isActive ? "active" : ""}>
+            <NavLink to={caseListPath()} className={({ isActive }) => isActive ? "active" : ""}>
               <ToggleOffIcon />
             </NavLink>
             <Typography fontSize={10}>{t("Case.Child")}</Typography>

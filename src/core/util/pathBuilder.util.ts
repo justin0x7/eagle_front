@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 export const homePath = () => {
   return "/";
 };
@@ -52,6 +54,10 @@ export const adminPath = () => {
 
 export const adultCaseList = () => {
   return "/adult-case-list";
+};
+
+export const caseListPath = () => {
+  return "/case-list";
 };
 
 

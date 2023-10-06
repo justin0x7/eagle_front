@@ -8,7 +8,7 @@ import { loadBackgroundSuveyBasicData } from './core/store/slices/backgroundSurv
 import { loadBackgroundAdultSuveyBasicData } from './core/store/slices/backgroundAdultSurveySlice';
 import { loadFollowUpSuveyBasicData } from './core/store/slices/followUpSurveySlice';
 import { fetchUserBytoken } from './core/store/slices/userSlice';
-import { backgroundSurveyPath, estimatesPath, followUpSurveyPath, forgotPasswordPath, homePath, loginPath, registerPath, settingsPath, systematicFollowUpPath, adminPath, backgroundAdultSurveyPath, adultCaseList, estimatesAdultPath, adultSystematicFollowUpPath } from './core/util/pathBuilder.util';
+import { backgroundSurveyPath, estimatesPath, followUpSurveyPath, forgotPasswordPath, homePath, loginPath, registerPath, settingsPath, systematicFollowUpPath, adminPath, backgroundAdultSurveyPath, adultCaseList, estimatesAdultPath, adultSystematicFollowUpPath, caseListPath } from './core/util/pathBuilder.util';
 import ForgotPasswordPage from './pages/auth/ForgotPasswordPage';
 import LoginPage from './pages/auth/LoginPage';
 import RegisterPage from './pages/auth/RegisterPage';
@@ -72,6 +72,12 @@ export default function App() {
       path: adultCaseList(),
       element: <ProtectedRoute>
         <CaseListAdultPage />
+      </ProtectedRoute>
+    },
+    {
+      path: caseListPath(),
+      element: <ProtectedRoute>
+        <CaseListPage />
       </ProtectedRoute>
     },
     {

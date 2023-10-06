@@ -66,6 +66,7 @@ export default function CaseListPage() {
   // const [showLinkModal, setShowLinkModal] = useState(false);
   // const [selectedRow, setSelectedRow] = useState<EstimatesDto>();
   // const tabList = ["All", "Loss", "Clear", "Coming"]
+
   const columns: GridColDef[] = useMemo(() => ([
     // { field: 'id', type: 'number', sortable: false, width: 30 }, 
     {
@@ -216,7 +217,7 @@ export default function CaseListPage() {
         )).filter((row: any) => row?.codeNumber.includes(searchString))
       : []
   )
-
+  
   // console.log("activeTabIndex:", activeTabIndex, "filteredRows:", filteredRows)
 
   // const switchProcessor = (closeStatusList.find(item => item.processor === username))?.codeNumber
