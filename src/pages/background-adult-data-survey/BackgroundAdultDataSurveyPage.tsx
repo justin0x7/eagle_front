@@ -235,7 +235,7 @@ export default function BackgroundAdultDataSurveyPage() {
         hasValue = false;
         if (
           unfilledEntities.includes("educationVh2") ||
-          unfilledEntities.includes("employmentVh2")
+          unfilledEntities.includes("employmentVh1")
         ) {
           for (const idString in formData["educationVh2"]) {
             if (formData["educationVh2"][idString]) {
