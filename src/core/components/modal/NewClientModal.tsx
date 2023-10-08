@@ -9,7 +9,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks/rtkHooks";
 import { BackgroundData } from "../../model/backgroundData.model";
 import { BackgroundAdultData } from "../../model/backgroundAdultData.model";
 import { loadCaseListData } from "../../store/slices/caseListSlice";
-import { backgroundSurveyPath, homePath, backgroundAdultSurveyPath } from '../../util/pathBuilder.util';
+import { backgroundSurveyPath, homePath, backgroundAdultSurveyPath, settingsPath, estimatesPath } from '../../util/pathBuilder.util';
 import { ButtonPrimary } from '../button/Button';
 import { fetchAPI } from "../../api/fetch-api";
 import ReactToPrint from "react-to-print";
