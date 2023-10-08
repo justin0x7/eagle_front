@@ -217,6 +217,21 @@ export default function CaseListPage() {
         )).filter((row: any) => row?.codeNumber.includes(searchString))
       : []
   )
+
+  const getThreeNumber = (number: string) => {
+    if (number.length == 1) {
+      return "00" + number
+    } else if (number.length == 2) {
+      return "0" + number
+    } 
+    return number
+  }
+
+  const rows = filteredRows.map((d: any, idx) => {
+    const codeNumberForSort = d.codeNumber.slice(3, 7) + getThreeNumber(d.codeNumber.split("-")[1])
+    return { ...d, codeNumberForSort: Number(codeNumberForSort), id: idx + 1}
+  });
+  const sorted = rows.sort((a, b) => a.codeNumberForSort - b.codeNumberForSort)
   
   // console.log("activeTabIndex:", activeTabIndex, "filteredRows:", filteredRows)
 
@@ -335,7 +350,7 @@ export default function CaseListPage() {
               <Box className="w-full">
                 <DataGridPro
                   // rows={filterByProcessor.filter(item=> activeTabIndex == 0 ? true : item?.status == tabList[activeTabIndex])}
-                  rows={filteredRows}
+                  rows={sorted}
                   columns={columns}
                   autoHeight={true}
                   rowSelection={false}
