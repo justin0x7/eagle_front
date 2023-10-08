@@ -300,7 +300,7 @@ export default function SettingsPage() {
                       <Divider variant="middle" sx={{ width: "100%" }} />
                       <Typography fontWeight="medium" variant="subtitle1" sx={{ lineHeight: 1.5, color: "#839BAA" }}>{t("Word.Password")}</Typography>
                       <Stack direction="row" sx={{ justifyContent: "space-between" }}>
-                        {showPassword ? (
+                        {!showPassword ? (
                           <Typography fontWeight="medium" variant="h5" sx={{ lineHeight: 1.5 }}>
                             ********************
                           </Typography>
