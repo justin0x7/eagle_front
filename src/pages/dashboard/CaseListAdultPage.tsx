@@ -226,6 +226,21 @@ export default function CaseListAdultPage() {
       : []
   )
 
+  const getThreeNumber = (number: string) => {
+    if (number.length == 1) {
+      return "00" + number
+    } else if (number.length == 2) {
+      return "0" + number
+    } 
+    return number
+  }
+
+  const rows = filteredRows.map((d: any, idx) => {
+    const codeNumberForSort = d.codeNumber.slice(3, 7) + getThreeNumber(d.codeNumber.split("-")[1])
+    return { ...d, codeNumberForSort: Number(codeNumberForSort), id: idx + 1}
+  });
+  const sorted = rows.sort((a, b) => a.codeNumberForSort - b.codeNumberForSort)
+
   useEffect(() => {
     dispatch(loadCaseListAdultData());
     dispatch(closeStatusAdultListData());
@@ -312,7 +327,7 @@ export default function CaseListAdultPage() {
             <TabPanel>
               <Box className="w-full">
                 <DataGridPro
-                  rows={filteredRows}
+                  rows={sorted}
                   columns={columns}
                   autoHeight={true}
                   rowSelection={false}
