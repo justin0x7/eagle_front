@@ -337,21 +337,21 @@ export default function EstimatesPage() {
               statusOfCareGiver2,
               statusOfChild,
             ] = occasionIndex === 0 ? [
-              currentEstimates ? currentEstimates.history.zeroMonth.date : "",
+              currentEstimates ? currentEstimates.history.zeroMonth.date : strDate,
               `${t("Word.Month")} 0 -`,
               currentEstimates ? currentEstimates.history.zeroMonth.statusInDetail.careGiver1 : SurveyStatus.Loss,
               currentEstimates ? currentEstimates.history.zeroMonth.statusInDetail.careGiver2 : SurveyStatus.Loss,
               currentEstimates ? currentEstimates.history.zeroMonth.statusInDetail.child : SurveyStatus.Loss,
             ]
                 : occasionIndex === 1 ? [
-                  currentEstimates ? currentEstimates.history.sixMonths.date : "",
+                  currentEstimates ? currentEstimates.history.sixMonths.date : strDate,
                   `${t("Word.Month")} 6 -`,
                   currentEstimates ? currentEstimates.history.sixMonths.statusInDetail.careGiver1 : SurveyStatus.Loss,
                   currentEstimates ? currentEstimates.history.sixMonths.statusInDetail.careGiver2 : SurveyStatus.Loss,
                   currentEstimates ? currentEstimates.history.sixMonths.statusInDetail.child : SurveyStatus.Loss
                 ]
                   : [
-                    currentEstimates ? currentEstimates.history.twelveMonths.date : "",
+                    currentEstimates ? currentEstimates.history.twelveMonths.date : strDate,
                     `${t("Word.Month")} 12 -`,
                     currentEstimates ? currentEstimates.history.twelveMonths.statusInDetail.careGiver1 : SurveyStatus.Loss,
                     currentEstimates ? currentEstimates.history.twelveMonths.statusInDetail.careGiver2 : SurveyStatus.Loss,

@@ -279,17 +279,17 @@ export default function EstimatesAdultPage() {
               label,
               statusOfChild,
             ] = occasionIndex === 0 ? [
-              currentEstimatesAdult ? currentEstimatesAdult.history.zeroMonth.date : "",
+              currentEstimatesAdult ? currentEstimatesAdult.history.zeroMonth.date : strDate,
               `${t("Word.Month")} 0 -`,
               currentEstimatesAdult ? currentEstimatesAdult.history.zeroMonth.statusInDetail.child : SurveyStatus.Loss,
             ]
                 : occasionIndex === 1 ? [
-                  currentEstimatesAdult ? currentEstimatesAdult.history.sixMonths.date : "",
+                  currentEstimatesAdult ? currentEstimatesAdult.history.sixMonths.date : strDate,
                   `${t("Word.Month")} 6 -`,
                   currentEstimatesAdult ? currentEstimatesAdult.history.sixMonths.statusInDetail.child : SurveyStatus.Loss
                 ]
                   : [
-                    currentEstimatesAdult ? currentEstimatesAdult.history.twelveMonths.date : "",
+                    currentEstimatesAdult ? currentEstimatesAdult.history.twelveMonths.date : strDate,
                     `${t("Word.Month")} 12 -`,
                     currentEstimatesAdult ? currentEstimatesAdult.history.twelveMonths.statusInDetail.child : SurveyStatus.Loss
                   ];
