@@ -59,6 +59,7 @@ export default function NewClientModal(props: Props) {
     }).catch(err => {
       console.log(err);
     });
+    // navigate(estimatesPath(strCodeNumber));
     //
   };
 

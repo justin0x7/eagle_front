@@ -18,10 +18,12 @@ import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import { fetchAPI } from "../../core/api/fetch-api";
 import { ButtonPrimary } from "../../core/components/button/Button";
-import { useAppSelector } from "../../core/hooks/rtkHooks";
+import { useAppDispatch, useAppSelector } from "../../core/hooks/rtkHooks";
 import { useBackgroundData } from "../../core/hooks/useBackgroundData";
 import { BackgroundData, BackgroundSurveyBasicData, FormDataMap } from "../../core/model/backgroundData.model";
 import { estimatesPath, homePath } from "../../core/util/pathBuilder.util";
+import { setCurrentEstimatesAction } from '../../core/store/slices/backgroundSurveySlice';
+import { GridRowParams } from '@mui/x-data-grid';
 
 const singleChoiceEntityNames = ["gender", "reasonForUpdate", "interpreterRequired"];
 const specialEntityPairs = [
@@ -34,6 +36,7 @@ const specialEntityPairs = [
 export default function BackgroundDataSurveyPage() {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const dispatch = useAppDispatch();
   const { codeNumber } = useParams();
   const { data: backgroundData, isFetched, refetch } = useBackgroundData(codeNumber);
   const {
@@ -284,8 +287,10 @@ export default function BackgroundDataSurveyPage() {
   const handleGoToEstimates = async () => {
     const saved = await handleSave();
     if (saved) 
-    {navigate(estimatesPath(codeNumber));
-    console.log(codeNumber)}
+    {
+      navigate(estimatesPath(codeNumber));
+    console.log(codeNumber)
+  }
   };
 
   if (!codeNumber) navigate(homePath());
@@ -439,3 +444,5 @@ export default function BackgroundDataSurveyPage() {
     </Container>
   );
 }
+
+

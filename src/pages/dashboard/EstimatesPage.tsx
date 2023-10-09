@@ -73,7 +73,7 @@ export default function EstimatesPage() {
   const { t } = useTranslation();
   const { username } = useAppSelector(state => state.user);
   const { closeStatusList } = useAppSelector(state => state.closeStatusIn);
-  
+
   // const [loadestimates, setLoadestimates] = useState<EstimatesDto | undefined>();
   // useEffect(() => {
   //   const loadestimates = useAppSelector(state => state.backgroundSurvey.currentEstimates);
@@ -95,8 +95,8 @@ export default function EstimatesPage() {
   const codenumber = useParams().codeNumber
   console.log("FFFFFFFFFFF:", codenumber)
   const [makeCodeNumber, setMakeCodeNumber] = useState("");
-  
-  
+
+
   const { data: scores } = useQuery<OrsAndScore15WithOccasion[]>("getScoresByCodeNumberAndOccasion", () =>
     axios.post(
       `${API_URL}/score/getScoresByCodeNumberAndOccasion`,
@@ -304,9 +304,6 @@ export default function EstimatesPage() {
           </Grid>
 
           {[...Array(3)].map((_occasionIt, occasionIndex) => {
-
-
-
             let ors = 0, score15 = 0;
             if (scores) {
               const filteredScores = scores.filter(s => s.occasion === (occasionIndex + 1));
@@ -356,73 +353,79 @@ export default function EstimatesPage() {
                     </CardHeader>
                     <CardContent>
                       <Grid container>
-                        <Grid item md={6}>
-                          <Stack gap={2}>
-                            <Stack direction="row" alignItems="center" gap={2}>
-                              <Typography fontWeight="bold" variant="h4">{label}</Typography>
-                              <Paper elevation={6} sx={{ borderRadius: "100%", width: "120px", height: "120px", padding: "16px" }}>
-                                <Stack justifyContent="center" alignItems="center" sx={{ height: "100%" }}>
-                                  <Typography color="text.secondary" fontWeight="bold" fontSize={16}>VAS</Typography>
-                                  <Typography color="info.main" fontWeight="600" variant='h4'>
-                                    {!ors ? (
-                                      "N/A"
-                                    ) : (
-                                      ors
-                                    )}
-                                  </Typography>
+                        {/* <Grid item sm={6}> */}
+                        <CardContent>
+                          <Grid container alignItems="center" justifyContent="center">
+                            <Stack gap={2}>
+                              <Stack direction="row" alignItems="center" gap={2}>
+                                <Typography fontWeight="bold" variant="h4">{label}</Typography>
+                                <Paper elevation={6} sx={{ borderRadius: "100%", width: "7rem", height: "7rem", padding: "3rem" }}>
+                                  <Stack justifyContent="center" alignItems="center" sx={{ height: "100%" }}>
+                                    <Typography color="text.secondary" fontWeight="bold" fontSize={16}>VAS</Typography>
+                                    <Typography color="info.main" fontWeight="600" variant='h4'>
+                                      {!ors ? (
+                                        "N/A"
+                                      ) : (
+                                        ors
+                                      )}
+                                    </Typography>
 
-                                </Stack>
-                              </Paper>
-                            </Stack>
+                                  </Stack>
+                                </Paper>
+                              </Stack>
 
-                            <Stack direction="row" alignItems="center" gap={2}>
-                              <Typography fontWeight="bold" variant="h4">{label}</Typography>
-                              <Paper elevation={6} sx={{ borderRadius: "100%", width: "120px", height: "120px", padding: "16px" }}>
-                                <Stack justifyContent="center" alignItems="center" sx={{ height: "100%" }}>
-                                  <Typography color="text.secondary" fontWeight="bold" fontSize={16}>{t("Word.Score15")}</Typography>
-                                  <Typography color="info.main" fontWeight="600" variant='h4'>
-                                    {!score15 ? (
-                                      "N/A"
-                                    ) : (
-                                      score15
-                                    )}
-                                  </Typography>
-                                </Stack>
-                              </Paper>
+                              <Stack direction="row" alignItems="center" gap={2}>
+                                <Typography fontWeight="bold" variant="h4">{label}</Typography>
+                                <Paper elevation={6} sx={{ borderRadius: "100%", width: "7rem", height: "7rem", padding: "2rem" }}>
+                                  <Stack justifyContent="center" alignItems="center" sx={{ height: "100%" }}>
+                                    <Typography color="text.secondary" fontWeight="bold" fontSize={16}>{t("Word.Score15")}</Typography>
+                                    <Typography color="info.main" fontWeight="600" variant='h4'>
+                                      {!score15 ? (
+                                        "N/A"
+                                      ) : (
+                                        score15
+                                      )}
+                                    </Typography>
+                                  </Stack>
+                                </Paper>
+                              </Stack>
                             </Stack>
-                          </Stack>
-                        </Grid>
-                        <Grid item md={6}>
-                          <Stack justifyContent="center" height="100%" gap={2}>
-                            <Stack direction="row" alignItems="center" gap={2}>
-                              <Typography fontWeight="bold">{t("Word.Guardian")} 1</Typography>
-                              <StatusChip
-                                circlePosition="left"
-                                status={statusOfCareGiver1}
-                                variant="large"
-                                content={<ScanLink disabled={isScanLocked} onClick={() => handleClickScanLink(2 as PersonIndex, (occasionIndex + 1) as OccasionIndex)} />}
-                              />
+                          </Grid>
+                        </CardContent>
+                        {/* <Grid item sm={6}> */}
+                        <CardContent>
+                          <Grid container alignItems="center">
+                            <Stack justifyContent="center" height="100%" gap={2} sx={{paddingTop: "4rem"}}>
+                              <Stack direction="row" alignItems="center" gap={2}>
+                                <Typography fontWeight="bold">{t("Word.Guardian")} 1</Typography>
+                                <StatusChip
+                                  circlePosition="left"
+                                  status={statusOfCareGiver1}
+                                  variant="large"
+                                  content={<ScanLink disabled={isScanLocked} onClick={() => handleClickScanLink(2 as PersonIndex, (occasionIndex + 1) as OccasionIndex)} />}
+                                />
+                              </Stack>
+                              <Stack direction="row" alignItems="center" gap={2}>
+                                <Typography fontWeight="bold">{t("Word.Guardian")} 2</Typography>
+                                <StatusChip
+                                  circlePosition="left"
+                                  status={statusOfCareGiver2}
+                                  variant="large"
+                                  content={<ScanLink disabled={isScanLocked} onClick={() => handleClickScanLink(3 as PersonIndex, (occasionIndex + 1) as OccasionIndex)} />}
+                                />
+                              </Stack>
+                              <Stack direction="row" alignItems="center" gap={2}>
+                                <Typography fontWeight="bold">{t("Word.Child")}</Typography>
+                                <StatusChip
+                                  circlePosition="left"
+                                  status={statusOfChild}
+                                  variant="large"
+                                  content={<ScanLink disabled={isScanLocked} onClick={() => handleClickScanLink(1 as PersonIndex, (occasionIndex + 1) as OccasionIndex)} />}
+                                />
+                              </Stack>
                             </Stack>
-                            <Stack direction="row" alignItems="center" gap={2}>
-                              <Typography fontWeight="bold">{t("Word.Guardian")} 2</Typography>
-                              <StatusChip
-                                circlePosition="left"
-                                status={statusOfCareGiver2}
-                                variant="large"
-                                content={<ScanLink disabled={isScanLocked} onClick={() => handleClickScanLink(3 as PersonIndex, (occasionIndex + 1) as OccasionIndex)} />}
-                              />
-                            </Stack>
-                            <Stack direction="row" alignItems="center" gap={2}>
-                              <Typography fontWeight="bold">{t("Word.Child")}</Typography>
-                              <StatusChip
-                                circlePosition="left"
-                                status={statusOfChild}
-                                variant="large"
-                                content={<ScanLink disabled={isScanLocked} onClick={() => handleClickScanLink(1 as PersonIndex, (occasionIndex + 1) as OccasionIndex)} />}
-                              />
-                            </Stack>
-                          </Stack>
-                        </Grid>
+                          </Grid>
+                        </CardContent>
                       </Grid>
                     </CardContent>
                     <CardActions sx={{ justifyContent: "flex-end" }}>
@@ -450,40 +453,48 @@ export default function EstimatesPage() {
               </CardHeader>
               <CardContent>
                 <Grid container>
-                  <Grid item md={6}>
-                    <Stack direction="row" alignItems="center" gap={2}>
-                      <Typography fontWeight="bold" variant="h4">{`${t("Estimates.ImpEvents")} - `}</Typography>
-                      <Paper elevation={6} sx={{ borderRadius: "100%", width: "120px", height: "120px", padding: "16px" }}>
-                        <Stack justifyContent="center" alignItems="center" sx={{
-                          height: "100%",
-                          color: "text.secondary",
-                          fontSize: 16
-                        }}>
-                          {differenceInDays >= 61 ?
-                            (
-                              <Typography fontWeight="bold">{t("Estimates.ReminderIfTwoMonths")}</Typography>
-                            ) : (
-                              differenceInDays >= 0 ? (
-                                <Typography fontWeight="bold">{t("Estimates.ComingSoon")}</Typography>
-                              ) : (
-                                <Typography fontWeight="bold">{t("Estimates.Missed")}</Typography>
-                              )
-                            )}
+                  <CardContent>
+                    <Grid container>
+                      <Grid item md={12}>
+                        <Stack direction="row" alignItems="center" gap={2}>
+                          <Typography fontWeight="bold" variant="h4">{`${t("Estimates.ImpEvents")} - `}</Typography>
+                          <Paper elevation={6} sx={{ borderRadius: "100%", width: "7rem", height: "7rem", padding: "2rem" }}>
+                            <Stack justifyContent="center" alignItems="center" sx={{
+                              height: "100%",
+                              color: "text.secondary",
+                              fontSize: 16
+                            }}>
+                              {differenceInDays >= 61 ?
+                                (
+                                  <Typography fontWeight="bold">{t("Estimates.ReminderIfTwoMonths")}</Typography>
+                                ) : (
+                                  differenceInDays >= 0 ? (
+                                    <Typography fontWeight="bold">{t("Estimates.ComingSoon")}</Typography>
+                                  ) : (
+                                    <Typography fontWeight="bold">{t("Estimates.Missed")}</Typography>
+                                  )
+                                )}
+                            </Stack>
+                          </Paper>
                         </Stack>
-                      </Paper>
-                    </Stack>
-                  </Grid>
-                  <Grid item md={6}>
-                    <Stack direction="row" alignItems="center" gap={2} height="100%">
-                      <Typography fontWeight="bold">{t("Word.Guardian")} 1</Typography>
-                      <StatusChip
-                        circlePosition="left"
-                        status={SurveyStatus.Loss}
-                        variant="large"
-                        content={<ScanLink disabled={false} onClick={() => handleClickImportantEventsScanLink()} />}
-                      />
-                    </Stack>
-                  </Grid>
+                      </Grid>
+                    </Grid>
+                  </CardContent>
+                  <CardContent>
+                    <Grid container>
+                      <Grid item md={12}>
+                        <Stack direction="row" alignItems="center" gap={2} height="100%"  sx={{position: "relative", top: "2rem"}}>
+                          <Typography fontWeight="bold">{t("Word.Guardian")} 1</Typography>
+                          <StatusChip
+                            circlePosition="left"
+                            status={SurveyStatus.Loss}
+                            variant="large"
+                            content={<ScanLink disabled={false} onClick={() => handleClickImportantEventsScanLink()} />}
+                          />
+                        </Stack>
+                      </Grid>
+                    </Grid>
+                  </CardContent>
                 </Grid>
               </CardContent>
               <CardActions sx={{ justifyContent: "flex-end" }}>
