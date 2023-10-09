@@ -34,6 +34,9 @@ import { FollowUpData } from '../../core/model/followUpData.model';
 import { BackgroundMetadata } from '../../core/model/backgroundData.model';
 import { closeStatusListData } from '../../core/store/slices/closeStatusSlice';
 import { useParams } from 'react-router-dom';
+import { setCurrentEstimatesAction } from '../../core/store/slices/backgroundSurveySlice';
+import { GridRowParams } from '@mui/x-data-grid';
+import { loadCaseListData } from "../../core/store/slices/caseListSlice";
 
 type CloseStatusEntity = {
   codeNumber: string;
@@ -73,18 +76,31 @@ export default function EstimatesPage() {
   const { t } = useTranslation();
   const { username } = useAppSelector(state => state.user);
   const { closeStatusList } = useAppSelector(state => state.closeStatusIn);
-
+  const [currentEstimates, setCurrentEstimates] = useState<EstimatesDto | undefined >();
+  const codenumber = useParams().codeNumber
+  console.log("FFFFFFFFFFF:", codenumber)
+  const { caseList } = useAppSelector(state => state.caseListSurvey);
   // const [loadestimates, setLoadestimates] = useState<EstimatesDto | undefined>();
   // useEffect(() => {
   //   const loadestimates = useAppSelector(state => state.backgroundSurvey.currentEstimates);
   //   setLoadestimates(loadestimates);
   // }, [])
-  const currentEstimates = useAppSelector(state => state.backgroundSurvey.currentEstimates);
+
+  // const refreshPage = (e: GridRowParams<EstimatesDto>) => {
+  //   dispatch(setCurrentEstimatesAction(e.row));
+  // };
+  
+  const currentEstimatesDatas = caseList.find(item => item.codeNumber === codenumber);
+  // console.log("HHHHHHHHHHHH:::::::", currentEstimatesDatas)
+  // setCurrentEstimates(currentEstimatesDatas);
+  console.log("currentEstimatesDatas:::::", currentEstimatesDatas)
+  // const currentEstimates = useAppSelector(state => state.backgroundSurvey.currentEstimates);
+  // const currentEstimates = setCurrentEstimatesAction;
   // const currentEstimates = loadestimates;
   const {
     data: followUpData,
     isFetched: isFetchedFollowUpData
-  } = useFollowUpData(currentEstimates.codeNumber);
+  } = useFollowUpData(codenumber);
   const completedFollowUpSurvey = isFetchedFollowUpData && !!followUpData?.codeNumber;
 
   const [showQRCodeModal, setShowQRCodeModal] = useState(false);
@@ -92,8 +108,7 @@ export default function EstimatesPage() {
   const [qrcodeUriDomain, setQrcodeUriDomain] = useState("");
   const [closedButton, setClosedButton] = useState<undefined | string>("true");
   const [closeStatusEntity, setCloseStatusEntity] = useState<CloseStatusEntity>();
-  const codenumber = useParams().codeNumber
-  console.log("FFFFFFFFFFF:", codenumber)
+
   const [makeCodeNumber, setMakeCodeNumber] = useState("");
 
 
@@ -101,14 +116,14 @@ export default function EstimatesPage() {
     axios.post(
       `${API_URL}/score/getScoresByCodeNumberAndOccasion`,
       {
-        codeNumber: currentEstimates.codeNumber
+        codeNumber: codenumber
       }
     ).then(res => res.data)
   );
 
   const handleClickScanLink = (person: PersonIndex, occasion: OccasionIndex) => {
     setTargetURI(btoa(btoa(btoa(JSON.stringify({
-      codeNumber: currentEstimates.codeNumber,
+      codeNumber: codenumber,
       person,
       occasion,
       score15: 0,
@@ -120,14 +135,14 @@ export default function EstimatesPage() {
 
   const handleClickImportantEventsScanLink = () => {
     setTargetURI(btoa(btoa(btoa(JSON.stringify({
-      codeNumber: currentEstimates.codeNumber,
+      codeNumber: codenumber,
     })))));
     setShowQRCodeModal(true);
     setQrcodeUriDomain("https://vallentuna-survey-important.netlify.app");
   };
 
   const handleClickFillOutFollowUpSurvey = () => {
-    navigate(followUpSurveyPath(currentEstimates.codeNumber));
+    navigate(followUpSurveyPath(codenumber));
   };
 
   const handleClickSendSurvey = async (occasion: OccasionIndex | 0) => {
@@ -136,7 +151,7 @@ export default function EstimatesPage() {
       method: "POST",
       url: `${API_URL}/background-data/download-docx`,
       data: {
-        codeNumber: currentEstimates.codeNumber,
+        codeNumber: codenumber,
         occasion: occasion
       },
       responseType: "blob"
@@ -145,9 +160,24 @@ export default function EstimatesPage() {
 
     saveAs(data, "survey.docx");
   };
+
+  useEffect(() => {
+    // setMakeCodeNumber(JSON.stringify(codenumber).slice(15, -2));
+    // console.log("GGGGGGGG:", JSON.stringify(codenumber).slice(15, -2))
+    setCurrentEstimates(currentEstimatesDatas);
+    // dispatch(loadCaseListData());
+    setMakeCodeNumber(String(codenumber))
+    console.log(String(codenumber))
+    const closeStatus = (closeStatusList.find((item) => item.codeNumber === codenumber))?.isClosed
+    setClosedButton(closeStatus);
+    console.log("closed status:", closeStatus)
+    console.log("closed status:", codenumber)
+
+  }, []);
+
   const ONE_DAY_IN_MILLISECONDS: number = 1000 * 60 * 60 * 24;
   const strDate = dayjs().format("YYYY-MM-DD");
-  const differenceInMilliseconds: number = new Date(currentEstimates.history.twelveMonths.date).getTime() - new Date(strDate).getTime();
+  const differenceInMilliseconds: number = new Date(currentEstimates ? currentEstimates.history.twelveMonths.date : "").getTime() - new Date(strDate).getTime();
   const differenceInDays: number = Math.floor(differenceInMilliseconds / ONE_DAY_IN_MILLISECONDS);
   const [open, setOpen] = React.useState(false);
 
@@ -162,7 +192,7 @@ export default function EstimatesPage() {
   // useEffect(() => {
   //   try {
   //     axios.get(
-  //       `${API_URL}/close-status/getOne/${currentEstimates.codeNumber}`
+  //       `${API_URL}/close-status/getOne/${codenumber}`
   //     ).then((res: any) => {
   //       console.log(res);
   //       const closeStatus = res.data.isClosed;
@@ -176,20 +206,10 @@ export default function EstimatesPage() {
   //   }
   // }, []);
 
-  useEffect(() => {
-    // setMakeCodeNumber(JSON.stringify(codenumber).slice(15, -2));
-    // console.log("GGGGGGGG:", JSON.stringify(codenumber).slice(15, -2))
-    setMakeCodeNumber(String(codenumber))
-    console.log(String(codenumber))
-    const closeStatus = (closeStatusList.find((item) => item.codeNumber === currentEstimates.codeNumber))?.isClosed
-    setClosedButton(closeStatus);
-    console.log("closed status:", closeStatus)
-    console.log("closed status:", currentEstimates.codeNumber)
-
-  }, []);
+  
 
   // axios.get(
-  //         `${API_URL}/close-status/getOne/${currentEstimates.codeNumber}`
+  //         `${API_URL}/close-status/getOne/${codenumber}`
   //       ).then((res: any) => {
   //         console.log(res);
   //         const closeStatus = res.data.isClosed;
@@ -198,7 +218,7 @@ export default function EstimatesPage() {
   const handleFinishCase = async () => {
     setOpen(false);
     navigate(-1);
-    const codeNumber = currentEstimates.codeNumber;
+    const codeNumber = codenumber;
     const processor = username;
     const isClosed = "false";
     setClosedButton("false");
@@ -255,13 +275,13 @@ export default function EstimatesPage() {
                 <Stack direction="row" justifyContent="space-between" alignItems="center">
                   <StatusChip
                     circlePosition="right"
-                    status={currentEstimates.status}
+                    status={currentEstimates ? currentEstimates.status : SurveyStatus.Clear}
                     variant="medium"
                     content={<Typography fontWeight="600">{makeCodeNumber}</Typography>}
                   />
 
                   <Stack alignItems="center">
-                    <Link to={backgroundSurveyPath(currentEstimates.codeNumber)} style={{ textDecoration: "none" }}>
+                    <Link to={backgroundSurveyPath(codenumber)} style={{ textDecoration: "none" }}>
                       <Stack direction="row" justifyContent="center" alignItems="center" gap={1}>
                         <OpenInNewIcon sx={{ color: "success.main" }} />
                         <Typography color="success.main">{t("Estimates.BackgroundSimpleInformation")}</Typography>
@@ -317,25 +337,25 @@ export default function EstimatesPage() {
               statusOfCareGiver2,
               statusOfChild,
             ] = occasionIndex === 0 ? [
-              currentEstimates.history.zeroMonth.date,
+              currentEstimates ? currentEstimates.history.zeroMonth.date : "",
               `${t("Word.Month")} 0 -`,
-              currentEstimates.history.zeroMonth.statusInDetail.careGiver1,
-              currentEstimates.history.zeroMonth.statusInDetail.careGiver2,
-              currentEstimates.history.zeroMonth.statusInDetail.child,
+              currentEstimates ? currentEstimates.history.zeroMonth.statusInDetail.careGiver1 : SurveyStatus.Loss,
+              currentEstimates ? currentEstimates.history.zeroMonth.statusInDetail.careGiver2 : SurveyStatus.Loss,
+              currentEstimates ? currentEstimates.history.zeroMonth.statusInDetail.child : SurveyStatus.Loss,
             ]
                 : occasionIndex === 1 ? [
-                  currentEstimates.history.sixMonths.date,
+                  currentEstimates ? currentEstimates.history.sixMonths.date : "",
                   `${t("Word.Month")} 6 -`,
-                  currentEstimates.history.sixMonths.statusInDetail.careGiver1,
-                  currentEstimates.history.sixMonths.statusInDetail.careGiver2,
-                  currentEstimates.history.sixMonths.statusInDetail.child
+                  currentEstimates ? currentEstimates.history.sixMonths.statusInDetail.careGiver1 : SurveyStatus.Loss,
+                  currentEstimates ? currentEstimates.history.sixMonths.statusInDetail.careGiver2 : SurveyStatus.Loss,
+                  currentEstimates ? currentEstimates.history.sixMonths.statusInDetail.child : SurveyStatus.Loss
                 ]
                   : [
-                    currentEstimates.history.twelveMonths.date,
+                    currentEstimates ? currentEstimates.history.twelveMonths.date : "",
                     `${t("Word.Month")} 12 -`,
-                    currentEstimates.history.twelveMonths.statusInDetail.careGiver1,
-                    currentEstimates.history.twelveMonths.statusInDetail.careGiver2,
-                    currentEstimates.history.twelveMonths.statusInDetail.child
+                    currentEstimates ? currentEstimates.history.twelveMonths.statusInDetail.careGiver1 : SurveyStatus.Loss,
+                    currentEstimates ? currentEstimates.history.twelveMonths.statusInDetail.careGiver2 : SurveyStatus.Loss,
+                    currentEstimates ? currentEstimates.history.twelveMonths.statusInDetail.child : SurveyStatus.Loss
                   ];
 
             const isScanLocked = Math.abs(dayjs().diff(date, "week")) > 0;
@@ -376,7 +396,7 @@ export default function EstimatesPage() {
 
                               <Stack direction="row" alignItems="center" gap={2}>
                                 <Typography fontWeight="bold" variant="h4">{label}</Typography>
-                                <Paper elevation={6} sx={{ borderRadius: "100%", width: "7rem", height: "7rem", padding: "2rem" }}>
+                                <Paper elevation={6} sx={{ borderRadius: "100%", width: "7rem", height: "7rem", padding: "1rem" }}>
                                   <Stack justifyContent="center" alignItems="center" sx={{ height: "100%" }}>
                                     <Typography color="text.secondary" fontWeight="bold" fontSize={16}>{t("Word.Score15")}</Typography>
                                     <Typography color="info.main" fontWeight="600" variant='h4'>
@@ -395,7 +415,7 @@ export default function EstimatesPage() {
                         {/* <Grid item sm={6}> */}
                         <CardContent>
                           <Grid container alignItems="center">
-                            <Stack justifyContent="center" height="100%" gap={2} sx={{paddingTop: "4rem"}}>
+                            <Stack justifyContent="center" height="100%" gap={2} sx={{ paddingTop: "4rem" }}>
                               <Stack direction="row" alignItems="center" gap={2}>
                                 <Typography fontWeight="bold">{t("Word.Guardian")} 1</Typography>
                                 <StatusChip
@@ -483,7 +503,7 @@ export default function EstimatesPage() {
                   <CardContent>
                     <Grid container>
                       <Grid item md={12}>
-                        <Stack direction="row" alignItems="center" gap={2} height="100%"  sx={{position: "relative", top: "2rem"}}>
+                        <Stack direction="row" alignItems="center" gap={2} height="100%" sx={{ position: "relative", top: "2rem" }}>
                           <Typography fontWeight="bold">{t("Word.Guardian")} 1</Typography>
                           <StatusChip
                             circlePosition="left"
@@ -508,7 +528,7 @@ export default function EstimatesPage() {
           {/* Follow Up Survey */}
           <Grid item md={6} my={4}>
             <Stack>
-              <Link to={followUpSurveyPath(currentEstimates.codeNumber)} style={{ textDecoration: "none" }}>
+              <Link to={followUpSurveyPath(codenumber)} style={{ textDecoration: "none" }}>
                 <Stack direction="row" alignItems="center" gap={1}>
                   <OpenInNewIcon sx={{ color: "success.main" }} />
                   <Typography color="success.main">{t("Estimates.FollowUpSurvey(TheProcessor)")}</Typography>

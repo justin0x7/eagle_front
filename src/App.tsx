@@ -110,11 +110,21 @@ export default function App() {
     },
     {
       path: estimatesPath(),
-      element: currentEstimates ? <EstimatesPage /> : <Navigate to={homePath()} />
+      element:
+        // currentEstimates ? 
+        <ProtectedRoute>
+          <EstimatesPage />
+        </ProtectedRoute>
+      // : <Navigate to={homePath()} />
     },
     {
       path: estimatesAdultPath(),
-      element: currentEstimatesAdult ? <EstimatesAdultPage /> : <Navigate to={homePath()} />
+      element:
+        // currentEstimatesAdult ? 
+        <ProtectedRoute>
+          <EstimatesAdultPage />
+        </ProtectedRoute>
+      // : <Navigate to={homePath()} />
     },
     {
       path: settingsPath(),

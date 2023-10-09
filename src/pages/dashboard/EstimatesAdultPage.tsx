@@ -23,12 +23,14 @@ import { API_URL, QUESTIONNAIRES_URL1 } from '../../core/constants/base.const';
 import { useAppDispatch, useAppSelector } from "../../core/hooks/rtkHooks";
 import { useFollowUpData } from "../../core/hooks/useFollowUpData";
 import DashboardLayout from "../../core/layout/DashboardLayout";
-import { OccasionIndex, PersonIndex } from '../../core/model/adultEstimates.model';
+import { AdultEstimatesDto, OccasionIndex, PersonIndex } from '../../core/model/adultEstimates.model';
 import { OrsAndScore15WithOccasion } from '../../core/model/score.model';
 import { SurveyStatus } from "../../core/model/status.model";
 import { backgroundAdultSurveyPath, followUpSurveyPath } from "../../core/util/pathBuilder.util";
 import { Dialog, DialogTitle, DialogActions, Button } from '@mui/material';
 import { closeStatusAdultListData } from '../../core/store/slices/closeStatusAdultSlice';
+import { EstimatesDto } from '../../core/model/estimates.model';
+import { loadCaseListAdultData } from '../../core/store/slices/caseListAdultSlice';
 
 type CloseStatusAdultEntity = {
   codeNumber: string;
@@ -68,12 +70,18 @@ export default function EstimatesAdultPage() {
   const { t } = useTranslation();
   const { username } = useAppSelector(state => state.user);
   const { closeStatusAdultList } = useAppSelector(state => state.closeStatusAdultIn)
-  const currentEstimatesAdult = useAppSelector(state => state.backgroundAdultSurvey.currentEstimatesAdult);
+  // const currentEstimatesAdult = useAppSelector(state => state.backgroundAdultSurvey.currentEstimatesAdult);
+  const [currentEstimatesAdult, setCurrentEstimates] = useState<AdultEstimatesDto | undefined >();
+  const codenumber = useParams().codeNumber
+  const { caseList } = useAppSelector(state => state.caseListAdultSurvey);
   const {
     data: followUpData,
     isFetched: isFetchedFollowUpData
-  } = useFollowUpData(currentEstimatesAdult.codeNumber);
+  } = useFollowUpData(codenumber);
   const completedFollowUpSurvey = isFetchedFollowUpData && !!followUpData?.codeNumber;
+  const currentEstimatesDatas = caseList.find(item => item.codeNumber === codenumber);
+  console.log("FFFFFFFFFFF:", currentEstimatesDatas)
+
 
   const [showQRCodeModal, setShowQRCodeModal] = useState(false);
   const [targetURI, setTargetURI] = useState("");
@@ -81,8 +89,6 @@ export default function EstimatesAdultPage() {
   const [open, setOpen] = React.useState(false);
   const [closedButton, setClosedButton] = useState<undefined | string>("true");
   const [closeStatusAdultEntity, setCloseStatusAdultEntity] = useState<CloseStatusAdultEntity>();
-  const codenumber = useParams().codeNumber
-  console.log("FFFFFFFFFFF:", codenumber)
   const [makeCodeNumber, setMakeCodeNumber] = useState("");
   const handleClickOpen = () => {
     setOpen(true);
@@ -96,14 +102,14 @@ export default function EstimatesAdultPage() {
     axios.post(
       `${API_URL}/adult-score/getScoresByCodeNumberAndOccasion`,
       {
-        codeNumber: currentEstimatesAdult.codeNumber
+        codeNumber: codenumber
       }
     ).then(res => res.data)
   );
 
   const handleClickScanLink = (person: PersonIndex, occasion: OccasionIndex) => {
     setTargetURI(btoa(btoa(btoa(JSON.stringify({
-      codeNumber: currentEstimatesAdult.codeNumber,
+      codeNumber: codenumber,
       person,
       occasion,
       score15: 0,
@@ -115,14 +121,14 @@ export default function EstimatesAdultPage() {
 
   const handleClickImportantEventsScanLink = () => {
     setTargetURI(btoa(btoa(btoa(JSON.stringify({
-      codeNumber: currentEstimatesAdult.codeNumber,
+      codeNumber: codenumber,
     })))));
     setShowQRCodeModal(true);
     setQrcodeUriDomain("https://vallentuna-survey-important-vux.netlify.app");
   };
 
   const handleClickFillOutFollowUpSurvey = () => {
-    navigate(followUpSurveyPath(currentEstimatesAdult.codeNumber));
+    navigate(followUpSurveyPath(codenumber));
   };
 
   const handleClickSendSurvey = async (occasion: OccasionIndex | 0) => {
@@ -132,7 +138,7 @@ export default function EstimatesAdultPage() {
       method: "POST",
       url: `${API_URL}/background-data/download-docx`,
       data: {
-        codeNumber: currentEstimatesAdult.codeNumber,
+        codeNumber: codenumber,
         occasion: occasion
       },
       responseType: "blob"
@@ -146,7 +152,7 @@ export default function EstimatesAdultPage() {
   //   try {
 
   //     axios.get(
-  //       `${API_URL}/close-status-adult/getOne/${currentEstimatesAdult.codeNumber}`
+  //       `${API_URL}/close-status-adult/getOne/${codenumber}`
   //     ).then((res: any) => {
   //       console.log(res);
   //       const closeStatus = res.data.isClosed;
@@ -163,19 +169,20 @@ export default function EstimatesAdultPage() {
   useEffect(() => {
     // setMakeCodeNumber(JSON.stringify(codenumber).slice(15, -2));
     // console.log("GGGGGGGG:", JSON.stringify(codenumber).slice(15, -2))
+    setCurrentEstimates(currentEstimatesDatas);
     setMakeCodeNumber(String(codenumber))
     console.log(String(codenumber))
-    const closeStatus = (closeStatusAdultList.find((item) => item.codeNumber === currentEstimatesAdult.codeNumber))?.isClosed
+    const closeStatus = (closeStatusAdultList.find((item) => item.codeNumber === codenumber))?.isClosed
     setClosedButton(closeStatus);
     console.log("closed status:", closeStatus)
-    console.log("closed status:", currentEstimatesAdult.codeNumber)
+    console.log("closed status:", codenumber)
 
   }, []);
 
   const handleFinishCase = async () => {
     setOpen(false);
     navigate(-1);
-    const codeNumber = currentEstimatesAdult.codeNumber;
+    const codeNumber = codenumber;
     const processor = username;
     const isClosed = "false";
     setClosedButton("false");
@@ -199,7 +206,7 @@ export default function EstimatesAdultPage() {
 
   const ONE_DAY_IN_MILLISECONDS: number = 1000 * 60 * 60 * 24;
   const strDate = dayjs().format("YYYY-MM-DD");
-  const differenceInMilliseconds: number = new Date(currentEstimatesAdult.history.twelveMonths.date).getTime() - new Date(strDate).getTime();
+  const differenceInMilliseconds: number = new Date(currentEstimatesAdult ? currentEstimatesAdult.history.twelveMonths.date : "").getTime() - new Date(strDate).getTime();
   const differenceInDays: number = Math.floor(differenceInMilliseconds / ONE_DAY_IN_MILLISECONDS);
 
   return (
@@ -212,13 +219,13 @@ export default function EstimatesAdultPage() {
                 <Stack direction="row" justifyContent="space-between" alignItems="center">
                   <StatusChip
                     circlePosition="right"
-                    status={currentEstimatesAdult.status}
+                    status={currentEstimatesAdult ? currentEstimatesAdult.status : SurveyStatus.Clear}
                     variant="medium"
                     content={<Typography fontWeight="600">{makeCodeNumber}</Typography>}
                   />
 
                   <Stack alignItems="center">
-                    <Link to={backgroundAdultSurveyPath(currentEstimatesAdult.codeNumber)} style={{ textDecoration: "none" }}>
+                    <Link to={backgroundAdultSurveyPath(codenumber)} style={{ textDecoration: "none" }}>
                       <Stack direction="row" justifyContent="center" alignItems="center" gap={1}>
                         <OpenInNewIcon sx={{ color: "success.main" }} />
                         <Typography color="success.main">{t("Estimates.BackgroundSimpleInformation")}</Typography>
@@ -272,19 +279,19 @@ export default function EstimatesAdultPage() {
               label,
               statusOfChild,
             ] = occasionIndex === 0 ? [
-              currentEstimatesAdult.history.zeroMonth.date,
+              currentEstimatesAdult ? currentEstimatesAdult.history.zeroMonth.date : "",
               `${t("Word.Month")} 0 -`,
-              currentEstimatesAdult.history.zeroMonth.statusInDetail.child,
+              currentEstimatesAdult ? currentEstimatesAdult.history.zeroMonth.statusInDetail.child : SurveyStatus.Loss,
             ]
                 : occasionIndex === 1 ? [
-                  currentEstimatesAdult.history.sixMonths.date,
+                  currentEstimatesAdult ? currentEstimatesAdult.history.sixMonths.date : "",
                   `${t("Word.Month")} 6 -`,
-                  currentEstimatesAdult.history.sixMonths.statusInDetail.child
+                  currentEstimatesAdult ? currentEstimatesAdult.history.sixMonths.statusInDetail.child : SurveyStatus.Loss
                 ]
                   : [
-                    currentEstimatesAdult.history.twelveMonths.date,
+                    currentEstimatesAdult ? currentEstimatesAdult.history.twelveMonths.date : "",
                     `${t("Word.Month")} 12 -`,
-                    currentEstimatesAdult.history.twelveMonths.statusInDetail.child
+                    currentEstimatesAdult ? currentEstimatesAdult.history.twelveMonths.statusInDetail.child : SurveyStatus.Loss
                   ];
 
             const isScanLocked = Math.abs(dayjs().diff(date, "week")) > 0;
@@ -441,7 +448,7 @@ export default function EstimatesAdultPage() {
           {/* Follow Up Survey */}
           <Grid item md={6} my={4}>
             <Stack>
-              <Link to={followUpSurveyPath(currentEstimatesAdult.codeNumber)} style={{ textDecoration: "none" }}>
+              <Link to={followUpSurveyPath(codenumber)} style={{ textDecoration: "none" }}>
                 <Stack direction="row" alignItems="center" gap={1}>
                   <OpenInNewIcon sx={{ color: "success.main" }} />
                   <Typography color="success.main">{t("Estimates.FollowUpSurvey(TheProcessor)")}</Typography>
