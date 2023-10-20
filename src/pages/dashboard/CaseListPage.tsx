@@ -153,8 +153,14 @@ export default function CaseListPage() {
       width: 400,
       renderCell: (data) => {
         // console.log(data.row.signal);
+        const checked = closeStatusList.find((tip) => tip.codeNumber === data.row.codeNumber)?.isClosed
+        console.log("CONSOLE:", checked)
         return (
-          data.row.nextSurvey + t(data.row.signal)
+          checked !== "true" || null ? (
+            data.row.nextSurvey + t(data.row.signal)
+          ) : (
+            t("CaseList.Next.Closed")
+          )
         )
       }
     },

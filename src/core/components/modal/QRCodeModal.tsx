@@ -41,7 +41,7 @@ export default function QRCodeModal(props: Props) {
         display: "flex",
         justifyContent: "space-between",
       }}>
-        <Typography color="success.main" variant="h4" component="span">{modalTitle}</Typography>
+        <Typography color="success.main" variant={modalTitle === t("Word.Self") ? ("h5") : ("h4")} component="span">{modalTitle}</Typography>
         <IconButton
           aria-label='close'
           onClick={props.onClose}

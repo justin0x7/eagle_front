@@ -87,7 +87,7 @@ export default function EstimatesAdultPage() {
   const [targetURI, setTargetURI] = useState("");
   const [qrcodeUriDomain, setQrcodeUriDomain] = useState("");
   const [open, setOpen] = React.useState(false);
-  const [closedButton, setClosedButton] = useState<undefined | string>("true");
+  const [closedButton, setClosedButton] = useState<undefined | string>("false");
   const [closeStatusAdultEntity, setCloseStatusAdultEntity] = useState<CloseStatusAdultEntity>();
   const [makeCodeNumber, setMakeCodeNumber] = useState("");
   const handleClickOpen = () => {
@@ -173,19 +173,19 @@ export default function EstimatesAdultPage() {
     setMakeCodeNumber(String(codenumber))
     console.log(String(codenumber))
     const closeStatus = (closeStatusAdultList.find((item) => item.codeNumber === codenumber))?.isClosed
-    setClosedButton(closeStatus);
+    setClosedButton(closeStatus === null ? "false" : closeStatus);
     console.log("closed status:", closeStatus)
     console.log("closed status:", codenumber)
 
   }, []);
 
   const handleFinishCase = async () => {
-    setOpen(false);
-    navigate(-1);
+    
+    // navigate(-1);
     const codeNumber = codenumber;
     const processor = username;
-    const isClosed = "false";
-    setClosedButton("false");
+    const isClosed = "true";
+    setClosedButton("true");
     axios.post(
       `${API_URL}/close-status-adult/create`,
       {
@@ -199,6 +199,7 @@ export default function EstimatesAdultPage() {
     }).catch(err => {
       console.log(err);
     });
+    setOpen(false);
   };
   useEffect(() => {
     dispatch(closeStatusAdultListData());
@@ -284,12 +285,12 @@ export default function EstimatesAdultPage() {
               currentEstimatesAdult ? currentEstimatesAdult.history.zeroMonth.statusInDetail.child : SurveyStatus.Loss,
             ]
                 : occasionIndex === 1 ? [
-                  currentEstimatesAdult ? currentEstimatesAdult.history.sixMonths.date : strDate,
+                  currentEstimatesAdult ? currentEstimatesAdult.history.sixMonths.date : dayjs().add(6, "month").format("YYYY-MM-DD"),
                   `${t("Word.Month")} 6 -`,
                   currentEstimatesAdult ? currentEstimatesAdult.history.sixMonths.statusInDetail.child : SurveyStatus.Loss
                 ]
                   : [
-                    currentEstimatesAdult ? currentEstimatesAdult.history.twelveMonths.date : strDate,
+                    currentEstimatesAdult ? currentEstimatesAdult.history.twelveMonths.date : dayjs().add(12, "month").format("YYYY-MM-DD"),
                     `${t("Word.Month")} 12 -`,
                     currentEstimatesAdult ? currentEstimatesAdult.history.twelveMonths.statusInDetail.child : SurveyStatus.Loss
                   ];
@@ -464,25 +465,25 @@ export default function EstimatesAdultPage() {
               <Typography fontWeight="bold">{t(completedFollowUpSurvey ? "Estimates.FollowSurveyDone" : "Estimates.FollowUpSurveyNotDone")}</Typography>
               {
                 completedFollowUpSurvey ? (
-                  closedButton === "true" ? (
-                    <ButtonRed onClick={handleClickOpen} sx={{ color: "#FFF" }}>
-                      {t("Estimates.CloseCase")}
-                    </ButtonRed>
-                  ) : (
+                  closedButton === "true"  ? (
                     <ButtonRed disabled={true} sx={{ color: "#FFF" }}>
                       {t("Estimates.Closed")}
                     </ButtonRed>
+                  ) : (
+                    <ButtonRed onClick={handleClickOpen} sx={{ color: "#FFF" }}>
+                    {t("Estimates.CloseCase")}
+                  </ButtonRed>
                   )
                 ) : (
-                  closedButton === "false" ? (
-                    <ButtonRed onClick={handleClickOpen} sx={{ color: "#FFF" }}>
-                      {t("Estimates.CloseCase")}
-                    </ButtonRed>
-                  ) : (
+                  // closedButton === "false" ? (
+                  //   <ButtonRed onClick={handleClickOpen} sx={{ color: "#FFF" }}>
+                  //     {t("Estimates.CloseCase")}
+                  //   </ButtonRed>
+                  // ) : (
                     <ButtonRed disabled={completedFollowUpSurvey} sx={{ color: "#FFF" }}>
                       {t("Estimates.InCompleted")}
                     </ButtonRed>
-                  )
+                  // )
                 )
               }
             </Stack>

@@ -21,7 +21,7 @@ import { ButtonPrimary } from "../../core/components/button/Button";
 import { useAppSelector } from "../../core/hooks/rtkHooks";
 import { useBackgroundAdultData } from "../../core/hooks/useBackgroundAdultData";
 import { BackgroundAdultData, BackgroundAdultSurveyBasicData, FormDataMap } from "../../core/model/backgroundAdultData.model";
-import { adultCaseList, estimatesPath, homePath } from "../../core/util/pathBuilder.util";
+import { adultCaseList, estimatesAdultPath, estimatesPath, homePath } from "../../core/util/pathBuilder.util";
 
 const singleChoiceEntityNames = ["gender"];
 const specialEntityPairs = [
@@ -285,7 +285,7 @@ export default function BackgroundAdultDataSurveyPage() {
     const saved = await handleSave();
     if (saved) 
     {
-      navigate(estimatesPath(codeNumber));
+      navigate(estimatesAdultPath(codeNumber));
     console.log(codeNumber)
   }
   };

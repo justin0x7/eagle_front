@@ -45,7 +45,7 @@ export default function NewClientModal(props: Props) {
     //
     const codeNumber = strCodeNumber;
     const processor = username;
-    const isClosed = "true"
+    const isClosed = "false"
     axios.post(
       `${API_URL}/close-status/create`,
       {
@@ -68,7 +68,7 @@ export default function NewClientModal(props: Props) {
     //
     const codeNumber = strCodeNumber;
     const processor = username;
-    const isClosed = "true"
+    const isClosed = "false"
     axios.post(
       `${API_URL}/close-status-adult/create`,
       {
@@ -107,7 +107,7 @@ export default function NewClientModal(props: Props) {
       //
       const codeNumber = strCodeNumber;
       const processor = username;
-      const isClosed = "true"
+      const isClosed = "false"
       axios.post(
         `${API_URL}/close-status/create`,
         {
@@ -152,7 +152,7 @@ export default function NewClientModal(props: Props) {
       //
       const codeNumber = strCodeNumber;
       const processor = username;
-      const isClosed = "true"
+      const isClosed = "false"
       axios.post(
         `${API_URL}/close-status-adult/create`,
         {

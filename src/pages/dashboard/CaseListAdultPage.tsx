@@ -126,8 +126,14 @@ export default function CaseListAdultPage() {
       width: 400,
       renderCell: (data) => {
         // console.log(data.row.signal);
+        const checked = closeStatusAdultList.find((tip) => tip.codeNumber === data.row.codeNumber)?.isClosed
+        console.log("AAAAAAAAAAAAAAAAAAA:", checked)
         return (
+          checked !== "true" || null ? (
           data.row.nextSurvey + t(data.row.signal)
+          ) : (
+            t("CaseList.Next.Closed")
+          )
         )
       }
     },
