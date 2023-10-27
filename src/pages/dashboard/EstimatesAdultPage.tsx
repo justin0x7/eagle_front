@@ -383,7 +383,7 @@ export default function EstimatesAdultPage() {
               <CardHeader
                 title={
                   <Typography fontWeight="medium" align="center">
-                    {`${t("Estimates.SurveyWindow")} `}<strong>{`Month 12 - ${t("Estimates.ImportantEventsDuring12Months")}`}</strong>
+                    {`${t("Estimates.SurveyWindow")} `}<strong>{`${t("Estimates.MonthLetter")} 12 - ${t("Estimates.ImportantEventsDuring12Months")}`}</strong>
                   </Typography>
                 }
                 sx={{
