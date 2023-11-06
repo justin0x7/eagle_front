@@ -518,9 +518,9 @@ export default function EstimatesPage() {
                 </Grid>
               </CardContent>
               <CardActions sx={{ justifyContent: "flex-end" }}>
-                <ButtonPrimary onClick={() => {
+                {/* <ButtonPrimary onClick={() => {
                   handleClickSendSurvey(0);
-                }}>{t("Estimates.SendSurvey")}</ButtonPrimary>
+                }}>{t("Estimates.SendSurvey")}</ButtonPrimary> */}
               </CardActions>
             </Card>
           </Grid>

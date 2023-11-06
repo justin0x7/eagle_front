@@ -133,13 +133,12 @@ export default function EstimatesAdultPage() {
 
   const handleClickSendSurvey = async (occasion: OccasionIndex | 0) => {
     console.log("before post");
-
     const { data } = await axios({
       method: "POST",
       url: `${API_URL}/background-data/download-docx`,
       data: {
         codeNumber: codenumber,
-        occasion: occasion
+        occasion: occasion + 3
       },
       responseType: "blob"
     });
@@ -439,9 +438,9 @@ export default function EstimatesAdultPage() {
                 </Grid>
               </CardContent>
               <CardActions sx={{ justifyContent: "flex-end" }}>
-                <ButtonPrimary onClick={() => {
+                {/* <ButtonPrimary onClick={() => {
                   handleClickSendSurvey(0);
-                }}>{t("Estimates.SendSurvey")}</ButtonPrimary>
+                }}>{t("Estimates.SendSurvey")}</ButtonPrimary> */}
               </CardActions>
             </Card>
           </Grid>

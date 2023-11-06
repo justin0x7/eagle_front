@@ -20,80 +20,130 @@ class ComponentToPrint1 extends React.Component<Props> {
       //   <img src={PrintImg} height={"1000px"} width={"100%"} ></img>
       // </>
       <>
-      <Container maxWidth="lg">
-        <Grid container sx={{ justifyContent: "space-between" }}>
-          <img src={leafImage} width={200}></img>
-          {strDate}
-        </Grid>
-        <Typography variant="h5" align="center">{t("Information about participation in systematic follow-up")}</Typography>
-        <br />
-        {/* <Stack direction="row" alignItems="center" gap={20}>
-          <QRCode
-            size={256}
-            style={{ height: "auto", maxWidth: "25%", width: "25%" }}
-            level="M"
-            value={this.props.uri}
-            viewBox={`0 0 256 256`}
-          />
-          <Stack>
-            <Typography>
-            {t("QR code for parent")} 1.
-            </Typography>
-            <Typography>
-            {t("The parent to answer")}: __________
-            </Typography>
-            <Typography>
-            {t("Reply latest - Date")}: __________
-            </Typography>
+        <Container maxWidth="lg">
+          <Grid container sx={{ justifyContent: "space-between" }}>
+            <img src={leafImage} width={200}></img>
+            {strDate}
+          </Grid>
+          <Typography variant="h5" align="center">{t("Information about participation in systematic follow-up")}</Typography>
+          <br />
+          {/* <Stack direction="row" alignItems="center" gap={20}>
+        <QRCode
+          size={256}
+          style={{ height: "auto", maxWidth: "25%", width: "25%" }}
+          level="M"
+          value={this.props.uri}
+          viewBox={`0 0 256 256`}
+        />
+        <Stack>
+          <Typography>
+          {t("QR code for parent")} 1.
+          </Typography>
+          <Typography>
+          {t("The parent to answer")}: __________
+          </Typography>
+          <Typography>
+          {t("Reply latest - Date")}: __________
+          </Typography>
+        </Stack>
+      </Stack> */}
+          <br />
+          <Typography>
+            {t("Open care Vuksen i Vallentuna carries out systematic follow-up of assistance-assessed interventions. The purpose is to ensure the quality of the assistance-assessed interventions carried out at Adult Public Services. Participation is voluntary and everyone who participates in outpatient interventions is asked to participate in the follow-up. The answers we receive are used to evaluate and improve our working methods and efforts. All data collected will be aggregated at group level.")}
+          </Typography>
+          <br />
+          <Typography variant="h6">
+            {t("Confidentiality and consent to the processing of personal data")}
+          </Typography>
+          <Typography>
+            {t("I agree to my personal data in the form of contact details being processed to enable a systematic follow-up in the form of sending out questionnaires after six and twelve months respectively after starting the effort. I also agree that my personal data, together with the answers provided in the survey, are processed for the purpose of evaluating and improving Adult Public Care's work methods and efforts.")}
+          </Typography>
+          <br />
+          <Typography>
+            {t("All information that I provide in the systematic follow-up will be treated confidentially. This consent form will be kept in a locked cabinet by Open Care Adults to which unauthorized persons have no access.")}
+          </Typography>
+          <br />
+          <Typography>
+            {t("Consented personal data will be processed at the latest from the date of signing this consent for 13 months after the start of the effort, or until you withdraw your consent. Then, when the processing of the personal data is finished, the answers are stored de-identified on a digital platform within the Nordic region.")}
+          </Typography>
+          <br />
+          <Typography>
+            {t("Vallentuna municipality is the personal data controller for the processing of personal data as above. The personal data is only processed for the purpose stated in the consent sentence above. The legal basis for the processing is consent. The categories of personal data that are processed are only those specified in the consent sentence.")}
+          </Typography>
+          <br />
+          <Typography sx={{ marginBottom: "300px" }}>
+            {t("You can reach the Data Protection Officer via our Contact Center, telephone: 08-587 850 00.")}
+          </Typography>
+          <br />
+          <Grid container sx={{ justifyContent: "space-between" }}>
+            <img src={leafImage} width={200}></img>
+            {strDate}
+          </Grid>
+          <Stack direction="row" gap={6} justifyContent="center">
+            <Stack>
+              <Typography>
+                {t("Singnature of name:")}
+              </Typography>
+              <br />
+              <Typography>
+                __________________
+              </Typography>
+            </Stack>
+            <Stack>
+              <Typography>
+                {t("Clarification of name:")}
+              </Typography>
+              <br />
+              <Typography>
+                __________________
+              </Typography>
+            </Stack>
+            <Stack>
+              <Typography>
+                {t("Date of name:")}
+              </Typography>
+              <br />
+              <Typography>
+                __________________
+              </Typography>
+            </Stack>
           </Stack>
-        </Stack> */}
-        <br />
-        <Typography>
-        {t("The Public Health Service in Vallentuna carries out systematic follow-up of the interventions that have been started after September 1, 2021. The purpose is to ensure the quality of the efforts carried out at the Public Health Service and to find areas for improvement. Everyone who is granted outpatient care is asked to participate in the follow-up, and the answers we receive are very important in being able to offer the best possible support to the people we meet.")}
-        </Typography>
-        <br />
-        <Typography variant="h6">
-        {t("Confidentiality and processing of personal data")}
-        </Typography>
-        <Typography>
-        {t("All information you provide in the systematic follow-up will be treated confidentially. The answers are de-identified and stored in a locked cabinet to which unauthorized persons do not have access. The processors have confidentiality regarding all collected information about you. In order to follow up the effect of the granted effort, we would like to be able to send you follow-up surveys after six, respectively twelve, months. Based on the EU's data protection regulation, GDPR, we need your consent to save your contact details during these twelve months. All data collected will be aggregated at the group level and your individual responses will be permanently deleted after the data is aggregated.")}
-        </Typography>
-        <br />
-        <Typography variant="h6">
-        {t("Consent")}
-        </Typography>
-        <Typography>
-        {t("I agree that the Public Health Service saves my contact details twelve months after starting work at the Public Health Service in order to ask follow-up questions about the work. I can request that my data be deleted at any time.")}
-        </Typography>
-        <br />
-        <Typography variant="h6">
-        {t("Name")}:________________________________________________
-        </Typography>
-        <Typography variant="h6">
-        {t("Place and date")}:__________________________________________
-        </Typography>
-        <Typography variant="h6">
-        {t("The consent is valid until")}:_______________________________
-        </Typography>
-        <Typography variant="h6">
-        {t("Address")}:____________________________________________
-        </Typography>
-        <Typography variant="h6">
-        ____________________________________________
-        </Typography>
-        <Typography variant="h6">
-        {t("Phone number")}:______________________________________
-        </Typography>
+          <br />
+          <Stack direction="row" justifyContent="center">
+            <Typography>
+              {t("Address of name:")}
+            </Typography>
+            <Stack>
+              <Typography>
+                ___________________________________________________________
+              </Typography>
+              <br />
+              <Typography>
+                ___________________________________________________________
+              </Typography>
+            </Stack>
+          </Stack>
+          <br />
+          <Typography variant="h6">
+            {t("Information about the data protection regulation (EU) 2016/679")}
+          </Typography>
+          <Typography sx={{ fontSize: "10px" }}>
+            {t("Personal data is processed according to the rules contained in the data protection regulation or with the support of other legislation relating to personal data. According to Article 15 of the data protection regulation, you have the right to receive information about which personal data about you we process and how we process it, free of charge, once per calendar year, after a written and signed application has been sent to us. You also have the right to request correction according to Article 16 of the same regulation.")}
+          </Typography>
+          <br />
+          <Typography sx={{ fontSize: "10px" }}>
+            {t("More about Vallentuna municipality's handling of personal data can be found at www.vallentuna.se/personpädtning.")}
+          </Typography>
+          <br />
+          <Grid container sx={{ justifyContent: "space-between", position: "absolute", bottom: "5px", right: "5px" }}>
+            <img src={footerLogo}></img>
+            <img src={eagle} height="100px"></img>
+          </Grid>
 
-        <Grid container sx={{ justifyContent: "space-between", position: "absolute", bottom: "5px", right: "5px" }}>
-          <img src={footerLogo}></img>
-          <img src={eagle} height="100px"></img>
-        </Grid>
-      
-      
 
-  </Container>
-  </>
+
+        </Container>
+      </>
     );
   }
 }
