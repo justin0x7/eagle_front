@@ -326,7 +326,7 @@ export default function BackgroundDataSurveyPage() {
                     size="small"
                     type="number"
                     value={yearOfBirth}
-                    onChange={e => setYearOfBirth(+e.target.value)}
+                    onChange={e => setYearOfBirth(backgroundData?.yearOfBirth ? backgroundData?.yearOfBirth : +e.target.value)}
                   />
                 </td>
               </tr>
@@ -338,7 +338,7 @@ export default function BackgroundDataSurveyPage() {
                     id="countries"
                     size="small"
                     value={country}
-                    onChange={(_e, newVal) => setCountry(newVal)}
+                    onChange={(_e, newVal) => setCountry(backgroundData?.country ? backgroundData?.country : newVal)}
                     options={countryList.getNames().sort()}
                     sx={{ width: 300 }}
                     renderInput={(params) => <TextField {...params} size="small" />}
