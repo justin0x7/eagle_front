@@ -322,7 +322,7 @@ export default function BackgroundAdultDataSurveyPage() {
                     variant="outlined"
                     size="small"
                     type="number"
-                    value={yearOfBirth}
+                    value={backgroundAdultData?.yearOfBirth ? backgroundAdultData?.yearOfBirth : yearOfBirth}
                     onChange={e => setYearOfBirth(backgroundAdultData?.yearOfBirth ? backgroundAdultData?.yearOfBirth : +e.target.value)}
                   />
                 </td>
@@ -334,7 +334,7 @@ export default function BackgroundAdultDataSurveyPage() {
                     disablePortal
                     id="countries"
                     size="small"
-                    value={country}
+                    value={backgroundAdultData?.country ? backgroundAdultData?.country : country}
                     onChange={(_e, newVal) => setCountry(backgroundAdultData?.country ? backgroundAdultData?.country : newVal)}
                     options={countryList.getNames().sort()}
                     sx={{ width: 300 }}
