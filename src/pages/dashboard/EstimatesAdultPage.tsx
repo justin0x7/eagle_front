@@ -295,6 +295,7 @@ export default function EstimatesAdultPage() {
                   ];
 
             const isScanLocked = Math.abs(dayjs().diff(date, "week")) > 0;
+            const percentOrs = ors * 15 / 100;
 
             return (
               <Grid item md={6} key={`grid-item-${occasionIndex}`}>
@@ -322,7 +323,7 @@ export default function EstimatesAdultPage() {
                                       {!ors ? (
                                         "N/A"
                                       ) : (
-                                        ors
+                                        percentOrs + "%"
                                       )}
                                     </Typography>
 

@@ -76,7 +76,7 @@ export default function EstimatesPage() {
   const { t } = useTranslation();
   const { username } = useAppSelector(state => state.user);
   const { closeStatusList } = useAppSelector(state => state.closeStatusIn);
-  const [currentEstimates, setCurrentEstimates] = useState<EstimatesDto | undefined >();
+  const [currentEstimates, setCurrentEstimates] = useState<EstimatesDto | undefined>();
   const codenumber = useParams().codeNumber
   console.log("FFFFFFFFFFF:", codenumber)
   const { caseList } = useAppSelector(state => state.caseListSurvey);
@@ -89,7 +89,7 @@ export default function EstimatesPage() {
   // const refreshPage = (e: GridRowParams<EstimatesDto>) => {
   //   dispatch(setCurrentEstimatesAction(e.row));
   // };
-  
+
   const currentEstimatesDatas = caseList.find(item => item.codeNumber === codenumber);
   // console.log("HHHHHHHHHHHH:::::::", currentEstimatesDatas)
   // setCurrentEstimates(currentEstimatesDatas);
@@ -168,7 +168,7 @@ export default function EstimatesPage() {
     // dispatch(loadCaseListData());
     setMakeCodeNumber(String(codenumber))
     console.log(String(codenumber))
-    const closeStatus = (closeStatusList.find((item) => item.codeNumber === codenumber))?.isClosed 
+    const closeStatus = (closeStatusList.find((item) => item.codeNumber === codenumber))?.isClosed
     setClosedButton(closeStatus === null ? "false" : closeStatus);
     console.log("closed status:", closeStatus)
     console.log("closed status:", codenumber)
@@ -206,7 +206,7 @@ export default function EstimatesPage() {
   //   }
   // }, []);
 
-  
+
 
   // axios.get(
   //         `${API_URL}/close-status/getOne/${codenumber}`
@@ -359,6 +359,8 @@ export default function EstimatesPage() {
                   ];
 
             const isScanLocked = Math.abs(dayjs().diff(date, "week")) > 0;
+            const percentOrs = ors * 15 / 100;
+
             return (
               <>
                 <Grid item md={6} key={`grid-item-${occasionIndex}`}>
@@ -386,7 +388,7 @@ export default function EstimatesPage() {
                                       {!ors ? (
                                         "N/A"
                                       ) : (
-                                        ors
+                                        percentOrs + "%"
                                       )}
                                     </Typography>
 
@@ -581,9 +583,9 @@ export default function EstimatesPage() {
                   //     {t("Estimates.CloseCase")}
                   //   </ButtonRed>
                   // ) : (
-                    <ButtonRed disabled={completedFollowUpSurvey} sx={{ color: "#FFF" }}>
-                      {t("Estimates.InCompleted")}
-                    </ButtonRed>
+                  <ButtonRed disabled={completedFollowUpSurvey} sx={{ color: "#FFF" }}>
+                    {t("Estimates.InCompleted")}
+                  </ButtonRed>
                   // )
                 )
               }
