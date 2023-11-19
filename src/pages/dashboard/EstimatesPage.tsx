@@ -359,7 +359,7 @@ export default function EstimatesPage() {
                   ];
 
             const isScanLocked = Math.abs(dayjs().diff(date, "week")) > 0;
-            // const percentOrs = ors * 100 / 15;
+            const percentOrs = (ors * 100 / 15).toFixed(0);
 
             return (
               <>
@@ -388,7 +388,8 @@ export default function EstimatesPage() {
                                       {!ors ? (
                                         "N/A"
                                       ) : (
-                                        ors + "%"
+                                        ors <= 15 ?
+                                        percentOrs + "%" : ors + "%"
                                       )}
                                     </Typography>
 
@@ -402,7 +403,7 @@ export default function EstimatesPage() {
                                   <Stack justifyContent="center" alignItems="center" sx={{ height: "100%" }}>
                                     <Typography color="text.secondary" fontWeight="bold" fontSize={16}>{t("Word.Score15")}</Typography>
                                     <Typography color="info.main" fontWeight="600" variant='h4'>
-                                      {!score15 ? (
+                                      {!ors ? (
                                         "N/A"
                                       ) : (
                                         score15

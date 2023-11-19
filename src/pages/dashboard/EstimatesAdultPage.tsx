@@ -71,7 +71,7 @@ export default function EstimatesAdultPage() {
   const { username } = useAppSelector(state => state.user);
   const { closeStatusAdultList } = useAppSelector(state => state.closeStatusAdultIn)
   // const currentEstimatesAdult = useAppSelector(state => state.backgroundAdultSurvey.currentEstimatesAdult);
-  const [currentEstimatesAdult, setCurrentEstimates] = useState<AdultEstimatesDto | undefined >();
+  const [currentEstimatesAdult, setCurrentEstimates] = useState<AdultEstimatesDto | undefined>();
   const codenumber = useParams().codeNumber
   const { caseList } = useAppSelector(state => state.caseListAdultSurvey);
   const {
@@ -179,7 +179,7 @@ export default function EstimatesAdultPage() {
   }, []);
 
   const handleFinishCase = async () => {
-    
+
     // navigate(-1);
     const codeNumber = codenumber;
     const processor = username;
@@ -295,7 +295,7 @@ export default function EstimatesAdultPage() {
                   ];
 
             const isScanLocked = Math.abs(dayjs().diff(date, "week")) > 0;
-            // const percentOrs = ors * 100 / 15;
+            const percentOrs = (ors * 100 / 15).toFixed(0);
 
             return (
               <Grid item md={6} key={`grid-item-${occasionIndex}`}>
@@ -323,7 +323,8 @@ export default function EstimatesAdultPage() {
                                       {!ors ? (
                                         "N/A"
                                       ) : (
-                                        ors + "%"
+                                        ors <= 15 ?
+                                          percentOrs + "%" : ors + "%"
                                       )}
                                     </Typography>
 
@@ -353,7 +354,7 @@ export default function EstimatesAdultPage() {
                       <CardContent>
                         <Grid container>
                           <Grid item md={6}>
-                            <Stack justifyContent="center" height="100%" gap={2} sx={{paddingTop: "4rem"}}>
+                            <Stack justifyContent="center" height="100%" gap={2} sx={{ paddingTop: "4rem" }}>
                               <Stack direction="row" alignItems="center" gap={2}>
                                 {/* <Typography fontWeight="bold">{t("Word.Self")}</Typography> */}
                                 <StatusChip
@@ -423,7 +424,7 @@ export default function EstimatesAdultPage() {
                   <CardContent>
                     <Grid container>
                       <Grid item md={12}>
-                        <Stack direction="row" alignItems="center" gap={2} height="100%" sx={{position: "relative", top: "2rem"}}>
+                        <Stack direction="row" alignItems="center" gap={2} height="100%" sx={{ position: "relative", top: "2rem" }}>
                           <Typography fontWeight="bold">{t("Word.Guardian")} 1</Typography>
                           <StatusChip
                             circlePosition="left"
@@ -465,14 +466,14 @@ export default function EstimatesAdultPage() {
               <Typography fontWeight="bold">{t(completedFollowUpSurvey ? "Estimates.FollowSurveyDone" : "Estimates.FollowUpSurveyNotDone")}</Typography>
               {
                 completedFollowUpSurvey ? (
-                  closedButton === "true"  ? (
+                  closedButton === "true" ? (
                     <ButtonRed disabled={true} sx={{ color: "#FFF" }}>
                       {t("Estimates.Closed")}
                     </ButtonRed>
                   ) : (
                     <ButtonRed onClick={handleClickOpen} sx={{ color: "#FFF" }}>
-                    {t("Estimates.CloseCase")}
-                  </ButtonRed>
+                      {t("Estimates.CloseCase")}
+                    </ButtonRed>
                   )
                 ) : (
                   // closedButton === "false" ? (
@@ -480,9 +481,9 @@ export default function EstimatesAdultPage() {
                   //     {t("Estimates.CloseCase")}
                   //   </ButtonRed>
                   // ) : (
-                    <ButtonRed disabled={completedFollowUpSurvey} sx={{ color: "#FFF" }}>
-                      {t("Estimates.InCompleted")}
-                    </ButtonRed>
+                  <ButtonRed disabled={completedFollowUpSurvey} sx={{ color: "#FFF" }}>
+                    {t("Estimates.InCompleted")}
+                  </ButtonRed>
                   // )
                 )
               }
